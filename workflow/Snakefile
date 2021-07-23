@@ -8,6 +8,9 @@ report: "report/workflow.rst"
 singularity: "docker://continuumio/miniconda3"
 
 
+print("Ahoj")
+
+
 rule all:
     input:
         # The first rule should define the default target files
