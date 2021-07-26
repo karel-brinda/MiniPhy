@@ -3,11 +3,13 @@ rule tree_newick:
         nw="results/tree/{batch}.nw",
     input:
         get_asms_batch
+    threads:
+        8
     shell:
         """
             mashtree \\
                 --outtree {output.nw} \\
-                --numcpus 7 \\
+                --numcpus {threads} \\
                 --seed 42  \\
                 --sort-order ABC \\
                 {input}

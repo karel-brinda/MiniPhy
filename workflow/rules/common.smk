@@ -51,13 +51,28 @@ def get_seq_source_path(wildcards):
     return BATCHES_FN[wildcards.batch][wildcards.sample]
     #pass
 
-def get_asm(batch, sample):
+
+###
+
+def get_asm_fa(batch, sample):
     return f"results/asm/{batch}/{sample}.fa"
 
 def get_asms_batch(wildcards):
     batch=wildcards["batch"]
-    l = [get_asm(batch, sample) for sample in BATCHES_FN[batch]]
+    l = [get_asm_fa(batch, sample) for sample in BATCHES_FN[batch]]
     return l
+
+###
+
+def get_pre_fa(batch, sample):
+    return f"results/pre/{batch}/{sample}.txt"
+
+def get_pres_batch(wildcards):
+    batch=wildcards["batch"]
+    l = [get_pre_fa(batch, sample) for sample in BATCHES_FN[batch]]
+    return l
+
+###
 
 def get_batches():
     return BATCHES_FN.keys()
