@@ -2,20 +2,55 @@
 # After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
 
 
+from snakemake.utils import min_version
+min_version("6.2.0")
+
 report: "report/workflow.rst"
+
 
 # Allow users to fix the underlying OS via singularity.
 singularity: "docker://continuumio/miniconda3"
 
 
-print("Ahoj")
+
+##### Target rules #####
 
 
 rule all:
     input:
-        # The first rule should define the default target files
-        # Subsequent target rules can be specified below. They should start with all_*.
+        "results/compressed_asm.tar.xz",
+        "results/compressed_pre.tar.xz",
+        "results/compressed_post.tar.xz",
+        #"results/stats/samples.tsv",
+        #"results/stats/global.tsv",
+
+
+
+
+
+##### Modules #####
 
 
 include: "rules/common.smk"
-include: "rules/other.smk"
+
+include: "rules/asm.smk"
+
+include: "rules/pre.smk"
+
+include: "rules/tree.smk"
+
+include: "rules/post.smk"
+
+include: "rules/compression.smk"
+
+#include: "rules/assembly_analysis.smk"
+
+#include: "rules/tree_inference.smk"
+
+#include: "rules/prepropagation_analysis.smk"
+
+#include: "rules/propagation.smk"
+
+#include: "rules/postpropagation_analysis.smk"
+
+#include: "rules/other.smk"
