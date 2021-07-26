@@ -15,10 +15,11 @@ singularity: "docker://continuumio/miniconda3"
 
 ##### Target rules #####
 
+include: "rules/common.smk"
 
 rule all:
     input:
-        []
+        [f"results/compressed_asm/{batch}.tar.xz" for batch in get_batches()]
         #"results/compressed_asm.tar.xz",
         #"results/compressed_pre.tar.xz",
         #"results/compressed_post.tar.xz",
@@ -32,7 +33,6 @@ rule all:
 ##### Modules #####
 
 
-include: "rules/common.smk"
 
 include: "rules/asm.smk"
 
