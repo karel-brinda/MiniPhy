@@ -1,4 +1,34 @@
-rule:
+rule compress_pre:
+    output:
+        xz="results/compressed_pre/{batch}.tar.xz",
+    input:
+        txt="results/pre/{batch}.txt",
+    params:
+        d="results/pre/"
+    shell:
+        """
+            tar cvf - -C "{params.d}" -T "{input.txt}" \\
+                | xz -T1 -9 \\
+                > {output.xz}
+        """
+
+
+rule pre_list:
+    output:
+        txt="results/pre/{batch}.txt",
+    input:
+        get_pres_batch
+    params:
+        d="results/pre/",
+    shell:
+        """
+            echo "{input}" \\
+                | xargs -n1 -I{{}} realpath --relative-to "{params.d}" {{}} \\
+                > "{output}"
+        """
+
+
+rule pre_simplitigs:
     output:
         txt="results/pre/{batch}/{sample}.txt",
     input:
@@ -12,3 +42,4 @@ rule:
                 | grep -v '>' \\
                 > {output.txt}
         """
+
