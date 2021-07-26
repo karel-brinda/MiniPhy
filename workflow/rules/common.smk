@@ -52,7 +52,7 @@ def get_seq_source_path(wildcards):
     #pass
 
 def get_asm(batch, sample):
-    return f"results/asm/{batch}/{sample}.fa.gz"
+    return f"results/asm/{batch}/{sample}.fa"
 
 def get_asms_batch(wildcards):
     batch=wildcards["batch"]
