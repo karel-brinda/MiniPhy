@@ -1,6 +1,6 @@
-~/github/my/rase-db-ngonorrhoeae-gisp/GCGS0001.fa
-~/github/my/rase-db-ngonorrhoeae-gisp/GCGS0002.fa
-~/github/my/rase-db-ngonorrhoeae-gisp/GCGS0003.fa
-~/github/my/rase-db-ngonorrhoeae-gisp/GCGS0004.fa
-~/github/my/rase-db-ngonorrhoeae-gisp/GCGS0005.fa
+/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0001.fa
+/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0002.fa
+/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0003.fa
+/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0004.fa
+/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0005.fa
 
