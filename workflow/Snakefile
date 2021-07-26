@@ -18,9 +18,10 @@ singularity: "docker://continuumio/miniconda3"
 
 rule all:
     input:
-        "results/compressed_asm.tar.xz",
-        "results/compressed_pre.tar.xz",
-        "results/compressed_post.tar.xz",
+        []
+        #"results/compressed_asm.tar.xz",
+        #"results/compressed_pre.tar.xz",
+        #"results/compressed_post.tar.xz",
         #"results/stats/samples.tsv",
         #"results/stats/global.tsv",
 

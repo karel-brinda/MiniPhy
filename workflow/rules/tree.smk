@@ -1,11 +1,14 @@
-rule:
+rule tree_newick:
     output:
         nw="results/tree/{batch}.nw",
     input:
-        fa=get_asms_batch
+        get_asms_batch
     shell:
         """
-            seqtk seq -U "{input.fa}" \\
-                | gzip --fast \\
-                > "{output.fa}"
-        """
+            mashtree \\
+                --outtree {output.nw} \\
+                --numcpus 7 \\
+                --seed 42  \\
+                --sort-order ABC \\
+                {input}
+         """
