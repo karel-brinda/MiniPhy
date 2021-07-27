@@ -17,14 +17,24 @@ def preprocess_tree(fn, out_tree):
 
 
 def print_nodes(tree, fn, only_leaves=False):
-    for i, n in enumerate(t, 1):
-        print(n.name, i, sep="\t")
+    with open(fn) as f:
+        if only_leaves:
+            it = t
+        else:
+            it = t.traverse('preorder')
+        for n in it:
+            assert n.name != "", "Error: empty node name"
+            f.write(f"{n.name}\n")
 
 
 def process_tree(in_tree_fn, out_tree_fn, leaves, nodes):
     t1 = preprocess_tree(in_tree_fn)
     t2 = name_internal_nodes(t1)
     t2.write(outfile=out_tree_fn, format=1)
+    if leaves_fn:
+        print_nodes(t2, leaves_fn, only_leaves=True)
+    if nodes_fn:
+        print_nodes(t2, nodes_fn, only_leaves=False)
 
 
 def main():
@@ -46,7 +56,7 @@ def main():
         '-l',
         '--leaves',
         metavar='leaves_order.txt',
-        dest='leaves',
+        dest='leaves_fn',
         help='Print leaves',
     )
 
@@ -54,7 +64,7 @@ def main():
         '-n',
         '--nodes',
         metavar='nodes_order.txt',
-        dest='nodes',
+        dest='nodes_fn',
         help='Print nodes',
     )
 
