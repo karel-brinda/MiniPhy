@@ -19,7 +19,7 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        [f"results/asm/{batch}.txt" for batch in get_batches()],
+        [f"results/asm/{batch}.list" for batch in get_batches()],
         [f"results/asm/{batch}.tar.xz" for batch in get_batches()],
         [f"results/pre/{batch}.tar.xz" for batch in get_batches()],
         #"results/compressed_asm.tar.xz",

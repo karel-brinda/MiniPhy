@@ -4,11 +4,11 @@ rule pre_list:
     output:
         list=fn_pre_list(_batch="{batch}"),
     input:
-        w_batch_pres
+        fa=w_batch_pres
     shell:
         """
             echo "{input.fa}" \\
-                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.txt}") {{}} \\
+                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
                 > "{output.list}"
         """
 

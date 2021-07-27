@@ -10,7 +10,7 @@ rule asm_list:
     shell:
         """
             echo "{input.fas}" \\
-                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.txt}") {{}} \\
+                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
                 > "{output.list}"
         """
 

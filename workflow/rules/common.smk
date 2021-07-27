@@ -70,22 +70,23 @@ def fn_tree(_batch):
 
 #
 
+def fn_asm_seq(_batch, _sample):
+    return f"results/asm/{_batch}/{_sample}.fa"
+
 def fn_asm_list(_batch):
     return f"results/asm/{_batch}.list"
 
-def fn_asm_seq(_batch, _sample):
-    return f"results/asm/{batch}/{sample}.fa"
+def fn_asm_compr(_batch):
+    return f"results/asm/{_batch}.tar.xz"
 
-def fn_asm_compr(_batch, _sample):
-    return f"results/asm/{batch}.tar.xz"
 
 #
 
-def fn_pre_list(_batch):
-    return f"results/pre/{_batch}.list"
-
 def fn_pre_seq(_batch, _sample):
     return f"results/pre/{_batch}/{_sample}.simpl"
+
+def fn_pre_list(_batch):
+    return f"results/pre/{_batch}.list"
 
 def fn_pre_compr(_batch):
     return f"results/pre/{_batch}.tar.xz"
@@ -93,11 +94,11 @@ def fn_pre_compr(_batch):
 
 #
 
-def fn_post_list(_batch):
-    return f"results/pre/{_batch}.list"
-
 def fn_post_seq(_batch, _sample):
     return f"results/post/{_batch}/{_sample}.simpl"
+
+def fn_post_list(_batch):
+    return f"results/post/{_batch}.list"
 
 def fn_post_compr(_batch):
     return f"results/post/{_batch}.tar.xz"
@@ -108,7 +109,9 @@ def fn_post_compr(_batch):
 
 # get source file path from batch & sample
 def w_sample_source(wildcards):
-    return BATCHES_FN[wildcards.batch][wildcards.sample]
+    batch=wildcards["batch"]
+    sample=wildcards["sample"]
+    return BATCHES_FN[batch][sample]
 
 # get source file paths from batch
 def w_batch_asms(wildcards):
