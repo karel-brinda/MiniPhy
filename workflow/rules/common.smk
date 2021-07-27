@@ -68,6 +68,16 @@ def get_batches():
 def fn_tree(_batch):
     return f"results/tree/{_batch}.nw"
 
+def fn_tree_mashtree(_batch):
+    return f"results/tree/{_batch}.nw.mashtree"
+
+def fn_sorted_leaves(_batch):
+    return f"results/tree/{_batch}.leaves"
+
+def fn_sorted_nodes(_batch):
+    return f"results/tree/{_batch}.nodes"
+
+
 #
 
 def fn_asm_seq(_batch, _sample):
@@ -107,19 +117,19 @@ def fn_post_compr(_batch):
 
 ## WILDCARD FUNCTIONS
 
-# get source file path from batch & sample
+# get source file path
 def w_sample_source(wildcards):
     batch=wildcards["batch"]
     sample=wildcards["sample"]
     return BATCHES_FN[batch][sample]
 
-# get source file paths from batch
+# get all source files paths for a given batch
 def w_batch_asms(wildcards):
     batch=wildcards["batch"]
     l = [fn_asm_seq(batch, sample) for sample in BATCHES_FN[batch]]
     return l
 
-## get pre propagation simplitig files from batch & sample
+## get pre-propagation simplitig files from batch & sample
 def w_batch_pres(wildcards):
     batch=wildcards["batch"]
     l = [fn_pre_seq(batch, sample) for sample in BATCHES_FN[batch]]
