@@ -1,3 +1,25 @@
+##
+## K-mer propagation and compression
+##
+
+
+
+rule prophyle:
+    output:
+        txt="results/post/{batch}.txt",
+        nw=fn_tree_prophyle(_batch="{batch}"),
+    input:
+        w_batch_pres
+    params:
+        d="results/pre/",
+    shell:
+        """
+            prophyle index $(dirname "input.txt")
+            cp 
+        """
+
+
+# list of nodes for archivation
 rule post_list:
     output:
         txt="results/post/{batch}.txt",
@@ -12,7 +34,10 @@ rule post_list:
                 > "{output}"
         """
 
+# todo: split prophyle file
 
+
+#prophyle index
 rule post_index:
     output:
         txt="results/post/{batch}/{batch}/index.fa",
@@ -22,6 +47,5 @@ rule post_index:
         k=31
     shell:
         """
-            prophyle index $(dirname "input.txt")
         """
 

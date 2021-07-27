@@ -1,3 +1,8 @@
+##
+## Compression of simplitigs of assemblies
+##
+
+
 # list of prepropagation simplitig files
 #    todo: should be inferred from the tree (through an intermediate list file)
 rule pre_list:

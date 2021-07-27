@@ -19,9 +19,8 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        [f"results/asm/{batch}.list" for batch in get_batches()],
-        [f"results/asm/{batch}.tar.xz" for batch in get_batches()],
-        [f"results/pre/{batch}.tar.xz" for batch in get_batches()],
+        [fn_asm_list('{batch}') for batch in get_batches()],
+        [fn_nodes_sorted('{batch}') for batch in get_batches()],
         #"results/compressed_asm.tar.xz",
         #"results/compressed_pre.tar.xz",
         #"results/compressed_post.tar.xz",
@@ -44,16 +43,6 @@ include: "rules/tree.smk"
 
 include: "rules/post.smk"
 
-include: "rules/compression.smk"
+include: "rules/tree.smk"
 
-#include: "rules/assembly_analysis.smk"
-
-#include: "rules/tree_inference.smk"
-
-#include: "rules/prepropagation_analysis.smk"
-
-#include: "rules/propagation.smk"
-
-#include: "rules/postpropagation_analysis.smk"
-
-#include: "rules/other.smk"
+include: "rules/other.smk"

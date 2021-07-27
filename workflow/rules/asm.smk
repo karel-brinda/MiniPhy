@@ -1,3 +1,9 @@
+##
+## Compression of assemblies
+##
+
+
+
 # list of assemblies as they will appear in the .tar.xz archive
 #    todo: should be inferred from the tree (through an intermediate list file)
 rule asm_list:
@@ -5,8 +11,6 @@ rule asm_list:
         list=fn_asm_list(_batch="{batch}"),
     input:
         fas=w_batch_asms
-    params:
-        d="results/asm/",
     shell:
         """
             echo "{input.fas}" \\

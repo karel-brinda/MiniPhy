@@ -65,16 +65,14 @@ def get_batches():
 # *_compr - compressed dataset
 
 
-def fn_tree(_batch):
-    return f"results/tree/{_batch}.nw"
 
 def fn_tree_mashtree(_batch):
     return f"results/tree/{_batch}.nw.mashtree"
 
-def fn_sorted_leaves(_batch):
+def fn_leaves_sorted(_batch):
     return f"results/tree/{_batch}.leaves"
 
-def fn_sorted_nodes(_batch):
+def fn_nodes_sorted(_batch):
     return f"results/tree/{_batch}.nodes"
 
 
@@ -106,6 +104,9 @@ def fn_pre_compr(_batch):
 
 def fn_post_seq(_batch, _sample):
     return f"results/post/{_batch}/{_sample}.simpl"
+
+def fn_tree_prophyle(_batch):
+    return f"results/post/{_batch}.nw"
 
 def fn_post_list(_batch):
     return f"results/post/{_batch}.list"
