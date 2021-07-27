@@ -1,14 +1,13 @@
 rule compress_asm:
     output:
-        #nw="results/tree/{batch}.nw",
         xz="results/compressed_asm/{batch}.tar.xz",
     input:
         txt="results/asm/{batch}.txt",
     params:
-        d="results/asm/"
+        asm_dir="results/asm/"
     shell:
         """
-            tar cvf - -C "{params.d}" -T "{input.txt}" \\
+            tar cvf - -C "{params.asm_dir}" -T "{input.txt}" \\
                 | xz -T1 -9 \\
                 > {output.xz}
         """
@@ -18,7 +17,7 @@ rule asm_list:
     output:
         txt="results/asm/{batch}.txt",
     input:
-        get_asms_batch
+        w_batch_asms
     params:
         d="results/asm/",
     shell:
@@ -33,7 +32,7 @@ rule asm_formatting:
     output:
         fa="results/asm/{batch}/{sample}.fa",
     input:
-        fa=get_seq_source_path,
+        fa=w_sample_source
     shell:
         """
             seqtk seq -U "{input.fa}" \\

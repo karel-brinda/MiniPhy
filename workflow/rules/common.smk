@@ -8,19 +8,21 @@ from pprint import pprint
 
 # this container defines the underlying OS for each job when using the workflow
 # with --use-conda --use-singularity
-singularity: "docker://continuumio/miniconda3"
+#singularity: "docker://continuumio/miniconda3"
 
 ##### load config and sample sheets #####
 
-configfile: "config/config.yaml"
-validate(config, schema="../schemas/config.schema.yaml")
+#configfile: "config/config.yaml"
+#validate(config, schema="../schemas/config.schema.yaml")
 
 #samples = pd.read_csv(config["samples"], sep="\t").set_index("sample", drop=False)
 #samples.index.names = ["sample_id"]
 #validate(samples, schema="../schemas/samples.schema.yaml")
 
-BATCHES_FN={}
 
+
+
+# extract sample name from a path
 def _get_sample_from_fn(x):
     suffixes=["fa", "fasta", "fna", "ffa"]
 
@@ -31,6 +33,8 @@ def _get_sample_from_fn(x):
     assert suffix in suffixes, f"Unknown suffix of source files ({suffix} in {x})"
     return sample
 
+# compute main dict for batches
+BATCHES_FN={}
 res=glob.glob("resources/*.txt")
 for x in res:
     b=os.path.basename(x)
@@ -47,40 +51,37 @@ for x in res:
 
 pprint(BATCHES_FN)
 
-def get_seq_source_path(wildcards):
-    return BATCHES_FN[wildcards.batch][wildcards.sample]
-    #pass
+
+## BATCHES
+
+def get_batches():
+   return BATCHES_FN.keys()
 
 
-###
+## FILE PATHS
 
 def get_asm_fa(batch, sample):
     return f"results/asm/{batch}/{sample}.fa"
 
-def get_asms_batch(wildcards):
-    batch=wildcards["batch"]
-    l = [get_asm_fa(batch, sample) for sample in BATCHES_FN[batch]]
-    return l
-
-###
 
 def get_pre_fa(batch, sample):
     return f"results/pre/{batch}/{sample}.txt"
 
-def get_pres_batch(wildcards):
+
+## WILDCARD FUNCTIONS
+
+# get source file path from batch & sample
+def w_sample_source(wildcards):
+    return BATCHES_FN[wildcards.batch][wildcards.sample]
+
+# get source file paths from batch
+def w_batch_asms(wildcards):
+    batch=wildcards["batch"]
+    l = [get_asm_fa(batch, sample) for sample in BATCHES_FN[batch]]
+    return l
+
+# get pre propagation simplitig files from batch & sample
+def w_batch_pres(wildcards):
     batch=wildcards["batch"]
     l = [get_pre_fa(batch, sample) for sample in BATCHES_FN[batch]]
     return l
-
-###
-
-def get_batches():
-    return BATCHES_FN.keys()
-
-def get_samples_from_batch(x):
-    #return BATCHES[x]
-    pass
-
-def get_sample_source_file(wildcards):
-    pass
-

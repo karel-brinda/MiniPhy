@@ -2,7 +2,7 @@ rule tree_newick:
     output:
         nw="results/tree/{batch}.nw",
     input:
-        get_asms_batch
+        w_batch_asms
     threads:
         8
     shell:

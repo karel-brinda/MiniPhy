@@ -1,10 +1,10 @@
 rule compress_post:
     output:
-        xz="results/compressed_pre/{batch}.tar.xz",
+        xz="results/compressed_post/{batch}.tar.xz",
     input:
-        txt="results/pre/{batch}.txt",
+        txt="results/post/{batch}.txt",
     params:
-        d="results/pre/"
+        d="results/post/"
     shell:
         """
             tar cvf - -C "{params.d}" -T "{input.txt}" \\
@@ -15,9 +15,9 @@ rule compress_post:
 
 rule post_list:
     output:
-        txt="results/pre/{batch}.txt",
+        txt="results/post/{batch}.txt",
     input:
-        get_pres_batch
+        w_batch_pres
     params:
         d="results/pre/",
     shell:

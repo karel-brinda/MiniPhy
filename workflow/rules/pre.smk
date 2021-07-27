@@ -17,7 +17,7 @@ rule pre_list:
     output:
         txt="results/pre/{batch}.txt",
     input:
-        get_pres_batch
+        w_batch_pres
     params:
         d="results/pre/",
     shell:
