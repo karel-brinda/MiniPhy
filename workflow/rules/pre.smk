@@ -1,38 +1,24 @@
-rule compress_pre:
-    output:
-        xz="results/compressed_pre/{batch}.tar.xz",
-    input:
-        txt="results/pre/{batch}.txt",
-    params:
-        d="results/pre/"
-    shell:
-        """
-            tar cvf - -C "{params.d}" -T "{input.txt}" \\
-                | xz -T1 -9 \\
-                > {output.xz}
-        """
-
-
+# list of prepropagation simplitig files
+#    todo: should be inferred from the tree (through an intermediate list file)
 rule pre_list:
     output:
-        txt="results/pre/{batch}.txt",
+        list=fn_pre_list(_batch="{batch}"),
     input:
         w_batch_pres
-    params:
-        d="results/pre/",
     shell:
         """
-            echo "{input}" \\
-                | xargs -n1 -I{{}} realpath --relative-to "{params.d}" {{}} \\
-                > "{output}"
+            echo "{input.fa}" \\
+                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.txt}") {{}} \\
+                > "{output.list}"
         """
 
 
+# compute simplitigs and put them into a text file (1 unitig per line)
 rule pre_simplitigs:
     output:
-        txt="results/pre/{batch}/{sample}.txt",
+        txt=fn_pre_seq(_batch="{batch}", _sample="{sample}"),
     input:
-        fa="results/asm/{batch}/{sample}.fa",
+        fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
     params:
         k=31
     shell:
@@ -42,4 +28,3 @@ rule pre_simplitigs:
                 | grep -v '>' \\
                 > {output.txt}
         """
-

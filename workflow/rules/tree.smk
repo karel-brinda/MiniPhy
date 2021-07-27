@@ -1,6 +1,7 @@
+# infer a phylogenetic tree from the assemblies of a given batch
 rule tree_newick:
     output:
-        nw="results/tree/{batch}.nw",
+        nw=fn_tree(_batch="{batch}"),
     input:
         w_batch_asms
     threads:

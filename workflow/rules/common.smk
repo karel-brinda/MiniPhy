@@ -60,12 +60,48 @@ def get_batches():
 
 ## FILE PATHS
 
-def get_asm_fa(batch, sample):
+# *_list - list of files for compression in that order
+# *_seq - files with sequences (fa / simpl
+# *_compr - compressed dataset
+
+
+def fn_tree(_batch):
+    return f"results/tree/{_batch}.nw"
+
+#
+
+def fn_asm_list(_batch):
+    return f"results/asm/{_batch}.list"
+
+def fn_asm_seq(_batch, _sample):
     return f"results/asm/{batch}/{sample}.fa"
 
+def fn_asm_compr(_batch, _sample):
+    return f"results/asm/{batch}.tar.xz"
 
-def get_pre_fa(batch, sample):
-    return f"results/pre/{batch}/{sample}.txt"
+#
+
+def fn_pre_list(_batch):
+    return f"results/pre/{_batch}.list"
+
+def fn_pre_seq(_batch, _sample):
+    return f"results/pre/{_batch}/{_sample}.simpl"
+
+def fn_pre_compr(_batch):
+    return f"results/pre/{_batch}.tar.xz"
+
+
+#
+
+def fn_post_list(_batch):
+    return f"results/pre/{_batch}.list"
+
+def fn_post_seq(_batch, _sample):
+    return f"results/post/{_batch}/{_sample}.simpl"
+
+def fn_post_compr(_batch):
+    return f"results/post/{_batch}.tar.xz"
+
 
 
 ## WILDCARD FUNCTIONS
@@ -77,11 +113,11 @@ def w_sample_source(wildcards):
 # get source file paths from batch
 def w_batch_asms(wildcards):
     batch=wildcards["batch"]
-    l = [get_asm_fa(batch, sample) for sample in BATCHES_FN[batch]]
+    l = [fn_asm_seq(batch, sample) for sample in BATCHES_FN[batch]]
     return l
 
-# get pre propagation simplitig files from batch & sample
+## get pre propagation simplitig files from batch & sample
 def w_batch_pres(wildcards):
     batch=wildcards["batch"]
-    l = [get_pre_fa(batch, sample) for sample in BATCHES_FN[batch]]
+    l = [fn_pre_seq(batch, sample) for sample in BATCHES_FN[batch]]
     return l

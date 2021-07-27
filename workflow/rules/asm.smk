@@ -1,36 +1,24 @@
-rule compress_asm:
-    output:
-        xz="results/compressed_asm/{batch}.tar.xz",
-    input:
-        txt="results/asm/{batch}.txt",
-    params:
-        asm_dir="results/asm/"
-    shell:
-        """
-            tar cvf - -C "{params.asm_dir}" -T "{input.txt}" \\
-                | xz -T1 -9 \\
-                > {output.xz}
-        """
-
-
+# list of assemblies as they will appear in the .tar.xz archive
+#    todo: should be inferred from the tree (through an intermediate list file)
 rule asm_list:
     output:
-        txt="results/asm/{batch}.txt",
+        list=fn_asm_list(_batch="{batch}"),
     input:
-        w_batch_asms
+        fas=w_batch_asms
     params:
         d="results/asm/",
     shell:
         """
-            echo "{input}" \\
-                | xargs -n1 -I{{}} realpath --relative-to "{params.d}" {{}} \\
-                > "{output}"
+            echo "{input.fas}" \\
+                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.txt}") {{}} \\
+                > "{output.list}"
         """
 
 
+# format individual fasta files (from the inferred source file)
 rule asm_formatting:
     output:
-        fa="results/asm/{batch}/{sample}.fa",
+        fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
     input:
         fa=w_sample_source
     shell:
@@ -38,4 +26,3 @@ rule asm_formatting:
             seqtk seq -U "{input.fa}" \\
                 > "{output.fa}"
         """
-
