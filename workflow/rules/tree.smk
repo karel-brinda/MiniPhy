@@ -4,11 +4,10 @@
 
 
 # get a cleaned tree and all auxiliary files
-#   todo: - sort tree; print names & nodes
-rule tree_final:
+rule tree_sorted:
     output:
-        nw=fn_tree(_batch="{batch}"),
-        leaves=fn_sorted_leaves(_batch="{batch}"),
+        nw=fn_tree_sorted(_batch="{batch}"),
+        leaves=fn_leaves_sorted(_batch="{batch}"),
     input:
         nw=fn_tree_mashtree(_batch="{batch}"),
     threads:

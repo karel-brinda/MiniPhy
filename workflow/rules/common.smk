@@ -66,6 +66,9 @@ def get_batches():
 
 
 
+def fn_tree_sorted (_batch):
+    return f"results/tree/{_batch}.nw.mashtree"
+
 def fn_tree_mashtree(_batch):
     return f"results/tree/{_batch}.nw.mashtree"
 
