@@ -30,6 +30,6 @@ rule histogram:
     	7
     shell:
         """
-            scripts/histogram_using_jf.sh {input.list} \\
+            ../scripts/histogram_using_jf.sh {input.list} \\
                 > {output.hist}
         """

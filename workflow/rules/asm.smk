@@ -3,20 +3,35 @@
 ##
 
 
-
-# list of assemblies as they will appear in the .tar.xz archive
-#    todo: should be inferred from the tree (through an intermediate list file)
+"""
+list of assemblies as they will appear in the .tar.xz archive
+"""
 rule asm_list:
     output:
         list=fn_asm_list(_batch="{batch}"),
     input:
-        fas=w_batch_asms
+        list=fn_leaves_sorted(_batch="{batch}")
     shell:
         """
-            echo "{input.fas}" \\
-                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
+            cat {input.list} \\
+                | perl -pe 's/^/{wildcards.batch}\//g' \\
+                | perl -pe 's/$/.fa/g' \\
                 > "{output.list}"
         """
+
+
+
+#rule asm_list_alphabetical:
+#    output:
+#        list=fn_asm_list(_batch="{batch}"),
+#    input:
+#        fas=w_batch_asms
+#    shell:
+#        """
+#            echo "{input.fas}" \\
+#                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
+#                > "{output.list}"
+#        """
 
 
 # format individual fasta files (from the inferred source file)

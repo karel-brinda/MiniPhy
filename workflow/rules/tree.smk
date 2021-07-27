@@ -12,7 +12,9 @@ rule tree_sorted:
         nw=fn_tree_mashtree(_batch="{batch}"),
     threads:
         8
-    shell:
+    script:
+        ## TADY JSEM SKONCIL!!!!
+        ## how to execute scripts?
         """
             ./scripts/postprocess_tree.py -l {output.leaves} {input.nw} {output.nw}
         """
