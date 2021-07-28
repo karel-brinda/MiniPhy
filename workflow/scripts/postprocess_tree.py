@@ -8,8 +8,8 @@ import re
 import sys
 
 
-def preprocess_tree(fn, out_tree):
-    t = ete3.Tree(fn)
+def preprocess_tree(tree_fn):
+    t = ete3.Tree(tree_fn)
 
     # to standardize the order (and possibly also enhance compression)
     t.ladderize()
@@ -27,7 +27,7 @@ def print_nodes(tree, fn, only_leaves=False):
             f.write(f"{n.name}\n")
 
 
-def process_tree(in_tree_fn, out_tree_fn, leaves, nodes):
+def process_tree(in_tree_fn, out_tree_fn, leaves_fn, nodes_fn):
     t1 = preprocess_tree(in_tree_fn)
     t2 = name_internal_nodes(t1)
     t2.write(outfile=out_tree_fn, format=1)
@@ -70,7 +70,8 @@ def main():
 
     args = parser.parse_args()
 
-    process_tree(args.in_tree_fn, args.out_tree_fn, args.leaves, args.nodes)
+    process_tree(args.in_tree_fn, args.out_tree_fn, args.leaves_fn,
+                 args.nodes_fn)
 
 
 if __name__ == "__main__":
