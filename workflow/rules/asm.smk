@@ -16,8 +16,7 @@ rule asm_list:
     shell:
         """
         cat {input.list} \\
-            | perl -pe 's/^/{wildcards.batch}\//g' \\
-            | perl -pe 's/$/.fa/g' \\
+            | perl -pe 's/^(.*)$/{wildcards.batch}\/\\1.fa/g' \\
             > "{output.list}"
         """
 
