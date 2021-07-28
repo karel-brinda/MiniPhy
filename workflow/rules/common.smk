@@ -125,7 +125,7 @@ def fn_pre_compr(_batch):
 
 
 def fn_post_seq0(_batch, _node):
-    return f"results/post/{_batch}/index/{_node}.reduced.fa"
+    return f"results/post/{_batch}/propagation/{_node}.reduced.fa"
 
 
 def fn_post_seq(_batch, _node):
@@ -177,14 +177,14 @@ def w_batch_pres(wildcards):
 
 # get post-propagation simplitig files from batch & sample
 def w_batch_posts(wildcards):
-    checkpoint_output = checkpoints.prophyle_index.get(**wildcards).output[0]
-    return expand(
-        fn_post_seq,
-        _batch=wildcards.batch,
-        _node=glob_wildcards(
-            os.path.join(checkpoint_output, "index", "{node}.reduced.fa")
-        ).node,
-    )
+    # checkpoint_output = checkpoints.prophyle_index.get(**wildcards).output[0]
+    # print("checkpoint output", checkpoint_output)
+    # os.path.join(checkpoint_output, "propagation", "{node}.reduced.fa")
+    nodes = glob_wildcards(fn_post_seq0(_batch=wildcards.batch, _node="{node}")).node
+    print("nodes", nodes)
+    tr = [fn_post_seq(_batch=wildcards.batch, _node=node) for node in nodes]
+    print(tr)
+    return tr
 
 
 # batch = wildcards["batch"]

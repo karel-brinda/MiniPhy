@@ -3,23 +3,6 @@
 ##
 
 
-rule pre_list:
-    """
-    Make a list of pre-propagation simplitig files
-    """
-    input:
-        list=fn_leaves_sorted(_batch="{batch}"),
-        fa=w_batch_pres,
-    output:
-        list=fn_pre_list(_batch="{batch}"),
-    run:
-        generate_file_list(
-            input.list,
-            output.list,
-            filename_function=lambda x: fn_pre_seq(_sample=x, _batch=wildcards.batch),
-        )
-
-
 rule pre_seq_prophasm:
     """
     Compute simplitigs from an assembly and put them into a text file (1 simplitig per line)
@@ -37,3 +20,20 @@ rule pre_seq_prophasm:
             | grep -v '>' \\
             > {output.txt}
         """
+
+
+rule pre_list:
+    """
+    Make a list of pre-propagation simplitig files
+    """
+    input:
+        list=fn_leaves_sorted(_batch="{batch}"),
+        fa=w_batch_pres,
+    output:
+        list=fn_pre_list(_batch="{batch}"),
+    run:
+        generate_file_list(
+            input.list,
+            output.list,
+            filename_function=lambda x: fn_pre_seq(_sample=x, _batch=wildcards.batch),
+        )
