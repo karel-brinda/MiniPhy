@@ -13,19 +13,13 @@ rule asm_list:
         list=fn_asm_list(_batch="{batch}"),
     input:
         list=fn_leaves_sorted(_batch="{batch}"),
+        fa=w_batch_asms,
     run:
-        # infer the file names from the fn_asm_seq function
         generate_file_list(
             input.list,
             output.list,
             filename_function=lambda x: fn_asm_seq(_sample=x, _batch=wildcards.batch),
         )
-        #    """
-        #    cat {input.list} \\
-        #        | perl -pe 's/^(.*)$/{wildcards.batch}\/\\1.fa/g' \\
-        #        > "{output.list}"
-        #    """
-
 
 
 # rule asm_list_alphabetical:

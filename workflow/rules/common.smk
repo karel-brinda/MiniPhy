@@ -5,6 +5,8 @@ import glob
 import pandas as pd
 
 from pprint import pprint
+from pathlib import Path
+
 
 # this container defines the underlying OS for each job when using the workflow
 # with --use-conda --use-singularity
@@ -156,7 +158,7 @@ def w_batch_pres(wildcards):
 
 ## OTHER FUNCTIONS
 
-
+# generate file list from a list of identifiers (e.g., leaf names -> assemblies names)
 def generate_file_list(input_list_fn, output_list_fn, filename_function):
     with open(input_list_fn) as f:
         with open(output_list_fn, "w") as g:
@@ -165,3 +167,8 @@ def generate_file_list(input_list_fn, output_list_fn, filename_function):
                 fn0 = filename_function(x)  # top-level path
                 fn = os.path.relpath(fn0, os.path.dirname(output_list_fn))
                 g.write(fn + "\n")
+## load list (as input files)
+# def load_list(fn):
+#    with open(fn) as f:
+#        fns = [x.strip() for x in f]
+#    return [Path(fn).parent / x for x in fns]

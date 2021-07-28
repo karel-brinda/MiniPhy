@@ -9,13 +9,14 @@ rule pre_list:
     output:
         list=fn_pre_list(_batch="{batch}"),
     input:
+        list=fn_leaves_sorted(_batch="{batch}"),
         fa=w_batch_pres,
-    shell:
-        """
-        echo "{input.fa}" \\
-            | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
-            > "{output.list}"
-        """
+    run:
+        generate_file_list(
+            input.list,
+            output.list,
+            filename_function=lambda x: fn_pre_seq(_sample=x, _batch=wildcards.batch),
+        )
 
 
 # compute simplitigs and put them into a text file (1 unitig per line)
