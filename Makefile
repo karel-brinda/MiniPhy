@@ -1,4 +1,4 @@
-.PHONY: all help clean cleanall test report
+.PHONY: all help clean cleanall test report format
 
 SHELL=/usr/bin/env bash -eo pipefail
 
@@ -17,6 +17,10 @@ help: ## Print help message
 
 report:
 	snakemake --report report.html
+
+format:
+	snakefmt .
+	yapf -i --recursive .
 
 clean: ## Clean
 
