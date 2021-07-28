@@ -10,13 +10,14 @@ rule tree_sorted:
         leaves=fn_leaves_sorted(_batch="{batch}"),
     input:
         nw=fn_tree_mashtree(_batch="{batch}"),
+    params:
+        script=workflow.source_path("../scripts/postprocess_tree.py")
     threads:
         8
     script:
-        ## TADY JSEM SKONCIL!!!!
         ## how to execute scripts?
         """
-            ./scripts/postprocess_tree.py -l {output.leaves} {input.nw} {output.nw}
+            {script} -l {output.leaves} {input.nw} {output.nw}
         """
 
 
