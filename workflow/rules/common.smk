@@ -52,6 +52,12 @@ for x in res:
 
 pprint(BATCHES_FN)
 
+## WILDCARDS CONSTRAINS
+
+wildcard_constraints:
+    sample=r"[a-zA-Z0-9_-]+",
+    batch=r"[a-zA-Z0-9_-]+",
+
 
 ## BATCHES
 
