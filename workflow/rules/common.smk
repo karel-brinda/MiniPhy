@@ -68,7 +68,11 @@ def get_batches():
 
 
 def fn_tree_sorted(_batch):
-    return f"results/tree/{_batch}.nw"
+    return f"results/tree/{_batch}.1.nw"
+
+
+def fn_tree_sorted2(_batch):
+    return f"results/tree/{_batch}.2.nw"
 
 
 def fn_tree_mashtree(_batch):
@@ -116,13 +120,12 @@ def fn_pre_compr(_batch):
 #
 
 
-# shouldn't be used as input or output of rules
+def fn_post_seq0(_batch, _node):
+    return f"results/post/{_batch}/index/{_node}.reduced.fa"
+
+
 def fn_post_seq(_batch, _node):
     return f"results/post/{_batch}/{_node}.simpl"
-
-
-def fn_tree_prophyle(_batch):
-    return f"results/post/{_batch}.nw"
 
 
 def fn_post_list(_batch):
@@ -131,6 +134,18 @@ def fn_post_list(_batch):
 
 def fn_post_compr(_batch):
     return f"results/post/{_batch}.tar.xz"
+
+
+def fn_prophyle_tree(_batch):
+    return f"results/post/{_batch}/tree.nw"
+
+
+def dir_prophyle_index(_batch):
+    return f"results/post/{_batch}/index"
+
+
+# def fn_prophyle_index(_batch):
+#    return f"results/post/{_batch}/index.fa",
 
 
 ## WILDCARD FUNCTIONS
@@ -156,6 +171,13 @@ def w_batch_pres(wildcards):
     return l
 
 
+# get post-propagation simplitig files from batch & sample
+def w_batch_posts(wildcards):
+    batch = wildcards["batch"]
+    l = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
+    return l
+
+
 ## OTHER FUNCTIONS
 
 # generate file list from a list of identifiers (e.g., leaf names -> assemblies names)
@@ -167,6 +189,11 @@ def generate_file_list(input_list_fn, output_list_fn, filename_function):
                 fn0 = filename_function(x)  # top-level path
                 fn = os.path.relpath(fn0, os.path.dirname(output_list_fn))
                 g.write(fn + "\n")
+
+
+def load_list(fn):
+    with open(fn) as f:
+        return [x.strip() for x in f]
 ## load list (as input files)
 # def load_list(fn):
 #    with open(fn) as f:

@@ -3,16 +3,17 @@
 ##
 
 
-# get a cleaned tree and all auxiliary files
-rule tree_sorted:
+rule tree_pre_sorted:
+    """
+    Get a cleaned tree and all auxiliary files
+    """
+    input:
+        nw=fn_tree_mashtree(_batch="{batch}"),
     output:
         nw=fn_tree_sorted(_batch="{batch}"),
         leaves=fn_leaves_sorted(_batch="{batch}"),
-    input:
-        nw=fn_tree_mashtree(_batch="{batch}"),
     params:
         script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
-    threads: 8
     shell:
         ## how to execute scripts?
         """
@@ -21,12 +22,14 @@ rule tree_sorted:
         """
 
 
-# infer a phylogenetic tree from the assemblies of a given batch
 rule tree_newick_mashtree:
-    output:
-        nww=fn_tree_mashtree(_batch="{batch}"),
+    """
+    Infer a phylogenetic tree from the assemblies belonging to a given batch
+    """
     input:
         w_batch_asms,
+    output:
+        nw=fn_tree_mashtree(_batch="{batch}"),
     threads: 8
     shell:
         """
@@ -35,5 +38,5 @@ rule tree_newick_mashtree:
             --seed 42  \\
             --sort-order ABC \\
             {input} \\
-            | tee {output.nww}
+            | tee {output.nw}
         """
