@@ -147,8 +147,21 @@ def w_batch_asms(wildcards):
     return l
 
 
-## get pre-propagation simplitig files from batch & sample
+# get pre-propagation simplitig files from batch & sample
 def w_batch_pres(wildcards):
     batch = wildcards["batch"]
     l = [fn_pre_seq(batch, sample) for sample in BATCHES_FN[batch]]
     return l
+
+
+## OTHER FUNCTIONS
+
+
+def generate_file_list(input_list_fn, output_list_fn, filename_function):
+    with open(input_list_fn) as f:
+        with open(output_list_fn, "w") as g:
+            for x in f:
+                x = x.strip()
+                fn0 = filename_function(x)  # top-level path
+                fn = os.path.relpath(fn0, os.path.dirname(output_list_fn))
+                g.write(fn + "\n")

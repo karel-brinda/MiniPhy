@@ -15,14 +15,11 @@ rule asm_list:
         list=fn_leaves_sorted(_batch="{batch}"),
     run:
         # infer the file names from the fn_asm_seq function
-        with open(input.list) as f:
-            with open(output.list, "w") as g:
-                for x in f:
-                    x = x.strip()
-                    fn0 = fn_asm_seq(wildcards.batch, x)  # top-level path
-                    fn = os.path.relpath(fn0, os.path.dirname(output.list))
-                    g.write(fn + "\n")
-        # shell:
+        generate_file_list(
+            input.list,
+            output.list,
+            filename_function=lambda x: fn_asm_seq(_sample=x, _batch=wildcards.batch),
+        )
         #    """
         #    cat {input.list} \\
         #        | perl -pe 's/^(.*)$/{wildcards.batch}\/\\1.fa/g' \\
