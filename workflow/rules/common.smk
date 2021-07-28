@@ -114,8 +114,9 @@ def fn_pre_compr(_batch):
 #
 
 
-def fn_post_seq(_batch, _sample):
-    return f"results/post/{_batch}/{_sample}.simpl"
+# shouldn't be used as input or output of rules
+def fn_post_seq(_batch, _node):
+    return f"results/post/{_batch}/{_node}.simpl"
 
 
 def fn_tree_prophyle(_batch):

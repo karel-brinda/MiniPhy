@@ -13,12 +13,22 @@ rule asm_list:
         list=fn_asm_list(_batch="{batch}"),
     input:
         list=fn_leaves_sorted(_batch="{batch}"),
-    shell:
-        """
-        cat {input.list} \\
-            | perl -pe 's/^(.*)$/{wildcards.batch}\/\\1.fa/g' \\
-            > "{output.list}"
-        """
+    run:
+        # infer the file names from the fn_asm_seq function
+        with open(input.list) as f:
+            with open(output.list, "w") as g:
+                for x in f:
+                    x = x.strip()
+                    fn0 = fn_asm_seq(wildcards.batch, x)  # top-level path
+                    fn = os.path.relpath(fn0, os.path.dirname(output.list))
+                    g.write(fn + "\n")
+        # shell:
+        #    """
+        #    cat {input.list} \\
+        #        | perl -pe 's/^(.*)$/{wildcards.batch}\/\\1.fa/g' \\
+        #        > "{output.list}"
+        #    """
+
 
 
 # rule asm_list_alphabetical:
