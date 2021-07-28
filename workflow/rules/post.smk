@@ -3,19 +3,18 @@
 ##
 
 
-
 rule prophyle:
     output:
         txt="results/post/{batch}.txt",
         nw=fn_tree_prophyle(_batch="{batch}"),
     input:
-        w_batch_pres
+        w_batch_pres,
     params:
         d="results/pre/",
     shell:
         """
-            prophyle index $(dirname "input.txt")
-            cp 
+        prophyle index $(dirname "input.txt")
+        cp 
         """
 
 
@@ -24,28 +23,28 @@ rule post_list:
     output:
         txt="results/post/{batch}.txt",
     input:
-        w_batch_pres
+        w_batch_pres,
     params:
         d="results/pre/",
     shell:
         """
-            echo "{input}" \\
-                | xargs -n1 -I{{}} realpath --relative-to "{params.d}" {{}} \\
-                > "{output}"
+        echo "{input}" \\
+            | xargs -n1 -I{{}} realpath --relative-to "{params.d}" {{}} \\
+            > "{output}"
         """
+
 
 # todo: split prophyle file
 
 
-#prophyle index
+# prophyle index
 rule post_index:
     output:
         txt="results/post/{batch}/{batch}/index.fa",
     input:
         txt="results/pre/{batch}.txt",
     params:
-        k=31
+        k=31,
     shell:
         """
         """
-

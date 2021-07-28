@@ -9,12 +9,12 @@ rule pre_list:
     output:
         list=fn_pre_list(_batch="{batch}"),
     input:
-        fa=w_batch_pres
+        fa=w_batch_pres,
     shell:
         """
-            echo "{input.fa}" \\
-                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
-                > "{output.list}"
+        echo "{input.fa}" \\
+            | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
+            > "{output.list}"
         """
 
 
@@ -25,11 +25,11 @@ rule pre_simplitigs:
     input:
         fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
     params:
-        k=31
+        k=31,
     shell:
         """
-            prophasm -i {input.fa} -k {params.k} -o - \\
-                | seqtk seq \\
-                | grep -v '>' \\
-                > {output.txt}
+        prophasm -i {input.fa} -k {params.k} -o - \\
+            | seqtk seq \\
+            | grep -v '>' \\
+            > {output.txt}
         """

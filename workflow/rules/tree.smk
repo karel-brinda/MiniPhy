@@ -11,15 +11,13 @@ rule tree_sorted:
     input:
         nw=fn_tree_mashtree(_batch="{batch}"),
     params:
-        script=workflow.source_path("../scripts/postprocess_tree.py")
-    threads:
-        8
+        script=workflow.source_path("../scripts/postprocess_tree.py"),
+    threads: 8
     script:
         ## how to execute scripts?
         """
-            {script} -l {output.leaves} {input.nw} {output.nw}
+        {script} -l {output.leaves} {input.nw} {output.nw}
         """
-
 
 
 # infer a phylogenetic tree from the assemblies of a given batch
@@ -27,15 +25,14 @@ rule tree_newick_mashtree:
     output:
         nw=fn_tree_mashtree(_batch="{batch}"),
     input:
-        w_batch_asms
-    threads:
-        8
+        w_batch_asms,
+    threads: 8
     shell:
         """
-            mashtree \\
-                --outtree {output.nw} \\
-                --numcpus {threads} \\
-                --seed 42  \\
-                --sort-order ABC \\
-                {input}
-         """
+        mashtree \\
+            --outtree {output.nw} \\
+            --numcpus {threads} \\
+            --seed 42  \\
+            --sort-order ABC \\
+            {input}
+        """
