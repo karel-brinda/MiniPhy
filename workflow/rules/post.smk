@@ -11,10 +11,13 @@ checkpoint prophyle_index:
         nw=fn_tree_sorted(_batch="{batch}"),
     output:
         nw=fn_prophyle_tree(_batch="{batch}"),
-        d=directory(dir_prophyle_index(_batch="{batch}")),
+        d=directory(dir_prophyle(_batch="{batch}")),
+    params:
+        k=31,
+        asm_dir=fn_asm_seq_dir("{batch}"),
     shell:
         """
-        prophyle index $(dirname "nnn.txt")
+        prophyle index -k{params.k} -T -A -g {params.asm_dir} {input.nw} {output.d}
         """
 
 
@@ -53,8 +56,8 @@ rule post_seq:
 # make a list of node simplitig files
 rule post_list:
     input:
+        w_batch_posts,
         list=fn_nodes_sorted(_batch="{batch}"),
-        fa=w_batch_posts,
     output:
         list=fn_post_list(_batch="{batch}"),
     run:

@@ -90,6 +90,10 @@ def fn_nodes_sorted(_batch):
 #
 
 
+def fn_asm_seq_dir(_batch):
+    return f"results/asm/{_batch}"
+
+
 def fn_asm_seq(_batch, _sample):
     return f"results/asm/{_batch}/{_sample}.fa"
 
@@ -140,8 +144,8 @@ def fn_prophyle_tree(_batch):
     return f"results/post/{_batch}/tree.nw"
 
 
-def dir_prophyle_index(_batch):
-    return f"results/post/{_batch}/index"
+def dir_prophyle(_batch):
+    return f"results/post/{_batch}"
 
 
 # def fn_prophyle_index(_batch):
@@ -174,14 +178,18 @@ def w_batch_pres(wildcards):
 # get post-propagation simplitig files from batch & sample
 def w_batch_posts(wildcards):
     checkpoint_output = checkpoints.prophyle_index.get(**wildcards).output[0]
-    return expand(fn_post_seq,
+    return expand(
+        fn_post_seq,
         _batch=wildcards.batch,
-        _node=glob_wildcards(os.path.join(checkpoint_output, "{node}.reduced.fa")).node
+        _node=glob_wildcards(
+            os.path.join(checkpoint_output, "index", "{node}.reduced.fa")
+        ).node,
     )
 
-    #batch = wildcards["batch"]
-    #l = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
-    #return l
+
+# batch = wildcards["batch"]
+# l = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
+# return l
 
 
 ## OTHER FUNCTIONS
