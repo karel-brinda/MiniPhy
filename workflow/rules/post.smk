@@ -5,7 +5,7 @@
 
 # compute prophyle index
 # todo: output *
-rule prophyle_index:
+checkpoint prophyle_index:
     input:
         w_batch_asms,
         nw=fn_tree_sorted(_batch="{batch}"),
@@ -19,7 +19,7 @@ rule prophyle_index:
 
 
 # get the ProPhyle tree, clean it, and print all node names
-checkpoint tree_post_sorted:
+rule tree_post_sorted:
     input:
         nw=fn_prophyle_tree(_batch="{batch}"),
     output:

@@ -173,9 +173,15 @@ def w_batch_pres(wildcards):
 
 # get post-propagation simplitig files from batch & sample
 def w_batch_posts(wildcards):
-    batch = wildcards["batch"]
-    l = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
-    return l
+    checkpoint_output = checkpoints.prophyle_index.get(**wildcards).output[0]
+    return expand(fn_post_seq,
+        _batch=wildcards.batch,
+        _node=glob_wildcards(os.path.join(checkpoint_output, "{node}.reduced.fa")).node
+    )
+
+    #batch = wildcards["batch"]
+    #l = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
+    #return l
 
 
 ## OTHER FUNCTIONS
