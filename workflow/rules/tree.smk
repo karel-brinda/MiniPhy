@@ -11,12 +11,12 @@ rule tree_sorted:
     input:
         nw=fn_tree_mashtree(_batch="{batch}"),
     params:
-        script=workflow.source_path("../scripts/postprocess_tree.py"),
+        script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
     threads: 8
-    script:
+    shell:
         ## how to execute scripts?
         """
-        {script} -l {output.leaves} {input.nw} {output.nw}
+        {params.script} -l {output.leaves} {input.nw} {output.nw}
         """
 
 
