@@ -66,11 +66,11 @@ def get_batches():
 
 
 def fn_tree_sorted(_batch):
-    return f"results/tree/{_batch}.nw.mashtree"
+    return f"results/tree/{_batch}.nw"
 
 
 def fn_tree_mashtree(_batch):
-    return f"results/tree/{_batch}.nw.mashtree"
+    return f"results/tree/{_batch}.nw_mashtree"
 
 
 def fn_leaves_sorted(_batch):

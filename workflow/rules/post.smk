@@ -6,7 +6,7 @@
 rule prophyle:
     output:
         txt="results/post/{batch}.txt",
-        nw=fn_tree_prophyle(_batch="{batch}"),
+        #nw=fn_tree_prophyle(_batch="{batch}"),
     input:
         w_batch_pres,
     params:
@@ -14,7 +14,6 @@ rule prophyle:
     shell:
         """
         prophyle index $(dirname "input.txt")
-        cp 
         """
 
 

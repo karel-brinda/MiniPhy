@@ -9,7 +9,7 @@ import sys
 
 
 def preprocess_tree(tree_fn):
-    t = ete3.Tree(tree_fn)
+    t = ete3.Tree(tree_fn, format=1)
 
     # to standardize the order (and possibly also enhance compression)
     t.ladderize()
@@ -17,24 +17,23 @@ def preprocess_tree(tree_fn):
 
 
 def print_nodes(tree, fn, only_leaves=False):
-    with open(fn) as f:
+    with open(fn, "w") as f:
         if only_leaves:
-            it = t
+            it = tree
         else:
-            it = t.traverse('preorder')
+            it = tree.traverse('preorder')
         for n in it:
             assert n.name != "", "Error: empty node name"
             f.write(f"{n.name}\n")
 
 
 def process_tree(in_tree_fn, out_tree_fn, leaves_fn, nodes_fn):
-    t1 = preprocess_tree(in_tree_fn)
-    t2 = name_internal_nodes(t1)
-    t2.write(outfile=out_tree_fn, format=1)
+    t = preprocess_tree(in_tree_fn)
+    t.write(outfile=out_tree_fn, format=1)
     if leaves_fn:
-        print_nodes(t2, leaves_fn, only_leaves=True)
+        print_nodes(t, leaves_fn, only_leaves=True)
     if nodes_fn:
-        print_nodes(t2, nodes_fn, only_leaves=False)
+        print_nodes(t, nodes_fn, only_leaves=False)
 
 
 def main():

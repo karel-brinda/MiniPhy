@@ -17,22 +17,23 @@ rule tree_sorted:
         ## how to execute scripts?
         """
         {params.script} -l {output.leaves} {input.nw} {output.nw}
+
         """
 
 
 # infer a phylogenetic tree from the assemblies of a given batch
 rule tree_newick_mashtree:
     output:
-        nw=fn_tree_mashtree(_batch="{batch}"),
+        nww=fn_tree_mashtree(_batch="{batch}"),
     input:
         w_batch_asms,
     threads: 8
     shell:
         """
         mashtree \\
-            --outtree {output.nw} \\
             --numcpus {threads} \\
             --seed 42  \\
             --sort-order ABC \\
-            {input}
+            {input} \\
+            | tee {output.nww}
         """
