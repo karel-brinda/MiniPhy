@@ -64,5 +64,5 @@ rule post_list:
         generate_file_list(
             input.list,
             output.list,
-            filename_function=lambda x: fn_post_seq0(_node=x, _batch=wildcards.batch),
+            filename_function=lambda x: fn_post_seq(_node=x, _batch=wildcards.batch),
         )
