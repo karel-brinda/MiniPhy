@@ -24,7 +24,8 @@ def print_nodes(tree, fn, only_leaves=False):
             it = tree.traverse('preorder')
         for n in it:
             assert n.name != "", "Error: empty node name"
-            f.write(f"{n.name}\n")
+            if n.name != "merge_root":
+                f.write(f"{n.name}\n")
 
 
 def process_tree(in_tree_fn, out_tree_fn, leaves_fn, nodes_fn):
