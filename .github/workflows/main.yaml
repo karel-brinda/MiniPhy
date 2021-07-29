@@ -8,16 +8,16 @@ on:
     branches_ignore: []
 
 jobs:
-  Linting:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Lint workflow
-      uses: snakemake/snakemake-github-action@v1.5.3
-      with:
-        directory: .
-        snakefile: workflow/Snakefile
-        args: "--lint"
+  #Linting:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #  - uses: actions/checkout@v1
+  #  - name: Lint workflow
+  #    uses: snakemake/snakemake-github-action@v1.5.3
+  #    with:
+  #      directory: .
+  #      snakefile: workflow/Snakefile
+  #      args: "--lint"
 
   Testing:
     runs-on: ubuntu-latest
