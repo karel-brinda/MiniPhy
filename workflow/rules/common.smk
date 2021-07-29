@@ -54,6 +54,7 @@ pprint(BATCHES_FN)
 
 ## WILDCARDS CONSTRAINS
 
+
 wildcard_constraints:
     sample=r"[a-zA-Z0-9_-]+",
     batch=r"[a-zA-Z0-9_-]+",
@@ -108,6 +109,10 @@ def fn_asm_list(_batch):
     return f"results/asm/{_batch}.asm.list"
 
 
+def fn_asm_hist(_batch):
+    return f"results/asm/{_batch}.asm.hist"
+
+
 def fn_asm_compr(_batch):
     return f"results/asm/{_batch}.asm.tar.xz"
 
@@ -121,6 +126,10 @@ def fn_pre_seq(_batch, _sample):
 
 def fn_pre_list(_batch):
     return f"results/pre/{_batch}.pre.list"
+
+
+def fn_pre_hist(_batch):
+    return f"results/pre/{_batch}.pre.hist"
 
 
 def fn_pre_compr(_batch):
@@ -140,6 +149,10 @@ def fn_post_seq(_batch, _node):
 
 def fn_post_list(_batch):
     return f"results/post/{_batch}.post.list"
+
+
+def fn_post_hist(_batch):
+    return f"results/post/{_batch}.post.hist"
 
 
 def fn_post_compr(_batch):

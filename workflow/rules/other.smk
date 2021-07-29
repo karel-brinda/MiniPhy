@@ -30,9 +30,12 @@ rule histogram:
         list="{pref}.list",
     output:
         hist="{pref}.hist",
+    params:
+        hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
+        lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
     threads: 7
     shell:
         """
-        ../scripts/histogram_using_jf.sh {input.list} \\
+        {params.hjf} <({params.lfa} {input.list}) \\
             > {output.hist}
         """
