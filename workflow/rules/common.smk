@@ -105,11 +105,11 @@ def fn_asm_seq(_batch, _sample):
 
 
 def fn_asm_list(_batch):
-    return f"results/asm/{_batch}.list"
+    return f"results/asm/{_batch}.asm.list"
 
 
 def fn_asm_compr(_batch):
-    return f"results/asm/{_batch}.tar.xz"
+    return f"results/asm/{_batch}.asm.tar.xz"
 
 
 #
@@ -120,11 +120,11 @@ def fn_pre_seq(_batch, _sample):
 
 
 def fn_pre_list(_batch):
-    return f"results/pre/{_batch}.list"
+    return f"results/pre/{_batch}.pre.list"
 
 
 def fn_pre_compr(_batch):
-    return f"results/pre/{_batch}.tar.xz"
+    return f"results/pre/{_batch}.pre.tar.xz"
 
 
 #
@@ -139,11 +139,11 @@ def fn_post_seq(_batch, _node):
 
 
 def fn_post_list(_batch):
-    return f"results/post/{_batch}.list"
+    return f"results/post/{_batch}.post.list"
 
 
 def fn_post_compr(_batch):
-    return f"results/post/{_batch}.tar.xz"
+    return f"results/post/{_batch}.post.tar.xz"
 
 
 def fn_prophyle_tree(_batch):
