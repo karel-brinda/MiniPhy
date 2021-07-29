@@ -171,8 +171,8 @@ def fn_post_compr(_batch):
     return f"results/post/{_batch}.post.tar.xz"
 
 
-def fn_prophyle_tree(_batch):
-    return f"results/post/{_batch}/tree.nw"
+# def fn_prophyle_tree(_batch):
+#    return f"results/post/{_batch}/tree.nw"
 
 
 def dir_prophyle(_batch):

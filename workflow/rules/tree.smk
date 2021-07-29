@@ -3,7 +3,7 @@
 ##
 
 
-rule tree_pre_sorted:
+rule tree_postprocessing:
     """
     Get a cleaned tree and all auxiliary files
     """
@@ -12,12 +12,19 @@ rule tree_pre_sorted:
     output:
         nw=fn_tree_sorted(_batch="{batch}"),
         leaves=fn_leaves_sorted(_batch="{batch}"),
+        nodes=fn_nodes_sorted(_batch="{batch}"),
     params:
         script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
     shell:
         """
-        {params.script} -l {output.leaves} {input.nw} {output.nw}
-
+        {params.script} \\
+            --standardize \\
+            --midpoint-outgroup \\
+            --name-internals \\
+            --ladderize \\
+            -l {output.leaves} \\
+            -n {output.nodes} \\
+            {input.nw} {output.nw}
         """
 
 

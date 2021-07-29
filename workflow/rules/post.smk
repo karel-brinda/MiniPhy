@@ -11,7 +11,7 @@ checkpoint prophyle_index:
         nw=fn_tree_sorted(_batch="{batch}"),
     output:
         d=directory(dir_prophyle(_batch="{batch}")),
-        nw=fn_prophyle_tree(_batch="{batch}"),
+        #nw=fn_prophyle_tree(_batch="{batch}"),
     params:
         k=31,
         asm_dir=fn_asm_seq_dir("{batch}"),
@@ -21,20 +21,20 @@ checkpoint prophyle_index:
         """
 
 
-# get the ProPhyle tree, clean it, and print all node names
-rule tree_post_sorted:
-    input:
-        nw=fn_prophyle_tree(_batch="{batch}"),
-    output:
-        nw=fn_tree_sorted2(_batch="{batch}"),
-        nodes=fn_nodes_sorted(_batch="{batch}"),
-    params:
-        script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
-    shell:
-        """
-        {params.script} -n {output.nodes} {input.nw} {output.nw}
-
-        """
+## get the ProPhyle tree, clean it, and print all node names
+# rule tree_post_sorted:
+#    input:
+#        nw=fn_prophyle_tree(_batch="{batch}"),
+#    output:
+#        nw=fn_tree_sorted2(_batch="{batch}"),
+#        nodes=fn_nodes_sorted(_batch="{batch}"),
+#    params:
+#        script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
+#    shell:
+#        """
+#        {params.script} -n {output.nodes} {input.nw} {output.nw}
+#
+#        """
 
 
 rule post_seq:
