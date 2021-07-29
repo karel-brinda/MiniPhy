@@ -3,12 +3,10 @@
 ##
 
 
-"""
-list of assemblies as they will appear in the .tar.xz archive
-"""
-
-
 rule asm_list:
+    """
+    Make a list of assemblies as they will appear in the .tar.xz archive
+    """
     output:
         list=fn_asm_list(_batch="{batch}"),
     input:
@@ -35,12 +33,14 @@ rule asm_list:
 #        """
 
 
-# format individual fasta files (from the inferred source file)
-rule asm_formatting:
-    output:
-        fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
+rule asm_seq_formatting:
+    """
+    Turn an assembly file from the input into a well-behaved fasta file
+    """
     input:
         fa=w_sample_source,
+    output:
+        fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
     shell:
         """
         seqtk seq -U "{input.fa}" \\

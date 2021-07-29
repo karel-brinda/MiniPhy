@@ -3,28 +3,33 @@
 ##
 
 
-# a general rule to turn a list of files into a highly compressed xz archive
 rule tar_xz:
+    """
+    Compress files using xz in a given order
+    """
     output:
         xz="{pref}.tar.xz",
     input:
         list="{pref}.list",
     shell:
         """
-        tar cvf - -C $(dirname "{input.list}") -T "{input.list}" \\
+        tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
             | xz -T1 -9 \\
             > {output.xz}
         """
 
 
-# a general rule to turn a list of files into a highly compressed xz archive
-# 	- todo: fix the script; add support for lists of files and text files with simplitigs; pass the number of threads as a params
-#   - todo: check tmp dir; might run out on the cluster
 rule histogram:
-    output:
-        hist="{pref}.hist",
+    """
+    Compute histogram from a list of files
+       - todo: fix the script; add support for lists of files and text files with simplitigs; pass the number of threads as a params
+       - todo: check tmp dir; might run out on the cluster
+
+    """
     input:
         list="{pref}.list",
+    output:
+        hist="{pref}.hist",
     threads: 7
     shell:
         """
