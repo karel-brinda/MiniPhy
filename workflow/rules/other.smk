@@ -22,7 +22,7 @@ rule tar_xz:
 rule histogram:
     """
     Compute histogram from a list of files
-       - todo: fix the script; add support for lists of files and text files with simplitigs; pass the number of threads as a params
+       - todo: pass the number of threads as a params
        - todo: check tmp dir; might run out on the cluster
 
     """
@@ -30,9 +30,32 @@ rule histogram:
         list="{pref}.list",
     output:
         hist="{pref}.hist",
+    params:
+        hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
+        lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
     threads: 7
     shell:
         """
-        ../scripts/histogram_using_jf.sh {input.list} \\
+        {params.hjf} <({params.lfa} {input.list}) \\
             > {output.hist}
+        """
+
+
+rule characterize_seqs:
+    """
+    Compute histogram from a list of files
+       - todo: pass the number of threads as a params
+       - todo: check tmp dir; might run out on the cluster
+
+    """
+    input:
+        list="{pref}.list",
+    output:
+        nscl="{pref}.nscl",
+    params:
+        ss=snakemake.workflow.srcdir("../scripts/file_list_to_seq_summaries.py"),
+    shell:
+        """
+        {params.ss} {input.list} \\
+            > {output.nscl}
         """

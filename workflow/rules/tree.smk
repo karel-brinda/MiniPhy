@@ -15,7 +15,6 @@ rule tree_pre_sorted:
     params:
         script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
     shell:
-        ## how to execute scripts?
         """
         {params.script} -l {output.leaves} {input.nw} {output.nw}
 
