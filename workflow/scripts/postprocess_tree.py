@@ -12,8 +12,8 @@ def info(*msg):
     print(*msg, file=sys.stderr)
 
 
-def name_internals(tree):
-    re_inferred = re.compile(r'^(.*)-up(\d+)$')
+def name_internal_nodes(tree):
+    re_inferred = re.compile(r'^(.*)-UP(\d+)$')
 
     for n in tree.traverse("postorder"):
         if len(n.children) == 0:
@@ -44,7 +44,7 @@ def load_and_process_tree(
     ladderize,
     name_internals,
 ):
-    t = ete3.Tree(tree_fn, format=1)
+    t = ete3.Tree(in_tree_fn, format=1)
 
     if standardize:
         info("Standardizing the tree")
@@ -58,7 +58,7 @@ def load_and_process_tree(
         t.ladderize()
     if name_internals:
         info("Automatic naming of internal nodes")
-        t = name_internals(t)
+        t = name_internal_nodes(t)
 
     return t
 
@@ -77,7 +77,7 @@ def print_nodes(tree, fn, only_leaves=False):
 
 def run(in_tree_fn, out_tree_fn, standardize, midpoint_outgroup,
         name_internals, ladderize, leaves_fn, nodes_fn):
-    t = process_tree(
+    t = load_and_process_tree(
         in_tree_fn=in_tree_fn,
         standardize=standardize,
         midpoint_outgroup=midpoint_outgroup,
@@ -108,28 +108,28 @@ def main():
 
     parser.add_argument(
         '--standardize',
-        metavar='standardize',
+        dest='standardize',
         help='Resolve polytomy nad ',
         action='store_true',
     )
 
     parser.add_argument(
         '--midpoint-outgroup',
-        metavar='midpoint_outgroup',
+        dest='midpoint_outgroup',
         help='Mid point outgroup',
         action='store_true',
     )
 
     parser.add_argument(
         '--ladderize',
-        metavar='ladderize',
+        dest='ladderize',
         help='Laderize tree',
         action='store_true',
     )
 
     parser.add_argument(
         '--name-internals',
-        metavar='name_internals',
+        dest='name_internals',
         help='Name internal nodes',
         action='store_true',
     )
@@ -152,14 +152,14 @@ def main():
 
     args = parser.parse_args()
 
-    process_tree(in_tree_fn=args.in_tree_fn,
-                 out_tree_fn=args.out_tree_fn,
-                 standardize=args.standardize,
-                 midpoint_outgroup=args.midpoint_outgroup,
-                 name_internals=args.name_internals,
-                 ladderize=args.ladderize,
-                 leaves_fn=args.leaves_fn,
-                 nodes_fn=args.nodes_fn)
+    run(in_tree_fn=args.in_tree_fn,
+        out_tree_fn=args.out_tree_fn,
+        standardize=args.standardize,
+        midpoint_outgroup=args.midpoint_outgroup,
+        name_internals=args.name_internals,
+        ladderize=args.ladderize,
+        leaves_fn=args.leaves_fn,
+        nodes_fn=args.nodes_fn)
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ checkpoint prophyle_index:
         w_batch_asms,
         nw=fn_tree_sorted(_batch="{batch}"),
     output:
-        d=directory(dir_prophyle(_batch="{batch}")),
+        d=directory(dir_prophyle_propagation(_batch="{batch}")),
         #nw=fn_prophyle_tree(_batch="{batch}"),
     params:
         k=31,
@@ -58,6 +58,7 @@ rule post_list:
     input:
         list=fn_nodes_sorted(_batch="{batch}"),
         fa=w_batch_posts,
+        dpp=dir_prophyle_propagation(_batch="{batch}"),
     output:
         list=fn_post_list(_batch="{batch}"),
     run:

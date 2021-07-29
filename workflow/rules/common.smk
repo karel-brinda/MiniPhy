@@ -179,6 +179,10 @@ def dir_prophyle(_batch):
     return f"results/post/{_batch}"
 
 
+def dir_prophyle_propagation(_batch):
+    return f"results/post/{_batch}/propagation"
+
+
 # def fn_prophyle_index(_batch):
 #    return f"results/post/{_batch}/index.fa",
 
