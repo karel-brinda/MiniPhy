@@ -8,11 +8,58 @@ import re
 import sys
 
 
-def preprocess_tree(tree_fn):
+def info(*msg):
+    print(*msg, file=sys.stderr)
+
+
+def name_internals(tree):
+    re_inferred = re.compile(r'^(.*)-up(\d+)$')
+
+    for n in tree.traverse("postorder"):
+        if len(n.children) == 0:
+            assert hasattr(n, "name")
+        else:
+            for x in n.children:
+                assert hasattr(x, "name")
+
+            if not hasattr(n, "name") or n.name == "" or n.name is None:
+                names = [x.name for x in n.children]
+                lmin_name = sorted(names)[0]
+
+                m = re_inferred.match(lmin_name)
+                if m is not None:
+                    left, right = m.groups()
+                    right = int(right) + 1
+                    n.name = "{}-UP{}".format(left, right)
+                else:
+                    n.name = lmin_name + "-UP1"
+
+    return tree
+
+
+def load_and_process_tree(
+    in_tree_fn,
+    standardize,
+    midpoint_outgroup,
+    ladderize,
+    name_internals,
+):
     t = ete3.Tree(tree_fn, format=1)
 
-    # to standardize the order (and possibly also enhance compression)
-    t.ladderize()
+    if standardize:
+        info("Standardizing the tree")
+        t.standardize()
+    if midpoint_outgroup:
+        info("Setting a midpoint outgroup")
+        R = t.get_midpoint_outgroup()
+        t.set_outgroup(R)
+    if ladderize:
+        info("Ladderizing")
+        t.ladderize()
+    if name_internals:
+        info("Automatic naming of internal nodes")
+        t = name_internals(t)
+
     return t
 
 
@@ -24,13 +71,20 @@ def print_nodes(tree, fn, only_leaves=False):
             it = tree.traverse('preorder')
         for n in it:
             assert n.name != "", "Error: empty node name"
-            if n.name != "merge_root":
-                f.write(f"{n.name}\n")
+            assert (n.name != "merge_root")
+            f.write(f"{n.name}\n")
 
 
-def process_tree(in_tree_fn, out_tree_fn, leaves_fn, nodes_fn):
-    t = preprocess_tree(in_tree_fn)
-    t.write(outfile=out_tree_fn, format=1)
+def run(in_tree_fn, out_tree_fn, standardize, midpoint_outgroup,
+        name_internals, ladderize, leaves_fn, nodes_fn):
+    t = process_tree(
+        in_tree_fn=in_tree_fn,
+        standardize=standardize,
+        midpoint_outgroup=midpoint_outgroup,
+        ladderize=ladderize,
+        name_internals=name_internals,
+    )
+    t.write(outfile=out_tree_fn, format=3)
     if leaves_fn:
         print_nodes(t, leaves_fn, only_leaves=True)
     if nodes_fn:
@@ -53,6 +107,34 @@ def main():
     )
 
     parser.add_argument(
+        '--standardize',
+        metavar='standardize',
+        help='Resolve polytomy nad ',
+        action='store_true',
+    )
+
+    parser.add_argument(
+        '--midpoint-outgroup',
+        metavar='midpoint_outgroup',
+        help='Mid point outgroup',
+        action='store_true',
+    )
+
+    parser.add_argument(
+        '--ladderize',
+        metavar='ladderize',
+        help='Laderize tree',
+        action='store_true',
+    )
+
+    parser.add_argument(
+        '--name-internals',
+        metavar='name_internals',
+        help='Name internal nodes',
+        action='store_true',
+    )
+
+    parser.add_argument(
         '-l',
         '--leaves',
         metavar='leaves_order.txt',
@@ -70,8 +152,14 @@ def main():
 
     args = parser.parse_args()
 
-    process_tree(args.in_tree_fn, args.out_tree_fn, args.leaves_fn,
-                 args.nodes_fn)
+    process_tree(in_tree_fn=args.in_tree_fn,
+                 out_tree_fn=args.out_tree_fn,
+                 standardize=args.standardize,
+                 midpoint_outgroup=args.midpoint_outgroup,
+                 name_internals=args.name_internals,
+                 ladderize=args.ladderize,
+                 leaves_fn=args.leaves_fn,
+                 nodes_fn=args.nodes_fn)
 
 
 if __name__ == "__main__":
