@@ -13,7 +13,7 @@ rule tar_xz:
         list="{pref}.list",
     shell:
         """
-        tar cvf - -C $(dirname "{input.list}") -T "{input.list}" \\
+        tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
             | xz -T1 -9 \\
             > {output.xz}
         """
