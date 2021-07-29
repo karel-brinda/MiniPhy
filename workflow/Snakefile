@@ -24,15 +24,15 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        #[fn_asm_list(f"{batch}") for batch in get_batches()],
         [fn_asm_compr(f"{batch}") for batch in get_batches()],
         [fn_pre_compr(f"{batch}") for batch in get_batches()],
         [fn_post_compr(f"{batch}") for batch in get_batches()],
+        [fn_asm_hist(f"{batch}") for batch in get_batches()],
+        [fn_pre_hist(f"{batch}") for batch in get_batches()],
         [fn_post_hist(f"{batch}") for batch in get_batches()],
-        #[fn_nodes_sorted('{batch}') for batch in get_batches()],
-        #"results/compressed_asm.tar.xz",
-        #"results/compressed_pre.tar.xz",
-        #"results/compressed_post.tar.xz",
+        [fn_asm_nscl(f"{batch}") for batch in get_batches()],
+        [fn_pre_nscl(f"{batch}") for batch in get_batches()],
+        [fn_post_nscl(f"{batch}") for batch in get_batches()],
         #"results/stats/samples.tsv",
         #"results/stats/global.tsv",
 

@@ -10,7 +10,8 @@ from pathlib import Path
 from xopen import xopen
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 
-header=False
+header = False
+
 
 def _to_fa(fn):
     fasta = False
