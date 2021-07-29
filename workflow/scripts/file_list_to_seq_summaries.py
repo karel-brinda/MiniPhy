@@ -8,7 +8,9 @@ import sys
 
 from pathlib import Path
 from xopen import xopen
+from Bio.SeqIO.FastaIO import SimpleFastaParser
 
+header=False
 
 def _to_fa(fn):
     fasta = False
@@ -22,7 +24,7 @@ def _to_fa(fn):
             yield x
 
 
-def process_file(fn):
+def process_seq_file(fn):
     sample = os.path.basename(fn).split(".")[0]
 
     cl = 0
@@ -44,7 +46,7 @@ def characterize_files(fn):
         for x in f:
             y = x.strip()
             if y:
-                print_fn_as_fa(y)
+                process_seq_file(y)
 
 
 def main():
