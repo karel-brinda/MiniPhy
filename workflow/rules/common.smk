@@ -110,8 +110,16 @@ def fn_asm_hist(_batch):
     return f"results/asm/{_batch}.asm.hist"
 
 
+def fn_asm_hist_summary(_batch):
+    return fn_asm_hist(_batch) + ".summary"
+
+
 def fn_asm_nscl(_batch):
     return f"results/asm/{_batch}.asm.nscl"
+
+
+def fn_asm_nscl_summary(_batch):
+    return fn_asm_nscl(_batch) + ".summary"
 
 
 def fn_asm_compr(_batch):
@@ -133,8 +141,16 @@ def fn_pre_hist(_batch):
     return f"results/pre/{_batch}.pre.hist"
 
 
+def fn_pre_hist_summary(_batch):
+    return fn_pre_hist(_batch) + ".summary"
+
+
 def fn_pre_nscl(_batch):
     return f"results/pre/{_batch}.pre.nscl"
+
+
+def fn_pre_nscl_summary(_batch):
+    return fn_pre_nscl(_batch) + ".summary"
 
 
 def fn_pre_compr(_batch):
@@ -160,8 +176,16 @@ def fn_post_hist(_batch):
     return f"results/post/{_batch}.post.hist"
 
 
+def fn_post_hist_summary(_batch):
+    return fn_post_hist(_batch) + ".summary"
+
+
 def fn_post_nscl(_batch):
     return f"results/post/{_batch}.post.nscl"
+
+
+def fn_post_nscl_summary(_batch):
+    return fn_post_nscl(_batch) + ".summary"
 
 
 def fn_post_compr(_batch):

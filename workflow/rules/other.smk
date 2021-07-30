@@ -41,13 +41,21 @@ rule histogram:
         """
 
 
-rule characterize_seqs:
-    """
-    Compute histogram from a list of files
-       - todo: pass the number of threads as a params
-       - todo: check tmp dir; might run out on the cluster
+rule histogram_summary:
+    input:
+        hist="{pref}.hist",
+    output:
+        summ="{pref}.hist.summary",
+    params:
+        s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
+    shell:
+        """
+        {params.s} {input.hist} \\
+            > {output.summ}
+        """
 
-    """
+
+rule nscl:
     input:
         list="{pref}.list",
     output:
@@ -58,4 +66,18 @@ rule characterize_seqs:
         """
         {params.ss} {input.list} \\
             > {output.nscl}
+        """
+
+
+rule nscl_summary:
+    input:
+        nscl="{pref}.nscl",
+    output:
+        summ="{pref}.nscl.summary",
+    params:
+        s=snakemake.workflow.srcdir("../scripts/summarize_nscl.py"),
+    shell:
+        """
+        {params.s} {input.nscl} \\
+            > {output.summ}
         """
