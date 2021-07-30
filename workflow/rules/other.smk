@@ -41,6 +41,21 @@ rule histogram:
         """
 
 
+rule histogram_summary:
+    input:
+        hist="{pref}.hist",
+    output:
+        summ="{pref}.hist.summary",
+    params:
+        s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
+    threads: 7
+    shell:
+        """
+        {params.s} {input.hist} \\
+            > {output.summ}
+        """
+
+
 rule characterize_seqs:
     """
     Compute histogram from a list of files

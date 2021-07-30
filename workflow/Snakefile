@@ -25,14 +25,16 @@ include: "rules/common.smk"
 rule all:
     input:
         [fn_post_compr(f"{batch}") for batch in get_batches()],
-        [fn_post_hist(f"{batch}") for batch in get_batches()],
+        [fn_post_hist_summary(f"{batch}") for batch in get_batches()],
         [fn_post_nscl(f"{batch}") for batch in get_batches()],
-        #[fn_asm_compr(f"{batch}") for batch in get_batches()],
-        #[fn_asm_hist(f"{batch}") for batch in get_batches()],
-        #[fn_asm_nscl(f"{batch}") for batch in get_batches()],
-        #[fn_pre_compr(f"{batch}") for batch in get_batches()],
-        #[fn_pre_hist(f"{batch}") for batch in get_batches()],
-        #[fn_pre_nscl(f"{batch}") for batch in get_batches()],
+        ####################
+        [fn_asm_compr(f"{batch}") for batch in get_batches()],
+        [fn_asm_hist_summary(f"{batch}") for batch in get_batches()],
+        [fn_asm_nscl(f"{batch}") for batch in get_batches()],
+        ####################
+        [fn_pre_compr(f"{batch}") for batch in get_batches()],
+        [fn_pre_hist_summary(f"{batch}") for batch in get_batches()],
+        [fn_pre_nscl(f"{batch}") for batch in get_batches()],
 
 
 ##### Modules #####
