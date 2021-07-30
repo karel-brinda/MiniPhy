@@ -57,6 +57,7 @@ pprint(BATCHES_FN)
 wildcard_constraints:
     sample=r"[a-zA-Z0-9_-]+",
     batch=r"[a-zA-Z0-9_-]+",
+    stage=r"(asm|pre|post)",
 
 
 ## BATCHES

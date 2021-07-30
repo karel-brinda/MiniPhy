@@ -8,9 +8,9 @@ rule tar_xz:
     Compress files using xz in a given order
     """
     output:
-        xz="{pref}.tar.xz",
+        xz="{pref}.{stage}.tar.xz",
     input:
-        list="{pref}.list",
+        list="{pref}.{stage}.list",
     shell:
         """
         tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
@@ -27,9 +27,9 @@ rule histogram:
 
     """
     input:
-        list="{pref}.list",
+        list="{pref}.{stage}.list",
     output:
-        hist="{pref}.hist",
+        hist="{pref}.{stage}.hist",
     params:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
@@ -43,23 +43,24 @@ rule histogram:
 
 rule histogram_summary:
     input:
-        hist="{pref}.hist",
+        hist="{pref}.{stage}.hist",
     output:
-        summ="{pref}.hist.summary",
+        summ="{pref}.{stage}.hist.summary",
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
     shell:
         """
         {params.s} {input.hist} \\
+            --add-prefix {wildcards.stage}_ \\
             > {output.summ}
         """
 
 
 rule nscl:
     input:
-        list="{pref}.list",
+        list="{pref}.{stage}.list",
     output:
-        nscl="{pref}.nscl",
+        nscl="{pref}.{stage}.nscl",
     params:
         ss=snakemake.workflow.srcdir("../scripts/file_list_to_seq_summaries.py"),
     shell:
@@ -71,13 +72,14 @@ rule nscl:
 
 rule nscl_summary:
     input:
-        nscl="{pref}.nscl",
+        nscl="{pref}.{stage}.nscl",
     output:
-        summ="{pref}.nscl.summary",
+        summ="{pref}.{stage}.nscl.summary",
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_nscl.py"),
     shell:
         """
         {params.s} {input.nscl} \\
+            --add-prefix {wildcards.stage}_ \\
             > {output.summ}
         """
