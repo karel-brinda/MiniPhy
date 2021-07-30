@@ -69,6 +69,15 @@ def get_batches():
 
 ## FILE PATHS
 
+
+def fn_stats_global(_batch):
+    return f"results/stats/{_batch}.global.tsv"
+
+
+def fn_stats_samples(_batch):
+    return f"results/stats/{_batch}.samples.tsv"
+
+
 # *_list - list of files for compression in that order
 # *_hist - k-mer histogram
 # *_nscl - number of sequence and cumulative length

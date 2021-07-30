@@ -16,6 +16,7 @@ def pt(*things, pref=""):
 
 def summarize_nscl(fn, pref):
     df = pd.read_csv(fn, sep='\t')
+    pt("recs", len(df), pref=pref)
     pt("sum_ns", sum(df["ns"]), pref=pref)
     pt("min_ns", min(df["ns"]), pref=pref)
     pt("max_ns", max(df["ns"]), pref=pref)
