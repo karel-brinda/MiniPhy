@@ -10,7 +10,6 @@ from pathlib import Path
 
 # this container defines the underlying OS for each job when using the workflow
 # with --use-conda --use-singularity
-# singularity: "docker://continuumio/miniconda3"
 
 ##### load config and sample sheets #####
 
@@ -70,16 +69,14 @@ def get_batches():
 ## FILE PATHS
 
 # *_list - list of files for compression in that order
+# *_hist - k-mer histogram
+# *_nscl - number of sequence and cumulative length
 # *_seq - files with sequences (fa / simpl
 # *_compr - compressed dataset
 
 
 def fn_tree_sorted(_batch):
     return f"results/tree/{_batch}.nw"
-
-
-# def fn_tree_sorted2(_batch):
-#    return f"results/tree/{_batch}.2.nw"
 
 
 def fn_tree_mashtree(_batch):
@@ -213,19 +210,8 @@ def w_batch_pres(wildcards):
 # get post-propagation simplitig files from batch & sample
 def w_batch_posts(wildcards):
     _ = checkpoints.prophyle_index.get(**wildcards)
-    # checkpoint_output = checkpoints.prophyle_index.get(**wildcards).output[0]
-    # print("checkpoint output", checkpoint_output)
-    # os.path.join(checkpoint_output, "propagation", "{node}.reduced.fa")
-    nodes = glob_wildcards(fn_post_seq0(_batch=wildcards.batch, _node="{node}")).node
-    print("nodes", nodes)
-    tr = [fn_post_seq(_batch=wildcards.batch, _node=node) for node in nodes]
-    print(tr)
+    tr = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
     return tr
-
-
-# batch = wildcards["batch"]
-# l = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
-# return l
 
 
 ## OTHER FUNCTIONS
@@ -244,8 +230,3 @@ def generate_file_list(input_list_fn, output_list_fn, filename_function):
 def load_list(fn):
     with open(fn) as f:
         return [x.strip() for x in f]
-## load list (as input files)
-# def load_list(fn):
-#    with open(fn) as f:
-#        fns = [x.strip() for x in f]
-#    return [Path(fn).parent / x for x in fns]
