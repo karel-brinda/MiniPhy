@@ -13,7 +13,7 @@ def info(*msg):
 
 
 def name_internal_nodes(tree):
-    re_inferred = re.compile(r'^(.*)-UP(\d+)$')
+    re_inferred = re.compile(r'^(.*)-up(\d+)$')
 
     for n in tree.traverse("postorder"):
         if len(n.children) == 0:
@@ -30,9 +30,9 @@ def name_internal_nodes(tree):
                 if m is not None:
                     left, right = m.groups()
                     right = int(right) + 1
-                    n.name = "{}-UP{}".format(left, right)
+                    n.name = "{}-up{}".format(left, right)
                 else:
-                    n.name = lmin_name + "-UP1"
+                    n.name = lmin_name + "-up1"
 
     return tree
 
