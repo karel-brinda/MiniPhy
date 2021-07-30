@@ -75,11 +75,11 @@ def get_batches():
 
 
 def fn_tree_sorted(_batch):
-    return f"results/tree/{_batch}.1.nw"
+    return f"results/tree/{_batch}.nw"
 
 
-def fn_tree_sorted2(_batch):
-    return f"results/tree/{_batch}.2.nw"
+# def fn_tree_sorted2(_batch):
+#    return f"results/tree/{_batch}.2.nw"
 
 
 def fn_tree_mashtree(_batch):
@@ -171,12 +171,16 @@ def fn_post_compr(_batch):
     return f"results/post/{_batch}.post.tar.xz"
 
 
-def fn_prophyle_tree(_batch):
-    return f"results/post/{_batch}/tree.nw"
+# def fn_prophyle_tree(_batch):
+#    return f"results/post/{_batch}/tree.nw"
 
 
 def dir_prophyle(_batch):
     return f"results/post/{_batch}"
+
+
+def dir_prophyle_propagation(_batch):
+    return f"results/post/{_batch}/propagation"
 
 
 # def fn_prophyle_index(_batch):
@@ -208,6 +212,7 @@ def w_batch_pres(wildcards):
 
 # get post-propagation simplitig files from batch & sample
 def w_batch_posts(wildcards):
+    _ = checkpoints.prophyle_index.get(**wildcards)
     # checkpoint_output = checkpoints.prophyle_index.get(**wildcards).output[0]
     # print("checkpoint output", checkpoint_output)
     # os.path.join(checkpoint_output, "propagation", "{node}.reduced.fa")
