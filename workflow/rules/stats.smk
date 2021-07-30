@@ -11,5 +11,8 @@ rule stats_global_sample:
         fn_stats_global(_batch="{batch}"),
     shell:
         """
-        cat {input} > {output}
+        (
+            printf 'batch\t%s\n' {wildcards.batch}
+            cat {input}
+        )> {output}
         """
