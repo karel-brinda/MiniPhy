@@ -24,7 +24,9 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        [fn_stats_global(f"{batch}") for batch in get_batches()],
+        fn_stats_global(),
+        #
+        #[fn_stats_sample_global(f"{batch}") for batch in get_batches()],
         ####################
         [fn_post_compr(f"{batch}") for batch in get_batches()],
         [fn_post_hist_summary(f"{batch}") for batch in get_batches()],

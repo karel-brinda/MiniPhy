@@ -70,7 +70,11 @@ def get_batches():
 ## FILE PATHS
 
 
-def fn_stats_global(_batch):
+def fn_stats_global():
+    return f"results/global_stats.tsv"
+
+
+def fn_stats_batch_global(_batch):
     return f"results/stats/{_batch}.global.tsv"
 
 
