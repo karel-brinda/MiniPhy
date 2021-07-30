@@ -16,11 +16,11 @@ def pt(*things, pref=""):
 
 def summarize_nscl(fn, pref):
     df = pd.read_csv(fn, sep='\t')
-    pt("ns", sum(df["ns"]), pref=pref)
+    pt("sum_ns", sum(df["ns"]), pref=pref)
     pt("min_ns", min(df["ns"]), pref=pref)
     pt("max_ns", max(df["ns"]), pref=pref)
     pt("avg_ns", sum(df["ns"]) / len(df), pref=pref)
-    pt("cl", sum(df["cl"]), pref=pref)
+    pt("sum_cl", sum(df["cl"]), pref=pref)
     pt("min_cl", min(df["cl"]), pref=pref)
     pt("max_cl", max(df["cl"]), pref=pref)
     pt("avg_cl", sum(df["cl"]) / len(df), pref=pref)
