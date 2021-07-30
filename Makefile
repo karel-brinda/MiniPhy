@@ -20,7 +20,7 @@ report:
 
 format:
 	snakefmt .
-	yapf -i --recursive .
+	yapf -i --recursive workflow
 
 clean: ## Clean
 

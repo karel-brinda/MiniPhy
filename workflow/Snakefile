@@ -24,6 +24,10 @@ include: "rules/common.smk"
 
 rule all:
     input:
+        fn_stats_global(),
+        #
+        #[fn_stats_sample_global(f"{batch}") for batch in get_batches()],
+        ####################
         [fn_post_compr(f"{batch}") for batch in get_batches()],
         [fn_post_hist_summary(f"{batch}") for batch in get_batches()],
         [fn_post_nscl_summary(f"{batch}") for batch in get_batches()],
@@ -44,5 +48,5 @@ include: "rules/asm.smk"
 include: "rules/pre.smk"
 include: "rules/tree.smk"
 include: "rules/post.smk"
-include: "rules/tree.smk"
+include: "rules/stats.smk"
 include: "rules/other.smk"

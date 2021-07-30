@@ -57,6 +57,7 @@ pprint(BATCHES_FN)
 wildcard_constraints:
     sample=r"[a-zA-Z0-9_-]+",
     batch=r"[a-zA-Z0-9_-]+",
+    stage=r"(asm|pre|post)",
 
 
 ## BATCHES
@@ -67,6 +68,19 @@ def get_batches():
 
 
 ## FILE PATHS
+
+
+def fn_stats_global():
+    return f"results/global_stats.tsv"
+
+
+def fn_stats_batch_global(_batch):
+    return f"results/stats/{_batch}.global.tsv"
+
+
+def fn_stats_samples(_batch):
+    return f"results/stats/{_batch}.samples.tsv"
+
 
 # *_list - list of files for compression in that order
 # *_hist - k-mer histogram
