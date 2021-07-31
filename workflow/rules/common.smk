@@ -49,7 +49,7 @@ for x in res:
                 sample = _get_sample_from_fn(sample_fn)
                 BATCHES_FN[batch][sample] = sample_fn
 
-pprint(BATCHES_FN)
+# pprint(BATCHES_FN)
 
 ## WILDCARDS CONSTRAINS
 
@@ -248,7 +248,14 @@ def w_batch_pres(wildcards):
 # get post-propagation simplitig files from batch & sample
 def w_batch_posts(wildcards):
     _ = checkpoints.prophyle_index.get(**wildcards)
-    tr = [fn_post_seq(batch, node) for node in load_list(fn_nodes_sorted(batch))]
+    # _ = checkpoints.post_list.get(**wildcards)
+    tr = [
+        fn_post_seq(wildcards.batch, node)
+        for node in load_list(fn_nodes_sorted(wildcards.batch))
+    ]
+    # print("=====")
+    # print(tr)
+    # print("=====")
     return tr
 
 
@@ -266,5 +273,9 @@ def generate_file_list(input_list_fn, output_list_fn, filename_function):
 
 
 def load_list(fn):
-    with open(fn) as f:
-        return [x.strip() for x in f]
+    try:
+        with open(fn) as f:
+            return [x.strip() for x in f]
+    except FileNotFoundError:
+        print(f"File not found {fn}, using empty list")
+        return []
