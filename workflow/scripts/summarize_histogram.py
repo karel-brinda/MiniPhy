@@ -16,11 +16,24 @@ def pt(*things, pref=""):
 
 def summarize_histogram(fn, pref):
     df = pd.read_csv(fn, sep='\t')
-    pt("set", sum(df["kmers"]), pref=pref)
+    kmset = sum(df["kmers"])
+    pt("set", kmset, pref=pref)
     pt("multiset", sum(df["freq"] * df["kmers"]), pref=pref)
-    pt("min_freq", min(df["freq"]), pref=pref)
-    pt("max_freq", max(df["freq"]), pref=pref)
-    pt("avg_freq", sum(df["freq"] * df["kmers"]) / sum(df["kmers"]), pref=pref)
+    try:
+        pt("min_freq", min(df["freq"]), pref=pref)
+    except ValueError:
+        pt("min_freq", "NA", pref=pref)
+    try:
+        pt("max_freq", max(df["freq"]), pref=pref)
+    except ValueError:
+        pt("max_freq", "NA", pref=pref)
+    try:
+        if kmset != 0:
+            pt("avg_freq", sum(df["freq"] * df["kmers"]) / kmset, pref=pref)
+        else:
+            pt("avg_freq", "NA", pref=pref)
+    except ValueError:
+        pt("avg_freq", "NA", pref=pref)
 
 
 def main():
