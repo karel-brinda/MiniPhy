@@ -49,7 +49,7 @@ rule post_seq:
     shell:
         """
         seqtk seq {input.fa} \\
-            | grep -v '>' \\
+            | {{ grep -v '>' || true; }} \\
             > {output.txt}
         """
 
