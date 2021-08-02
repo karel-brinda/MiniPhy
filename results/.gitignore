@@ -1,0 +1,8 @@
+*.fa
+*.fasta
+*.xz
+*.simpl
+*.complete
+.*complete*
+propagation/
+index.fa*
