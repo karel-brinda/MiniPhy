@@ -7,15 +7,31 @@ rule tar_xz:
     """
     Compress files using xz in a given order
     """
-    output:
-        xz="{pref}.{stage}.tar.xz",
     input:
         list="{pref}.{stage}.list",
+    output:
+        xz="{pref}.{stage}.tar.xz",
     shell:
         """
         tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
             | xz -T1 -9 \\
             > {output.xz}
+        """
+
+
+rule tar_xz_summary:
+    """
+    Compress files using xz in a given order
+    """
+    input:
+        xz="{pref}.{stage}.tar.xz",
+    output:
+        xz="{pref}.{stage}.tar.xz.summary",
+    shell:
+        """
+        printf '%s\\t%s\\n' \\
+            {wildcards.stage}_xz_size $(wc -c < "{input.xz}") \\
+            > {output}
         """
 
 

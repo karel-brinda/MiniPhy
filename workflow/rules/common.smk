@@ -140,6 +140,10 @@ def fn_asm_compr(_batch):
     return f"results/asm/{_batch}.asm.tar.xz"
 
 
+def fn_asm_compr_summary(_batch):
+    return fn_asm_compr(_batch) + ".summary"
+
+
 #
 
 
@@ -169,6 +173,10 @@ def fn_pre_nscl_summary(_batch):
 
 def fn_pre_compr(_batch):
     return f"results/pre/{_batch}.pre.tar.xz"
+
+
+def fn_pre_compr_summary(_batch):
+    return fn_pre_compr(_batch) + ".summary"
 
 
 #
@@ -204,6 +212,10 @@ def fn_post_nscl_summary(_batch):
 
 def fn_post_compr(_batch):
     return f"results/post/{_batch}.post.tar.xz"
+
+
+def fn_post_compr_summary(_batch):
+    return fn_post_compr(_batch) + ".summary"
 
 
 # def fn_prophyle_tree(_batch):
