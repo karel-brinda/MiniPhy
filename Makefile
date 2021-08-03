@@ -1,4 +1,4 @@
-.PHONY: all help clean cleanall test report format
+.PHONY: all help clean cleanall test report format rmstats
 
 SHELL=/usr/bin/env bash -eo pipefail
 
@@ -26,6 +26,7 @@ clean: ## Clean
 
 cleanall: clean ## Clean all
 
-
-
+rmstats: ## Remove stats
+	find results .test/results -name '*.global.tsv' | xargs rm -fv
+	find results .test/results -name '*.summary' | xargs rm -fv
 
