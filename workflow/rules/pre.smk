@@ -15,7 +15,7 @@ rule pre_seq_prophasm:
         k=31,
     shell:
         """
-        prophasm -i {input.fa} -k {params.k} -o - \\
+        prophasm -S -i {input.fa} -k {params.k} -o - \\
             | seqtk seq \\
             | grep -v '>' \\
             > {output.txt}
