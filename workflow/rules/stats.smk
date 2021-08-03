@@ -16,6 +16,7 @@ rule stats_global_sample:
         fn_asm_hist_summary(_batch="{batch}"),
         fn_asm_nscl_summary(_batch="{batch}"),
         fn_asm_compr_summary(_batch="{batch}"),
+        fn_asm_seq_gz_sizegram_summary(_batch="{batch}"),
         fn_pre_hist_summary(_batch="{batch}"),
         fn_pre_nscl_summary(_batch="{batch}"),
         fn_pre_compr_summary(_batch="{batch}"),

@@ -116,6 +116,22 @@ def fn_asm_seq(_batch, _sample):
     return f"results/asm/{_batch}/{_sample}.fa"
 
 
+def fn_asm_seq_gz(_batch, _sample):
+    return f"results/asm/{_batch}/{_sample}.fa.gz"
+
+
+def fn_asm_seq_gz_size(_batch, _sample):
+    return f"results/asm/{_batch}/{_sample}.fa.gz.size"
+
+
+def fn_asm_seq_gz_sizegram(_batch):
+    return f"results/asm/{_batch}.asm.gz_sizegram"
+
+
+def fn_asm_seq_gz_sizegram_summary(_batch):
+    return f"results/asm/{_batch}.asm.gz_sizes.summary"
+
+
 def fn_asm_list(_batch):
     return f"results/asm/{_batch}.asm.list"
 
@@ -247,6 +263,13 @@ def w_sample_source(wildcards):
 def w_batch_asms(wildcards):
     batch = wildcards["batch"]
     l = [fn_asm_seq(batch, sample) for sample in BATCHES_FN[batch]]
+    return l
+
+
+# get all source files paths for a given batch
+def w_batch_asms_gz_sizes(wildcards):
+    batch = wildcards["batch"]
+    l = [fn_asm_seq_gz_size(batch, sample) for sample in BATCHES_FN[batch]]
     return l
 
 
