@@ -21,7 +21,8 @@ from pathlib import Path
 # validate(samples, schema="../schemas/samples.schema.yaml")
 
 
-def _get_input_dir():
+# input dir - where to look for files
+def dir_input():
     return Path("resources")
 
 
@@ -40,7 +41,7 @@ def _get_sample_from_fn(x):
 # compute main dict for batches
 BATCHES_FN = {}
 # res = glob.glob("resources/*.txt")
-res = _get_input_dir().glob("*.txt")
+res = dir_input().glob("*.txt")
 for x in res:
     b = os.path.basename(x)
     if not b.endswith(".txt"):
@@ -70,6 +71,16 @@ wildcard_constraints:
 
 def get_batches():
     return BATCHES_FN.keys()
+
+
+## DIR PATHS
+
+def dir_prophyle(_batch):
+    return f"results/post/{_batch}"
+
+
+def dir_prophyle_propagation(_batch):
+    return f"results/post/{_batch}/propagation"
 
 
 ## FILE PATHS
@@ -241,14 +252,6 @@ def fn_post_compr_summary(_batch):
 
 # def fn_prophyle_tree(_batch):
 #    return f"results/post/{_batch}/tree.nw"
-
-
-def dir_prophyle(_batch):
-    return f"results/post/{_batch}"
-
-
-def dir_prophyle_propagation(_batch):
-    return f"results/post/{_batch}/propagation"
 
 
 # def fn_prophyle_index(_batch):
