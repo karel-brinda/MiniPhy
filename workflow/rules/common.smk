@@ -21,6 +21,10 @@ from pathlib import Path
 # validate(samples, schema="../schemas/samples.schema.yaml")
 
 
+def _get_input_dir():
+    return Path("resources")
+
+
 # extract sample name from a path
 def _get_sample_from_fn(x):
     suffixes = ["fa", "fasta", "fna", "ffa"]
@@ -35,7 +39,8 @@ def _get_sample_from_fn(x):
 
 # compute main dict for batches
 BATCHES_FN = {}
-res = glob.glob("resources/*.txt")
+# res = glob.glob("resources/*.txt")
+res = _get_input_dir().glob("*.txt")
 for x in res:
     b = os.path.basename(x)
     if not b.endswith(".txt"):
