@@ -21,6 +21,11 @@ from pathlib import Path
 # validate(samples, schema="../schemas/samples.schema.yaml")
 
 
+# input dir - where to look for files
+def dir_input():
+    return Path("resources")
+
+
 # extract sample name from a path
 def _get_sample_from_fn(x):
     suffixes = ["fa", "fasta", "fna", "ffa"]
@@ -35,7 +40,8 @@ def _get_sample_from_fn(x):
 
 # compute main dict for batches
 BATCHES_FN = {}
-res = glob.glob("resources/*.txt")
+# res = glob.glob("resources/*.txt")
+res = dir_input().glob("*.txt")
 for x in res:
     b = os.path.basename(x)
     if not b.endswith(".txt"):
@@ -67,6 +73,17 @@ def get_batches():
     return BATCHES_FN.keys()
 
 
+## DIR PATHS
+
+
+def dir_prophyle(_batch):
+    return f"results/post/{_batch}"
+
+
+def dir_prophyle_propagation(_batch):
+    return f"results/post/{_batch}/propagation"
+
+
 ## FILE PATHS
 
 
@@ -93,8 +110,8 @@ def fn_tree_sorted(_batch):
     return f"results/tree/{_batch}.nw"
 
 
-def fn_tree_mashtree(_batch):
-    return f"results/tree/{_batch}.nw_mashtree"
+def fn_tree_dirty(_batch):
+    return f"results/tree/{_batch}.nw_dirty"
 
 
 def fn_leaves_sorted(_batch):
@@ -236,14 +253,6 @@ def fn_post_compr_summary(_batch):
 
 # def fn_prophyle_tree(_batch):
 #    return f"results/post/{_batch}/tree.nw"
-
-
-def dir_prophyle(_batch):
-    return f"results/post/{_batch}"
-
-
-def dir_prophyle_propagation(_batch):
-    return f"results/post/{_batch}/propagation"
 
 
 # def fn_prophyle_index(_batch):

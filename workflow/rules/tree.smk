@@ -8,7 +8,7 @@ rule tree_postprocessing:
     Get a cleaned tree and all auxiliary files
     """
     input:
-        nw=fn_tree_mashtree(_batch="{batch}"),
+        nw=fn_tree_dirty(_batch="{batch}"),
     output:
         nw=fn_tree_sorted(_batch="{batch}"),
         leaves=fn_leaves_sorted(_batch="{batch}"),
@@ -28,6 +28,25 @@ rule tree_postprocessing:
         """
 
 
+ruleorder: symlink_nw_tree > tree_newick_mashtree
+
+
+rule symlink_nw_tree:
+    """
+    Symlink a phylogenetic tree if possible (nw)
+    """
+    input:
+        nw=dir_input() / "{batch}.nw",
+    output:
+        nw=fn_tree_dirty(_batch="{batch}"),
+    shell:
+        """
+        odir=$(dirname "{output.nw}")
+        r=$(realpath --relative-to="$odir" "{input.nw}")
+        ln -sf "$r" {output.nw}
+        """
+
+
 rule tree_newick_mashtree:
     """
     Infer a phylogenetic tree from the assemblies belonging to a given batch
@@ -35,7 +54,7 @@ rule tree_newick_mashtree:
     input:
         w_batch_asms,
     output:
-        nw=fn_tree_mashtree(_batch="{batch}"),
+        nw=fn_tree_dirty(_batch="{batch}"),
     threads: 8
     shell:
         """
