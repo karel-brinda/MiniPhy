@@ -75,6 +75,7 @@ def get_batches():
 
 ## DIR PATHS
 
+
 def dir_prophyle(_batch):
     return f"results/post/{_batch}"
 
@@ -109,8 +110,8 @@ def fn_tree_sorted(_batch):
     return f"results/tree/{_batch}.nw"
 
 
-def fn_tree_mashtree(_batch):
-    return f"results/tree/{_batch}.nw_mashtree"
+def fn_tree_dirty(_batch):
+    return f"results/tree/{_batch}.nw_dirty"
 
 
 def fn_leaves_sorted(_batch):
