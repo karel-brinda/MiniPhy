@@ -18,7 +18,9 @@ checkpoint prophyle_index:
         asm_dir=fn_asm_seq_dir("{batch}"),
     shell:
         """
-        prophyle index -k{params.k} -T -A -g {params.asm_dir} {input.nw} {output.d1}
+        prophyle index  -T -A -S\\
+            -k {params.k} -g {params.asm_dir}\\
+            {input.nw} {output.d1}
         """
 
 
