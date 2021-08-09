@@ -64,10 +64,14 @@ rule asm_gz_sizegram:
         tsv=fn_asm_seq_gz_sizegram(_batch="{batch}"),
     input:
         w_batch_asms_gz_sizes,
-    shell:
-        """
-        cat {input} > {output}
-        """
+    run:
+        with open(output.tsv,"w") as f:
+            for x in sorted(input):
+                with open(x) as g:
+                    f.write("".join(g))
+        #"""
+        #cat {input} > {output}
+        #"""
 
 
 rule asm_gz_sizegram_summary:
