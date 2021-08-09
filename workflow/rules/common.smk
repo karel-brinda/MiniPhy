@@ -251,6 +251,10 @@ def fn_post_compr_summary(_batch):
     return fn_post_compr(_batch) + ".summary"
 
 
+def fn_prophyle_kmer_stats(_batch):
+    return f"results/post/{_batch}/index.fa.kmers.tsv"
+
+
 # def fn_prophyle_tree(_batch):
 #    return f"results/post/{_batch}/tree.nw"
 
