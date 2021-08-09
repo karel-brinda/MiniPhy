@@ -19,7 +19,7 @@ report:
 	snakemake --report report.html
 
 format:
-	snakefmt .
+	snakefmt workflow
 	yapf -i --recursive workflow
 
 clean: ## Clean
