@@ -17,10 +17,11 @@ checkpoint prophyle_index:
         k=31,
         pro_dir=directory(dir_prophyle(_batch="{batch}")),
         asm_dir=fn_asm_seq_dir("{batch}"),
+    threads: workflow.cores * 0.75
     shell:
         """
         prophyle index  -T -A -S \\
-            -j {threads} workflow.cores * 0.75 \\
+            -j {threads} \\
             -k {params.k} -g {params.asm_dir} \\
             {input.nw} {params.pro_dir}
         """
