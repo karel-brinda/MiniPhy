@@ -1,4 +1,4 @@
-.PHONY: all help clean cleanall test report testreport format rmstats
+.PHONY: all help clean cleanall test report testreport format rmstats edit
 
 SHELL=/usr/bin/env bash -eo pipefail
 
@@ -33,3 +33,5 @@ rmstats: ## Remove stats
 	find results .test/results -name '*.global.tsv' | xargs rm -fv
 	find results .test/results -name '*.summary' | xargs rm -fv
 
+edit:
+	nvim -p workflow/Snakefile workflow/rules/*.smk
