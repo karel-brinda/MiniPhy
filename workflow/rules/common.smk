@@ -32,7 +32,7 @@ def _get_sample_from_fn(x):
 
     b = os.path.basename(x)
     if b.endswith(".gz"):
-        b = x[:-3]
+        b = b[:-3]
     sample, _, suffix = b.rpartition(".")
     assert suffix in suffixes, f"Unknown suffix of source files ({suffix} in {x})"
     return sample
@@ -265,7 +265,8 @@ def fn_post_compr_summary(_batch):
 def w_sample_source(wildcards):
     batch = wildcards["batch"]
     sample = wildcards["sample"]
-    return BATCHES_FN[batch][sample]
+    fn = BATCHES_FN[batch][sample]
+    return fn
 
 
 # get all source files paths for a given batch
