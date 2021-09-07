@@ -8,6 +8,8 @@ import re
 import sys
 
 
+sys.setrecursionlimit(500000)
+
 def info(*msg):
     print(*msg, file=sys.stderr)
 
