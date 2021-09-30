@@ -37,6 +37,7 @@ For installation details, see the [instructions in the Snakemake documentation](
 * Xopen
 * BioPython
 * Pandas
+* Ete3
 
 
 ### Step 4: Execute workflow
