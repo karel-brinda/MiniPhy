@@ -23,13 +23,21 @@ If you use this workflow in a paper, don't forget to give credits to the authors
 
 Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify your sample setup.
 
-### Step 3: Install Snakemake
+### Step 3: Install Snakemake and dependencies
 
 Install Snakemake using [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html):
 
     conda create -c bioconda -c conda-forge -n snakemake snakemake
 
 For installation details, see the [instructions in the Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html).
+
+#### Other dependencies
+
+* Jellyfish2
+* Xopen
+* BioPython
+* Pandas
+
 
 ### Step 4: Execute workflow
 
