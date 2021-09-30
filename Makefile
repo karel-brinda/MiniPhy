@@ -7,7 +7,7 @@ SHELL=/usr/bin/env bash -eo pipefail
 .SUFFIXES:
 
 all:
-	snakemake -j -p
+	snakemake -j -p --rerun-incomplete
 
 test: ## Run the workflow on test data
 	snakemake -j -p --dir .test --debug-dag
