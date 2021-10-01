@@ -38,6 +38,7 @@ For installation details, see the [instructions in the Snakemake documentation](
 * BioPython
 * Pandas
 * Ete3
+* Mashtree
 
 
 ### Step 4: Execute workflow
