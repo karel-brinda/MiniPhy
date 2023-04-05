@@ -13,6 +13,8 @@ rule pre_seq_prophasm:
         txt=fn_pre_seq(_batch="{batch}", _sample="{sample}"),
     params:
         k=31,
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         prophasm -S -i {input.fa} -k {params.k} -o - \\
