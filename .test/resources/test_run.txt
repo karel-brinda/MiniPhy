@@ -1,5 +1,5 @@
-.test/resources/isolates/GCGS0001.fa
-.test/resources/isolates/GCGS0002.fa
-.test/resources/isolates/GCGS0003.fa
-.test/resources/isolates/GCGS0004.fa
-.test/resources/isolates/GCGS0005.fa
+resources/isolates/GCGS0001.fa
+resources/isolates/GCGS0002.fa
+resources/isolates/GCGS0003.fa
+resources/isolates/GCGS0004.fa
+resources/isolates/GCGS0005.fa

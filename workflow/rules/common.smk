@@ -11,10 +11,10 @@ from pathlib import Path
 ##### load config and sample sheets #####
 # input dir - where to look for files
 def dir_input():
-    return Path(config["resources_dir"])
+    return Path("resources")
 
 def dir_output():
-    return config["results_dir"]
+    return "results"
 
 
 # extract sample name from a path
