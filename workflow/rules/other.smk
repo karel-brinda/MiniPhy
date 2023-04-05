@@ -50,6 +50,8 @@ rule histogram:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
     threads: 7
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         {params.hjf} <({params.lfa} {input.list}) \\
