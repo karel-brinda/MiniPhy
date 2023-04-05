@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - reproducibility
   pull_request:
     branches_ignore: []
 
@@ -29,12 +30,10 @@ jobs:
     - name: Test workflow (local test data)
       uses: snakemake/snakemake-github-action@v1.5.3
       with:
-        directory: .test
         snakefile: workflow/Snakefile
-        args: "--use-conda --show-failed-logs -j 10 --conda-cleanup-pkgs"
+        args: "-j 4 --configfile .test/config.yaml --use-conda -p --show-failed-logs --conda-cleanup-pkgs"
     - name: Test report
       uses: snakemake/snakemake-github-action@v1.5.3
       with:
-        directory: .test
         snakefile: workflow/Snakefile
-        args: "--report report.zip"
+        args: "--configfile .test/config.yaml --use-conda --report test_report.html"
