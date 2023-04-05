@@ -29,7 +29,7 @@ jellyfish count \
 	--threads $threads \
 	--canonical \
 	--mer-len 31 \
-	--size 20M \
+	--size 5M \
 	--output "$y" \
 	"$x"
 
