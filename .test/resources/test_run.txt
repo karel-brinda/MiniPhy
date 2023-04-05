@@ -1,6 +1,5 @@
-/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0001.fa
-/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0002.fa
-/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0003.fa
-/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0004.fa
-/Users/karel/github/my/rase-db-ngonorrhoeae-gisp/isolates/GCGS0005.fa
-
+.test/resources/isolates/GCGS0001.fa
+.test/resources/isolates/GCGS0002.fa
+.test/resources/isolates/GCGS0003.fa
+.test/resources/isolates/GCGS0004.fa
+.test/resources/isolates/GCGS0005.fa
