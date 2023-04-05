@@ -29,7 +29,7 @@ jobs:
       uses: snakemake/snakemake-github-action@v1
       with:
         snakefile: workflow/Snakefile
-        args: "-j 4 --use-conda -p --show-failed-logs --conda-cleanup-pkgs"
+        args: "-j 1 --use-conda -p --show-failed-logs --conda-cleanup-pkgs"
     - name: Test report
       uses: snakemake/snakemake-github-action@v1
       with:
