@@ -1,9 +1,6 @@
 from snakemake.utils import validate
 import collections
 import glob
-
-import pandas as pd
-
 from pprint import pprint
 from pathlib import Path
 
@@ -12,18 +9,12 @@ from pathlib import Path
 # with --use-conda --use-singularity
 
 ##### load config and sample sheets #####
-
-# configfile: "config/config.yaml"
-# validate(config, schema="../schemas/config.schema.yaml")
-
-# samples = pd.read_csv(config["samples"], sep="\t").set_index("sample", drop=False)
-# samples.index.names = ["sample_id"]
-# validate(samples, schema="../schemas/samples.schema.yaml")
-
-
 # input dir - where to look for files
 def dir_input():
     return Path("resources")
+
+def dir_output():
+    return "results"
 
 
 # extract sample name from a path
@@ -40,7 +31,6 @@ def _get_sample_from_fn(x):
 
 # compute main dict for batches
 BATCHES_FN = {}
-# res = glob.glob("resources/*.txt")
 res = dir_input().glob("*.txt")
 for x in res:
     b = os.path.basename(x)
@@ -54,8 +44,6 @@ for x in res:
             if sample_fn:
                 sample = _get_sample_from_fn(sample_fn)
                 BATCHES_FN[batch][sample] = sample_fn
-
-# pprint(BATCHES_FN)
 
 ## WILDCARDS CONSTRAINS
 
@@ -77,26 +65,26 @@ def get_batches():
 
 
 def dir_prophyle(_batch):
-    return f"results/post/{_batch}"
+    return f"{dir_output()}/post/{_batch}"
 
 
 def dir_prophyle_propagation(_batch):
-    return f"results/post/{_batch}/propagation"
+    return f"{dir_output()}/post/{_batch}/propagation"
 
 
 ## FILE PATHS
 
 
 def fn_stats_global():
-    return f"results/global_stats.tsv"
+    return f"{dir_output()}/global_stats.tsv"
 
 
 def fn_stats_batch_global(_batch):
-    return f"results/stats/{_batch}.global.tsv"
+    return f"{dir_output()}/stats/{_batch}.global.tsv"
 
 
 def fn_stats_samples(_batch):
-    return f"results/stats/{_batch}.samples.tsv"
+    return f"{dir_output()}/stats/{_batch}.samples.tsv"
 
 
 # *_list - list of files for compression in that order
@@ -107,54 +95,54 @@ def fn_stats_samples(_batch):
 
 
 def fn_tree_sorted(_batch):
-    return f"results/tree/{_batch}.nw"
+    return f"{dir_output()}/tree/{_batch}.nw"
 
 
 def fn_tree_dirty(_batch):
-    return f"results/tree/{_batch}.nw_dirty"
+    return f"{dir_output()}/tree/{_batch}.nw_dirty"
 
 
 def fn_leaves_sorted(_batch):
-    return f"results/tree/{_batch}.leaves"
+    return f"{dir_output()}/tree/{_batch}.leaves"
 
 
 def fn_nodes_sorted(_batch):
-    return f"results/tree/{_batch}.nodes"
+    return f"{dir_output()}/tree/{_batch}.nodes"
 
 
 #
 
 
 def fn_asm_seq_dir(_batch):
-    return f"results/asm/{_batch}"
+    return f"{dir_output()}/asm/{_batch}"
 
 
 def fn_asm_seq(_batch, _sample):
-    return f"results/asm/{_batch}/{_sample}.fa"
+    return f"{dir_output()}/asm/{_batch}/{_sample}.fa"
 
 
 def fn_asm_seq_gz(_batch, _sample):
-    return f"results/asm/{_batch}/{_sample}.fa.gz"
+    return f"{dir_output()}/asm/{_batch}/{_sample}.fa.gz"
 
 
 def fn_asm_seq_gz_size(_batch, _sample):
-    return f"results/asm/{_batch}/{_sample}.fa.gz.size"
+    return f"{dir_output()}/asm/{_batch}/{_sample}.fa.gz.size"
 
 
 def fn_asm_seq_gz_sizegram(_batch):
-    return f"results/asm/{_batch}.asm.gz_sizegram"
+    return f"{dir_output()}/asm/{_batch}.asm.gz_sizegram"
 
 
 def fn_asm_seq_gz_sizegram_summary(_batch):
-    return f"results/asm/{_batch}.asm.gz_sizes.summary"
+    return f"{dir_output()}/asm/{_batch}.asm.gz_sizes.summary"
 
 
 def fn_asm_list(_batch):
-    return f"results/asm/{_batch}.asm.list"
+    return f"{dir_output()}/asm/{_batch}.asm.list"
 
 
 def fn_asm_hist(_batch):
-    return f"results/asm/{_batch}.asm.hist"
+    return f"{dir_output()}/asm/{_batch}.asm.hist"
 
 
 def fn_asm_hist_summary(_batch):
@@ -162,7 +150,7 @@ def fn_asm_hist_summary(_batch):
 
 
 def fn_asm_nscl(_batch):
-    return f"results/asm/{_batch}.asm.nscl"
+    return f"{dir_output()}/asm/{_batch}.asm.nscl"
 
 
 def fn_asm_nscl_summary(_batch):
@@ -170,7 +158,7 @@ def fn_asm_nscl_summary(_batch):
 
 
 def fn_asm_compr(_batch):
-    return f"results/asm/{_batch}.asm.tar.xz"
+    return f"{dir_output()}/asm/{_batch}.asm.tar.xz"
 
 
 def fn_asm_compr_summary(_batch):
@@ -181,15 +169,15 @@ def fn_asm_compr_summary(_batch):
 
 
 def fn_pre_seq(_batch, _sample):
-    return f"results/pre/{_batch}/{_sample}.simpl"
+    return f"{dir_output()}/pre/{_batch}/{_sample}.simpl"
 
 
 def fn_pre_list(_batch):
-    return f"results/pre/{_batch}.pre.list"
+    return f"{dir_output()}/pre/{_batch}.pre.list"
 
 
 def fn_pre_hist(_batch):
-    return f"results/pre/{_batch}.pre.hist"
+    return f"{dir_output()}/pre/{_batch}.pre.hist"
 
 
 def fn_pre_hist_summary(_batch):
@@ -197,7 +185,7 @@ def fn_pre_hist_summary(_batch):
 
 
 def fn_pre_nscl(_batch):
-    return f"results/pre/{_batch}.pre.nscl"
+    return f"{dir_output()}/pre/{_batch}.pre.nscl"
 
 
 def fn_pre_nscl_summary(_batch):
@@ -205,7 +193,7 @@ def fn_pre_nscl_summary(_batch):
 
 
 def fn_pre_compr(_batch):
-    return f"results/pre/{_batch}.pre.tar.xz"
+    return f"{dir_output()}/pre/{_batch}.pre.tar.xz"
 
 
 def fn_pre_compr_summary(_batch):
@@ -216,19 +204,19 @@ def fn_pre_compr_summary(_batch):
 
 
 def fn_post_seq0(_batch, _node):
-    return f"results/post/{_batch}/propagation/{_node}.reduced.fa"
+    return f"{dir_output()}/post/{_batch}/propagation/{_node}.reduced.fa"
 
 
 def fn_post_seq(_batch, _node):
-    return f"results/post/{_batch}/{_node}.simpl"
+    return f"{dir_output()}/post/{_batch}/{_node}.simpl"
 
 
 def fn_post_list(_batch):
-    return f"results/post/{_batch}.post.list"
+    return f"{dir_output()}/post/{_batch}.post.list"
 
 
 def fn_post_hist(_batch):
-    return f"results/post/{_batch}.post.hist"
+    return f"{dir_output()}/post/{_batch}.post.hist"
 
 
 def fn_post_hist_summary(_batch):
@@ -236,7 +224,7 @@ def fn_post_hist_summary(_batch):
 
 
 def fn_post_nscl(_batch):
-    return f"results/post/{_batch}.post.nscl"
+    return f"{dir_output()}/post/{_batch}.post.nscl"
 
 
 def fn_post_nscl_summary(_batch):
@@ -244,19 +232,11 @@ def fn_post_nscl_summary(_batch):
 
 
 def fn_post_compr(_batch):
-    return f"results/post/{_batch}.post.tar.xz"
+    return f"{dir_output()}/post/{_batch}.post.tar.xz"
 
 
 def fn_post_compr_summary(_batch):
     return fn_post_compr(_batch) + ".summary"
-
-
-# def fn_prophyle_tree(_batch):
-#    return f"results/post/{_batch}/tree.nw"
-
-
-# def fn_prophyle_index(_batch):
-#    return f"results/post/{_batch}/index.fa",
 
 
 ## WILDCARD FUNCTIONS
@@ -293,14 +273,10 @@ def w_batch_pres(wildcards):
 # get post-propagation simplitig files from batch & sample
 def w_batch_posts(wildcards):
     _ = checkpoints.prophyle_index.get(**wildcards)
-    # _ = checkpoints.post_list.get(**wildcards)
     tr = [
         fn_post_seq(wildcards.batch, node)
         for node in load_list(fn_nodes_sorted(wildcards.batch))
     ]
-    # print("=====")
-    # print(tr)
-    # print("=====")
     return tr
 
 

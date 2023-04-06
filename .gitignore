@@ -1,2 +1,4 @@
 .snakemake/
 report.html
+.idea
+jellyfish_version.txt

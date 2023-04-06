@@ -20,19 +20,6 @@ rule asm_list:
         )
 
 
-# rule asm_list_alphabetical:
-#    output:
-#        list=fn_asm_list(_batch="{batch}"),
-#    input:
-#        fas=w_batch_asms
-#    shell:
-#        """
-#            echo "{input.fas}" \\
-#                | xargs -n1 -I{{}} realpath --relative-to $(dirname "{output.list}") {{}} \\
-#                > "{output.list}"
-#        """
-
-
 rule asm_seq_formatting:
     """
     Turn an assembly file from the input into a well-behaved fasta file
@@ -45,6 +32,8 @@ rule asm_seq_formatting:
         fa_gz_size=fn_asm_seq_gz_size(_batch="{batch}", _sample="{sample}"),
     params:
         gzip_level=5,
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         seqtk seq -U "{input.fa}" \\

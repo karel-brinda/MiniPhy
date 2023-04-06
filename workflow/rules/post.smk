@@ -12,32 +12,17 @@ checkpoint prophyle_index:
     output:
         d1=directory(dir_prophyle(_batch="{batch}")),
         d2=directory(dir_prophyle_propagation(_batch="{batch}")),
-        #nw=fn_prophyle_tree(_batch="{batch}"),
     params:
         k=31,
         asm_dir=fn_asm_seq_dir("{batch}"),
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         prophyle index  -T -A -S\\
             -k {params.k} -g {params.asm_dir}\\
             {input.nw} {output.d1}
         """
-
-
-## get the ProPhyle tree, clean it, and print all node names
-# rule tree_post_sorted:
-#    input:
-#        nw=fn_prophyle_tree(_batch="{batch}"),
-#    output:
-#        nw=fn_tree_sorted2(_batch="{batch}"),
-#        nodes=fn_nodes_sorted(_batch="{batch}"),
-#    params:
-#        script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
-#    shell:
-#        """
-#        {params.script} -n {output.nodes} {input.nw} {output.nw}
-#
-#        """
 
 
 rule post_seq:
@@ -48,6 +33,8 @@ rule post_seq:
         fa=fn_post_seq0(_batch="{batch}", _node="{node}"),
     output:
         txt=fn_post_seq(_batch="{batch}", _node="{node}"),
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         seqtk seq {input.fa} \\

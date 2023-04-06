@@ -50,6 +50,8 @@ rule histogram:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
     threads: 7
+    conda:
+        "../envs/jellyfish.yaml"
     shell:
         """
         {params.hjf} <({params.lfa} {input.list}) \\
@@ -64,6 +66,8 @@ rule histogram_summary:
         summ="{pref}.{stage}.hist.summary",
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         {params.s} {input.hist} \\
@@ -79,6 +83,8 @@ rule nscl:
         nscl="{pref}.{stage}.nscl",
     params:
         ss=snakemake.workflow.srcdir("../scripts/file_list_to_seq_summaries.py"),
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         {params.ss} {input.list} \\
@@ -93,6 +99,8 @@ rule nscl_summary:
         summ="{pref}.{stage}.nscl.summary",
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_nscl.py"),
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         {params.s} {input.nscl} \\

@@ -5,6 +5,8 @@ rule global_stats:
         fn_stats_global(),
     params:
         s=snakemake.workflow.srcdir("../scripts/merge_global_stats.py"),
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         {params.s} {input} > {output}
