@@ -1,0 +1,22 @@
+########################################################################################################################
+# input data
+input_tree: .test/resources/test_run.nw
+
+batches:
+  test_run:  # batch name
+      GCGS0001: .test/resources/isolates/GCGS0001.fa  # sample name and sample path
+      GCGS0002: .test/resources/isolates/GCGS0002.fa
+      GCGS0003: .test/resources/isolates/GCGS0003.fa
+      GCGS0004: .test/resources/isolates/GCGS0004.fa
+      GCGS0005: .test/resources/isolates/GCGS0005.fa
+  # more batches allowed here
+########################################################################################################################
+
+
+########################################################################################################################
+# output configuration
+output_dir: .test/results
+generate_assembly_stats: True  # True or False
+generate_prepropagation_stats: True  # True or False
+generate_postpropagation_stats: True  # True or False
+########################################################################################################################

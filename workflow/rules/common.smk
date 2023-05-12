@@ -4,50 +4,21 @@ import glob
 from pprint import pprint
 from pathlib import Path
 
-
-# this container defines the underlying OS for each job when using the workflow
-# with --use-conda --use-singularity
+configfile: "config.yaml"
 
 ##### load config and sample sheets #####
-# input dir - where to look for files
-def dir_input():
-    return Path("resources")
+def input_tree():
+    return config["input_tree"]
 
 def dir_output():
-    return "results"
+    return config["output_dir"]
 
+# batches dictionary, e.g.:
+# {'test_run': {'GCGS0001': 'resources/isolates/GCGS0001.fa', 'GCGS0002': 'resources/isolates/GCGS0002.fa', 'GCGS0003': 'resources/isolates/GCGS0003.fa', 'GCGS0004': 'resources/isolates/GCGS0004.fa', 'GCGS0005': 'resources/isolates/GCGS0005.fa'}}
+BATCHES_FN=config["batches"]
 
-# extract sample name from a path
-def _get_sample_from_fn(x):
-    suffixes = ["fa", "fasta", "fna", "ffa"]
-
-    b = os.path.basename(x)
-    if b.endswith(".gz"):
-        b = b[:-3]
-    sample, _, suffix = b.rpartition(".")
-    assert suffix in suffixes, f"Unknown suffix of source files ({suffix} in {x})"
-    return sample
-
-
-# compute main dict for batches
-BATCHES_FN = {}
-res = dir_input().glob("*.txt")
-for x in res:
-    b = os.path.basename(x)
-    if not b.endswith(".txt"):
-        continue
-    batch = b[:-4]
-    BATCHES_FN[batch] = {}
-    with open(x) as f:
-        for y in f:
-            sample_fn = y.strip()
-            if sample_fn:
-                sample = _get_sample_from_fn(sample_fn)
-                BATCHES_FN[batch][sample] = sample_fn
 
 ## WILDCARDS CONSTRAINS
-
-
 wildcard_constraints:
     sample=r"[a-zA-Z0-9_-]+",
     batch=r"[a-zA-Z0-9_-]+",
