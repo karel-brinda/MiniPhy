@@ -10,10 +10,10 @@ all:
 	snakemake -j --use-conda -p --rerun-incomplete
 
 test: ## Run the workflow on test data
-	snakemake --dir .test -j 4 --use-conda -p --debug-dag
+	snakemake -j 4 --use-conda -p --debug-dag
 
 testreport: ## Create html report for the test dir
-	snakemake --dir .test --use-conda --report test_report.html
+	snakemake --use-conda --report test_report.html
 
 help: ## Print help message
 	@echo "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\\x1b[36m\1\\x1b[m:\2/' | column -c2 -t -s : | sort)"
