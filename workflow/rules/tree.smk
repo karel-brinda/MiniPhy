@@ -58,6 +58,8 @@ rule tree_newick_mashtree:
     output:
         nw=fn_tree_dirty(_batch="{batch}"),
     threads: 8
+    conda:
+        "../envs/env.yaml"
     shell:
         """
         mashtree \\
