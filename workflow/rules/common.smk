@@ -7,15 +7,53 @@ from pathlib import Path
 configfile: "config.yaml"
 
 ##### load config and sample sheets #####
-def input_tree():
-    return config["input_tree"]
+def dir_input():
+    return Path(config["input_dir"])
 
 def dir_output():
     return config["output_dir"]
 
-# batches dictionary, e.g.:
-# {'test_run': {'GCGS0001': 'resources/isolates/GCGS0001.fa', 'GCGS0002': 'resources/isolates/GCGS0002.fa', 'GCGS0003': 'resources/isolates/GCGS0003.fa', 'GCGS0004': 'resources/isolates/GCGS0004.fa', 'GCGS0005': 'resources/isolates/GCGS0005.fa'}}
-BATCHES_FN=config["batches"]
+# extract sample name from a path
+def _get_sample_from_fn(x):
+    suffixes = ["fa", "fasta", "fna", "ffa"]
+
+    b = os.path.basename(x)
+    if b.endswith(".gz"):
+        b = b[:-3]
+    sample, _, suffix = b.rpartition(".")
+    assert suffix in suffixes, f"Unknown suffix of source files ({suffix} in {x})"
+    return sample
+
+
+def ensure_there_is_a_tree_for_this_batch(batch):
+    tree_path = dir_input() / f"{batch}.nw"
+    tree_exists_for_this_batch = tree_path.is_file() and tree_path.exists()
+    assert tree_exists_for_this_batch, f"Tree not found for batch {batch} ({tree_path} not found)"
+
+
+# compute main dict for batches
+# TODO: if executed in cluster mode, every job will recompute this BATCHES_FN variable when submitted
+# TODO: this is because in cluster mode each job is ran as <get the actual snakemake command line if needed>
+# TODO: this makes us include this file and thus recompute BATCHES_FN
+# TODO: might be a good idea to serialise BATCHES_FN to disk and read from it, instead of recomputing it every time
+# TODO: it might hammer the disk in cluster envs, depending on the number of batches
+BATCHES_FN = {}
+res = dir_input().glob("*.txt")
+for x in res:
+    b = os.path.basename(x)
+    if not b.endswith(".txt"):
+        continue
+    batch = b[:-4]
+
+    ensure_there_is_a_tree_for_this_batch(batch)
+
+    BATCHES_FN[batch] = {}
+    with open(x) as f:
+        for y in f:
+            sample_fn = y.strip()
+            if sample_fn:
+                sample = _get_sample_from_fn(sample_fn)
+                BATCHES_FN[batch][sample] = sample_fn
 
 
 ## WILDCARDS CONSTRAINS

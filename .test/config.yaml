@@ -1,15 +1,18 @@
 ########################################################################################################################
-# input data
-input_tree: resources/test_run.nw
-
-batches:
-  test_run:  # batch name
-      GCGS0001: resources/isolates/GCGS0001.fa  # sample name and sample path
-      GCGS0002: resources/isolates/GCGS0002.fa
-      GCGS0003: resources/isolates/GCGS0003.fa
-      GCGS0004: resources/isolates/GCGS0004.fa
-      GCGS0005: resources/isolates/GCGS0005.fa
-  # more batches allowed here
+# input configuration
+# This parameter denotes the input dir, a path to a directory with a very specific structure, that contains the input
+#     data to this pipeline, i.e. the batches and the initial tree for each batch.
+# Here we describe this structure in details.
+# Each batch named <batch> is composed of two files: a <batch>.txt file and a <batch>.nw file.
+#   * The <batch.txt> file is a text file where each line is a path to an assembly file
+#      * An assembly file is a file with extensions ["fa", "fasta", "fna", "ffa"], optionally compressed with gzip
+#          ("gz" extension) denoting the assembly of a sample;
+#      * See .test/resources/test_run.txt for an example of a <batch.txt> file;
+#   * The <batch>.nw file is a newick file representing the initial tree of the samples in its respective <batch>.txt
+#          file.
+#      * See .test/resources/test_run.txt for an example of a <batch>.nw
+#   * These two files for each batch must be at the top level of the given directory.
+input_dir: resources
 ########################################################################################################################
 
 

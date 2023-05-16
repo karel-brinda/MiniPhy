@@ -38,7 +38,7 @@ rule symlink_nw_tree:
     Symlink a phylogenetic tree if possible (nw)
     """
     input:
-        nw=input_tree(),
+        nw=dir_input() / "{batch}.nw",
     output:
         nw=fn_tree_dirty(_batch="{batch}"),
     shell:
