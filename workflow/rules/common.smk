@@ -25,12 +25,6 @@ def _get_sample_from_fn(x):
     return sample
 
 
-def ensure_there_is_a_tree_for_this_batch(batch):
-    tree_path = dir_input() / f"{batch}.nw"
-    tree_exists_for_this_batch = tree_path.is_file() and tree_path.exists()
-    assert tree_exists_for_this_batch, f"Tree not found for batch {batch} ({tree_path} not found)"
-
-
 # compute main dict for batches
 # TODO: if executed in cluster mode, every job will recompute this BATCHES_FN variable when submitted
 # TODO: this is because in cluster mode each job is ran as <get the actual snakemake command line if needed>
@@ -44,8 +38,6 @@ for x in res:
     if not b.endswith(".txt"):
         continue
     batch = b[:-4]
-
-    ensure_there_is_a_tree_for_this_batch(batch)
 
     BATCHES_FN[batch] = {}
     with open(x) as f:
