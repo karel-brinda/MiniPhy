@@ -1,6 +1,7 @@
 ##
 ## Tree inference
 ##
+import os.path
 
 
 rule tree_postprocessing:
@@ -41,11 +42,11 @@ rule symlink_nw_tree:
         nw=dir_input() / "{batch}.nw",
     output:
         nw=fn_tree_dirty(_batch="{batch}"),
+    params:
+        relative_path=lambda wildcards, input, output: os.path.relpath(input.nw, start=os.path.dirname(output.nw))
     shell:
         """
-        odir=$(dirname "{output.nw}")
-        r=$(realpath --relative-to="$odir" "{input.nw}")
-        ln -sf "$r" {output.nw}
+        ln -sf {params.relative_path} {output.nw}
         """
 
 
