@@ -20,7 +20,10 @@ jobs:
   #      args: "--lint"
 
   Testing:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     #needs: Linting
     steps:
     - uses: actions/checkout@v3
