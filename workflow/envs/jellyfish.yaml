@@ -1,7 +1,6 @@
 channels:
   - bioconda
-  - conda-forge
   - defaults
 dependencies:
-  - jellyfish >=2.2.10
-  - xopen >=0.7.3
+  - jellyfish ==2.2.10
+  - xopen ==0.7.3
