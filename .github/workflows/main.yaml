@@ -52,6 +52,7 @@ jobs:
           create-args: >-
             python=3.10
             snakemake
+            mamba
           init-shell: bash
           cache-environment: true
           post-cleanup: 'all'
