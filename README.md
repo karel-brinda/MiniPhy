@@ -1,114 +1,154 @@
-# Snakemake workflow: mof-compress
+# MOF-Compress
 
-[![Snakemake](https://img.shields.io/badge/snakemake-≥6.2.0-brightgreen.svg)](https://snakemake.bitbucket.io)
-[![Build Status](https://travis-ci.org/snakemake-workflows/mof-compress.svg?branch=master)](https://travis-ci.org/snakemake-workflows/mof-compress)
+<!-- vim-markdown-toc GFM -->
 
-This is the template for a new Snakemake workflow. Replace this text with a comprehensive description covering the purpose and domain.
-Insert your code into the respective folders, i.e. `scripts`, `rules`, and `envs`. Define the entry point of the workflow in the `Snakefile` and the main configuration in the `config.yaml` file.
+* [Introduction](#introduction)
+  * [Citation](#citation)
+* [Installation](#installation)
+  * [Step 1: Install dependencies](#step-1-install-dependencies)
+  * [Step 2: Clone the repository](#step-2-clone-the-repository)
+  * [Step 3: Run a simple test](#step-3-run-a-simple-test)
+  * [Step 4: Download the database](#step-4-download-the-database)
+* [Usage](#usage)
+  * [Step 1: Copy or symlink your queries](#step-1-copy-or-symlink-your-queries)
+  * [Step 2: Adjust configuration](#step-2-adjust-configuration)
+  * [Step 3: Clean up intermediate files](#step-3-clean-up-intermediate-files)
+  * [Step 4: Run the pipeline](#step-4-run-the-pipeline)
+  * [Step 5: Analyze your results](#step-5-analyze-your-results)
+* [Additional information](#additional-information)
+  * [List of workflow commands](#list-of-workflow-commands)
+  * [Directories](#directories)
+  * [Running on a cluster](#running-on-a-cluster)
+  * [Known limitations](#known-limitations)
+* [License](#license)
+* [Contacts](#contacts)
 
-## Authors
+<!-- vim-markdown-toc -->
 
-* Karel Břinda (@karel-brinda)
+
+## Introduction
+
+MOF-Compress is a central package of MOF that performs phylogenetic compression, a technique based
+on using estimated evolutionary history to guide compression and efficiently
+search large collections of microbial genomes using existing algorithms and
+data structures. In short, input data are reorganized according to the topology
+of the estimated phylogenies, which makes data highly locally compressible even
+using basic techniques. The resulting performance gains come from a wide range of benefits of
+phylogenetic compression, including easy parallelization, small memory
+requirements, small database size, better memory locality, and better branch
+prediction.
+
+This pipeline performs phylogenetic compression of several batches and calculates the
+associated statistics. It implements the following three protocols: 1) phylogenetic compression of assemblies based on
+a left-to-right reordering, 2) phylogenetic compression of de Bruijn graphs represented by simplitigs based on the
+left-to-right reordering, and 3) phylogenetic compression of de Bruijn graphs using bottom-up k-mer propagation using
+ProPhyle. 
+
+For more information about phylogenetic compression and implementation details, see the [corresponding
+paper](https://www.biorxiv.org/content/10.1101/2023.04.15.536996v2) (and its
+[supplementary](https://www.biorxiv.org/content/biorxiv/early/2023/04/18/2023.04.15.536996/DC1/embed/media-1.pdf)
+and the associated website for the whole [MOF
+framework](http://karel-brinda.github.io/mof)).
+
+
+### Citation
+
+> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression.** bioRxiv 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
+
+
+## Installation
+
+### Step 1: Install dependencies
+
+MOF-Compress is implemented as a [Snakemake](https://snakemake.github.io)
+pipeline, using the Conda system to manage all non-standard dependencies. It requires the following packages pre-installed:
+
+* [Conda](https://docs.conda.io/en/latest/miniconda.html)
+* [Python](https://www.python.org/) (>=3.7)
+* [Snakemake](https://snakemake.github.io) (>=6.2.0)
+* [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0) - optional, recommended
+
+The last three packages can be installed using Conda by running
+```bash
+    conda install -y "python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+```
+
+
+### Step 2: Clone the repository
+
+```bash
+   git clone https://github.com/karel-brinda/mof-compress
+   cd mof-compress
+```
+
+### Step 3: Run a simple test
+
+Run `make test` to ensure the pipeline works for the sample data present in the [`.test` directory.](.test).
+
+**Notes:**
+* `make test` should display the following message on a successful exection:
+```
+94 of 94 steps (100%) done
+```
 
 ## Usage
 
-If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) repository and, if available, its DOI (see above).
+### Step 1: Adjust configuration
 
-### Step 1: Obtain a copy of this workflow
+Edit the [`config.yaml`](config.yaml) file for your desired search. All available options are
+documented directly there.
 
-1. Create a new github repository using this workflow [as a template](https://help.github.com/en/articles/creating-a-repository-from-a-template).
-2. [Clone](https://help.github.com/en/articles/cloning-a-repository) the newly created repository to your local system, into the place where you want to perform the data analysis.
+See the [test config](.test/config.yaml) and the [test input dir](.test/resources) for an example.
 
-### Step 2: Configure workflow
+### Step 2: Run the pipeline
 
-Configure the workflow according to your needs via editing the files in the `config/` folder. Adjust `config.yaml` to configure the workflow execution, and `samples.tsv` to specify your sample setup.
+Simply run `make`, which will execute Snakemake with the corresponding parameters.
 
-### Step 3: Install Snakemake and dependencies
+### Step 3: Analyze your results
 
-Install Snakemake using [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html):
+Check the output files in `output_dir` (defined in `config.yaml`).
 
-    conda create -c bioconda -c conda-forge -n snakemake snakemake
+If the results don't correspond to what you expected and you need to re-adjust your parameters, go to Step 1.
 
-For installation details, see the [instructions in the Snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html).
+## Additional information
 
-#### Other dependencies
+### List of workflow commands
 
-* Jellyfish2
-* Xopen
-* BioPython
-* Pandas
-* Ete3
-* Mashtree
+MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
+
+Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
-### Step 4: Execute workflow
+```
+######################
+## General commands ##
+######################
+cleanall    Clean all
+clean       Clean
+format      Reformat source codes
+help        Print help message
+report      Create html report
+rmstats     Remove stats
+testreport  Create html report for the test dir
+test        Run the workflow on test data
+```
 
-Activate the conda environment:
+### Directories in the output dir
 
-    conda activate snakemake
-
-Test your configuration by performing a dry-run via
-
-    snakemake --use-conda -n
-
-Execute the workflow locally via
-
-    snakemake --use-conda --cores $N
-
-using `$N` cores or run it in a cluster environment via
-
-    snakemake --use-conda --cluster qsub --jobs 100
-
-or
-
-    snakemake --use-conda --drmaa --jobs 100
-
-If you not only want to fix the software stack but also the underlying OS, use
-
-    snakemake --use-conda --use-singularity
-
-in combination with any of the modes above.
-See the [Snakemake documentation](https://snakemake.readthedocs.io/en/stable/executable.html) for further details.
-
-### Step 5: Investigate results
-
-After successful execution, you can create a self-contained interactive HTML report with all results via:
-
-    snakemake --report report.html
-
-This report can, e.g., be forwarded to your collaborators.
-An example (using some trivial test data) can be seen [here](https://cdn.rawgit.com/snakemake-workflows/rna-seq-kallisto-sleuth/master/.test/report.html).
-
-### Step 6: Commit changes
-
-Whenever you change something, don't forget to commit the changes back to your github copy of the repository:
-
-    git commit -a
-    git push
-
-### Step 7: Obtain updates from upstream
-
-Whenever you want to synchronize your workflow copy with new developments from upstream, do the following.
-
-1. Once, register the upstream repository in your local copy: `git remote add -f upstream git@github.com:snakemake-workflows/mof-compress.git` or `git remote add -f upstream https://github.com/snakemake-workflows/mof-compress.git` if you do not have setup ssh keys.
-2. Update the upstream version: `git fetch upstream`.
-3. Create a diff with the current version: `git diff HEAD upstream/master workflow > upstream-changes.diff`.
-4. Investigate the changes: `vim upstream-changes.diff`.
-5. Apply the modified diff via: `git apply upstream-changes.diff`.
-6. Carefully check whether you need to update the config files: `git diff HEAD upstream/master config`. If so, do it manually, and only where necessary, since you would otherwise likely overwrite your settings and samples.
+* `asm/`: TODO
+* `post/`: TODO
+* `pre/`: TODO
+* `stats/`: TODO
+* `tree/`: TODO
+* `global_stats.tsv`: TODO
 
 
-### Step 8: Contribute back
+## License
 
-In case you have also changed or added steps, please consider contributing them back to the original repository:
+[MIT](https://github.com/karel-brinda/mof-search/blob/master/LICENSE)
 
-1. [Fork](https://help.github.com/en/articles/fork-a-repo) the original repo to a personal or lab account.
-2. [Clone](https://help.github.com/en/articles/cloning-a-repository) the fork to your local system, to a different place than where you ran your analysis.
-3. Copy the modified files from your analysis to the clone of your fork, e.g., `cp -r workflow path/to/fork`. Make sure to **not** accidentally copy config file contents or sample sheets. Instead, manually update the example config files if necessary.
-4. Commit and push your changes to your fork.
-5. Create a [pull request](https://help.github.com/en/articles/creating-a-pull-request) against the original repository.
+## Contacts
 
-## Testing
-
-Test cases are in the subfolder `.test`. They are automatically executed via continuous integration with [Github Actions](https://github.com/features/actions).
+* [Karel Brinda](http://karel-brinda.github.io) \<karel.brinda@inria.fr\>
+* [Leandro Lima](https://github.com/leoisl) \<leandro@ebi.ac.uk\>
 
