@@ -35,8 +35,11 @@ jobs:
 #        snakefile: workflow/Snakefile
 #        args: "--use-conda --report test_report.html"
 
-  Testing_macos:
-    runs-on: macos-latest
+  Testing:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
     #needs: Linting
     steps:
       - uses: actions/checkout@v3
