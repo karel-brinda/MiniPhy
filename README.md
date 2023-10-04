@@ -64,13 +64,14 @@ MOF-Compress is implemented as a [Snakemake](https://snakemake.github.io)
 pipeline, using the Conda system to manage all non-standard dependencies. It requires the following packages pre-installed:
 
 * [Conda](https://docs.conda.io/en/latest/miniconda.html)
+* [GNU Make](https://www.gnu.org/software/make/)
 * [Python](https://www.python.org/) (>=3.7)
 * [Snakemake](https://snakemake.github.io) (>=6.2.0)
 * [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0) - optional, recommended
 
 The last three packages can be installed using Conda by running
 ```bash
-    conda install -y "python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+    conda install -c conda-forge -c bioconda -c defaults -y "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
 
@@ -83,7 +84,7 @@ The last three packages can be installed using Conda by running
 
 ### Step 3: Run a simple test
 
-Run `make test` to ensure the pipeline works for the sample data present in the [`.test` directory.](.test).
+Run `make test` to ensure the pipeline works for the sample data present in the [`.test` directory](.test).
 
 **Notes:**
 * `make test` should display the following message on a successful exection:
@@ -123,14 +124,15 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 ######################
 ## General commands ##
 ######################
+all         Run everything (the default rule)
+report      Create html report
+test        Run the workflow on test data
+testreport  Create html report for the test dir
 cleanall    Clean all
 clean       Clean
 format      Reformat source codes
 help        Print help message
-report      Create html report
 rmstats     Remove stats
-testreport  Create html report for the test dir
-test        Run the workflow on test data
 ```
 
 ### Directories in the output dir
