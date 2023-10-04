@@ -5,7 +5,8 @@ on:
     branches:
       - master
   pull_request:
-    branches_ignore: []
+    branches:
+      - master
 
 jobs:
   #Linting:
@@ -19,27 +20,13 @@ jobs:
   #      snakefile: workflow/Snakefile
   #      args: "--lint"
 
-#  Testing_ubuntu:
-#    runs-on: ubuntu-latest
-#    #needs: Linting
-#    steps:
-#    - uses: actions/checkout@v3
-#    - name: Test workflow (local test data)
-#      uses: snakemake/snakemake-github-action@v1
-#      with:
-#        snakefile: workflow/Snakefile
-#        args: "-j 1 --use-conda -p --show-failed-logs --conda-cleanup-pkgs"
-#    - name: Test report
-#      uses: snakemake/snakemake-github-action@v1
-#      with:
-#        snakefile: workflow/Snakefile
-#        args: "--use-conda --report test_report.html"
 
   Testing:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
+        python-version: [ 3.7, 3.8, 3.9, 3.10, 3.11 ]
     #needs: Linting
     steps:
       - uses: actions/checkout@v3
@@ -53,7 +40,7 @@ jobs:
               - bioconda
               - defaults
           create-args: >-
-            python=3.10
+            python=${{ matrix.python-version }}
             snakemake
             mamba
           init-shell: bash
