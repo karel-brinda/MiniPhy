@@ -14,7 +14,7 @@
   * [Step 3: Analyze your results](#step-3-analyze-your-results)
 * [Additional information](#additional-information)
   * [List of workflow commands](#list-of-workflow-commands)
-  * [Directories in the output dir](##directories-in-the-output-dir)
+  * [Directories in the output dir](#directories-in-the-output-dir)
 * [License](#license)
 * [Contacts](#contacts)
 
@@ -37,7 +37,7 @@ This pipeline performs phylogenetic compression of several batches and calculate
 associated statistics. It implements the following three protocols: 1) phylogenetic compression of assemblies based on
 a left-to-right reordering, 2) phylogenetic compression of de Bruijn graphs represented by simplitigs based on the
 left-to-right reordering, and 3) phylogenetic compression of de Bruijn graphs using bottom-up k-mer propagation using
-ProPhyle. 
+ProPhyle.
 
 For more information about phylogenetic compression and implementation details, see the [corresponding
 paper](https://www.biorxiv.org/content/10.1101/2023.04.15.536996v2) (and its
