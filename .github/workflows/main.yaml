@@ -43,6 +43,6 @@ jobs:
       - name: Test workflow (local test data)
         shell: bash -el {0}
         run: |
-          brew install mamba
-          mamba install -c conda-forge -c bioconda -c defaults snakemake
+          brew install micromamba
+          micromamba install -c conda-forge -c bioconda -c defaults snakemake
           snakemake -d .test -j 1 --use-conda -p --show-failed-logs --conda-cleanup-pkgs
