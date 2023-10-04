@@ -15,8 +15,6 @@ if [[ $NARGS -ne 1 ]]; then
 	exit 1
 fi
 
-jellyfish --version 2>&1 > jellyfish_version.txt
-
 x="$1"
 y=$(mktemp -d)/count.jf
 

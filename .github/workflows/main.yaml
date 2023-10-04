@@ -5,7 +5,8 @@ on:
     branches:
       - master
   pull_request:
-    branches_ignore: []
+    branches:
+      - master
 
 jobs:
   #Linting:
@@ -19,18 +20,34 @@ jobs:
   #      snakefile: workflow/Snakefile
   #      args: "--lint"
 
+
   Testing:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+        python-version: [ 3.8, 3.9, "3.10", 3.11 ]
     #needs: Linting
     steps:
-    - uses: actions/checkout@v3
-    - name: Test workflow (local test data)
-      uses: snakemake/snakemake-github-action@v1
-      with:
-        snakefile: workflow/Snakefile
-        args: "-j 1 --use-conda -p --show-failed-logs --conda-cleanup-pkgs"
-    - name: Test report
-      uses: snakemake/snakemake-github-action@v1
-      with:
-        snakefile: workflow/Snakefile
-        args: "--use-conda --report test_report.html"
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: '1.3.1-0'
+          environment-name: test-env
+          condarc: |
+            channels:
+              - conda-forge
+              - bioconda
+              - defaults
+          create-args: >-
+            python=${{ matrix.python-version }}
+            snakemake
+            mamba
+          init-shell: bash
+          cache-environment: true
+          post-cleanup: 'all'
+      - name: Test workflow (local test data)
+        shell: bash -el {0}
+        run: |
+          micromamba activate test-env
+          snakemake -d .test -j 1 --use-conda -p --show-failed-logs --conda-cleanup-pkgs

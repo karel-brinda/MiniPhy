@@ -4,18 +4,14 @@ import glob
 from pprint import pprint
 from pathlib import Path
 
-
-# this container defines the underlying OS for each job when using the workflow
-# with --use-conda --use-singularity
+configfile: "config.yaml"
 
 ##### load config and sample sheets #####
-# input dir - where to look for files
 def dir_input():
-    return Path("resources")
+    return Path(config["input_dir"])
 
 def dir_output():
-    return "results"
-
+    return config["output_dir"]
 
 # extract sample name from a path
 def _get_sample_from_fn(x):
@@ -30,6 +26,11 @@ def _get_sample_from_fn(x):
 
 
 # compute main dict for batches
+# TODO: if executed in cluster mode, every job will recompute this BATCHES_FN variable when submitted
+# TODO: this is because in cluster mode each job is ran as <get the actual snakemake command line if needed>
+# TODO: this makes us include this file and thus recompute BATCHES_FN
+# TODO: might be a good idea to serialise BATCHES_FN to disk and read from it, instead of recomputing it every time
+# TODO: it might hammer the disk in cluster envs, depending on the number of batches
 BATCHES_FN = {}
 res = dir_input().glob("*.txt")
 for x in res:
@@ -37,6 +38,7 @@ for x in res:
     if not b.endswith(".txt"):
         continue
     batch = b[:-4]
+
     BATCHES_FN[batch] = {}
     with open(x) as f:
         for y in f:
@@ -45,9 +47,8 @@ for x in res:
                 sample = _get_sample_from_fn(sample_fn)
                 BATCHES_FN[batch][sample] = sample_fn
 
+
 ## WILDCARDS CONSTRAINS
-
-
 wildcard_constraints:
     sample=r"[a-zA-Z0-9_-]+",
     batch=r"[a-zA-Z0-9_-]+",
