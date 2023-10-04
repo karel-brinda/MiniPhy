@@ -40,13 +40,9 @@ jobs:
     #needs: Linting
     steps:
       - uses: actions/checkout@v3
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          python-version: "3.10"
-          mamba-version: "*"
-          channels: conda-forge,defaults
       - name: Test workflow (local test data)
         shell: bash -el {0}
         run: |
-          mamba install snakemake
+          brew install mamba
+          mamba install -c conda-forge -c bioconda -c defaults snakemake
           snakemake -d .test -j 1 --use-conda -p --show-failed-logs --conda-cleanup-pkgs
