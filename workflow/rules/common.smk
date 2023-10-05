@@ -4,14 +4,18 @@ import glob
 from pprint import pprint
 from pathlib import Path
 
+
 configfile: "config.yaml"
+
 
 ##### load config and sample sheets #####
 def dir_input():
     return Path(config["input_dir"])
 
+
 def dir_output():
     return config["output_dir"]
+
 
 # extract sample name from a path
 def _get_sample_from_fn(x):
@@ -242,6 +246,7 @@ def fn_post_compr_summary(_batch):
 
 ## WILDCARD FUNCTIONS
 
+
 # get source file path
 def w_sample_source(wildcards):
     batch = wildcards["batch"]
@@ -282,6 +287,7 @@ def w_batch_posts(wildcards):
 
 
 ## OTHER FUNCTIONS
+
 
 # generate file list from a list of identifiers (e.g., leaf names -> assemblies names)
 def generate_file_list(input_list_fn, output_list_fn, filename_function):
