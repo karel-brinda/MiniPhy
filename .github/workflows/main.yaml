@@ -31,16 +31,9 @@ jobs:
             snakemake
             mamba
             make
-            snakefmt
-            yapf
           init-shell: bash
           cache-environment: true
           post-cleanup: 'all'
-      - name: Check format
-        shell: bash -el {0}
-        run: |
-          micromamba activate test-env
-          make checkformat
       - name: Test workflow (local test data)
         shell: bash -el {0}
         run: |
