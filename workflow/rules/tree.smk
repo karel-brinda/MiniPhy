@@ -43,7 +43,9 @@ rule symlink_nw_tree:
     output:
         nw=fn_tree_dirty(_batch="{batch}"),
     params:
-        relative_path=lambda wildcards, input, output: os.path.relpath(input.nw, start=os.path.dirname(output.nw))
+        relative_path=lambda wildcards, input, output: os.path.relpath(
+            input.nw, start=os.path.dirname(output.nw)
+        ),
     shell:
         """
         ln -sf {params.relative_path} {output.nw}

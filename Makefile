@@ -25,6 +25,10 @@ format: ## Reformat source codes
 	snakefmt workflow
 	yapf -i --recursive workflow
 
+checkformat: ## Check source code format
+	snakefmt --check workflow
+	yapf --diff --recursive workflow
+
 clean: ## Clean
 
 cleanall: clean ## Clean all

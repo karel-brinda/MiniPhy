@@ -9,25 +9,12 @@ on:
       - master
 
 jobs:
-  #Linting:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #  - uses: actions/checkout@v1
-  #  - name: Lint workflow
-  #    uses: snakemake/snakemake-github-action@v1.5.3
-  #    with:
-  #      directory: .
-  #      snakefile: workflow/Snakefile
-  #      args: "--lint"
-
-
   Testing:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
         python-version: [ 3.8, 3.9, "3.10", 3.11 ]
-    #needs: Linting
     steps:
       - uses: actions/checkout@v3
       - uses: mamba-org/setup-micromamba@v1
