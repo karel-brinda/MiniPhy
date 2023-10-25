@@ -1,4 +1,4 @@
-.PHONY: all help clean cleanall test report testreport format rmstats edit
+.PHONY: all help clean cleanall test report testreport format rmstats edit conda
 
 SHELL=/usr/bin/env bash -eo pipefail
 
@@ -35,6 +35,11 @@ checkformat: ## Check source code format
 clean: ## Clean
 
 cleanall: clean ## Clean all
+
+conda: ## Create the conda environments
+	# as test tests everything, it requires all the environments, unlike the default conf
+	snakemake -p -j -d .test $(condaparams) --conda-create-envs-only
+
 
 rmstats: ## Remove stats
 	find results .test/results -name '*.global.tsv' | xargs rm -fv
