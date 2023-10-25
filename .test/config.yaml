@@ -18,6 +18,8 @@ output_dir: output
 
 
 ########################################################################################################################
+kmer_histograms: True
+
 generate_assembly_stats: True  # True or False
 generate_prepropagation_stats: True  # True or False
 generate_postpropagation_stats: True  # True or False
