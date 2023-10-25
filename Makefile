@@ -9,13 +9,13 @@ SHELL=/usr/bin/env bash -eo pipefail
 mkfile_dir := $(shell pwd)
 condaparams=--use-conda --conda-prefix="$(mkfile_dir)/conda"
 
-all:
+all: ## Run everything
 	snakemake -j $(condaparams) -p --rerun-incomplete
 
 test: ## Run the workflow on test data
 	snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs
 
-testreport: ## Create html report for the test dir
+testreport:
 	snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs --report test_report.html
 
 help: ## Print help message
@@ -24,11 +24,11 @@ help: ## Print help message
 report: ## Create html report
 	snakemake $(condaparams) --report report.html
 
-format: ## Reformat source codes
+format: ## Reformat all source code (developers)
 	snakefmt workflow
 	yapf -i --recursive workflow
 
-checkformat: ## Check source code format
+checkformat: ## Check source code format (developers)
 	snakefmt --check workflow
 	yapf --diff --recursive workflow
 
