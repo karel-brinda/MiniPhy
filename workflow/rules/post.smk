@@ -16,11 +16,11 @@ checkpoint prophyle_index:
         k=31,
         asm_dir=fn_asm_seq_dir("{batch}"),
     conda:
-        "../envs/env.yaml"
+        "../envs/prophyle.yaml"
     shell:
         """
-        prophyle index  -T -A -S\\
-            -k {params.k} -g {params.asm_dir}\\
+        prophyle index  -T -A -S \\
+            -k {params.k} -g {params.asm_dir} \\
             {input.nw} {output.d1}
         """
 

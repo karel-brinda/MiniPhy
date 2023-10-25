@@ -12,13 +12,12 @@
 #   * The <batch>.nw is an optional newick file representing the tree of the samples in its respective <batch>.txt
 #          file. If this file is not provided, this pipeline builds a tree automatically using Mashtree.
 #   * These files must be at the top level of the given directory.
-input_dir: resources
+input_dir: input
+output_dir: output
 ########################################################################################################################
 
 
 ########################################################################################################################
-# output configuration
-output_dir: results
 generate_assembly_stats: True  # True or False
 generate_prepropagation_stats: True  # True or False
 generate_postpropagation_stats: True  # True or False

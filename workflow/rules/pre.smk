@@ -14,7 +14,7 @@ rule pre_seq_prophasm:
     params:
         k=31,
     conda:
-        "../envs/env.yaml"
+        "../envs/prophasm.yaml"
     shell:
         """
         prophasm -S -i {input.fa} -k {params.k} -o - \\
