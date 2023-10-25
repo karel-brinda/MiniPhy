@@ -3,4 +3,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - mashtree ==1.4.5
+  - mashtree ==1.4.6
