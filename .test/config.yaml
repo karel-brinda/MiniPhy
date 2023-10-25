@@ -13,6 +13,7 @@
 #          file. If this file is not provided, this pipeline builds a tree automatically using Mashtree.
 #   * These files must be at the top level of the given directory.
 input_dir: input
+intermediate_dir: intermediate
 output_dir: output
 ########################################################################################################################
 
