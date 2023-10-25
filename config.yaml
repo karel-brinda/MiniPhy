@@ -20,6 +20,6 @@ output_dir: output
 ########################################################################################################################
 # output configuration
 generate_assembly_stats: True  # True or False
-generate_prepropagation_stats: True  # True or False
-generate_postpropagation_stats: True  # True or False
+generate_prepropagation_stats: False  # True or False
+generate_postpropagation_stats: False  # True or False
 ########################################################################################################################
