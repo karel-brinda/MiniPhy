@@ -33,7 +33,7 @@ checkformat: ## Check source code format (developers)
 	yapf --diff --recursive workflow
 
 clean: ## Clean
-	rm -fvr output/*
+	rm -fvr intermediate/* output/*
 
 cleanall: clean ## Clean all
 

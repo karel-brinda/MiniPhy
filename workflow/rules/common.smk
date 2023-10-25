@@ -13,6 +13,10 @@ def dir_input():
     return Path(config["input_dir"])
 
 
+def dir_intermediate():
+    return Path(config["intermediate_dir"])
+
+
 def dir_output():
     return config["output_dir"]
 
@@ -70,11 +74,11 @@ def get_batches():
 
 
 def dir_prophyle(_batch):
-    return f"{dir_output()}/post/{_batch}"
+    return f"{dir_intermediate()}/post/{_batch}"
 
 
 def dir_prophyle_propagation(_batch):
-    return f"{dir_output()}/post/{_batch}/propagation"
+    return f"{dir_intermediate()}/post/{_batch}/propagation"
 
 
 ## FILE PATHS
@@ -85,11 +89,11 @@ def fn_stats_global():
 
 
 def fn_stats_batch_global(_batch):
-    return f"{dir_output()}/stats/{_batch}.global.tsv"
+    return f"{dir_intermediate()}/stats/{_batch}.global.tsv"
 
 
 def fn_stats_samples(_batch):
-    return f"{dir_output()}/stats/{_batch}.samples.tsv"
+    return f"{dir_intermediate()}/stats/{_batch}.samples.tsv"
 
 
 # *_list - list of files for compression in that order
@@ -100,38 +104,38 @@ def fn_stats_samples(_batch):
 
 
 def fn_tree_sorted(_batch):
-    return f"{dir_output()}/tree/{_batch}.nw"
+    return f"{dir_intermediate()}/tree/{_batch}.nw"
 
 
 def fn_tree_dirty(_batch):
-    return f"{dir_output()}/tree/{_batch}.nw_dirty"
+    return f"{dir_intermediate()}/tree/{_batch}.nw_dirty"
 
 
 def fn_leaves_sorted(_batch):
-    return f"{dir_output()}/tree/{_batch}.leaves"
+    return f"{dir_intermediate()}/tree/{_batch}.leaves"
 
 
 def fn_nodes_sorted(_batch):
-    return f"{dir_output()}/tree/{_batch}.nodes"
+    return f"{dir_intermediate()}/tree/{_batch}.nodes"
 
 
-#
+# Assemblies
 
 
 def fn_asm_seq_dir(_batch):
-    return f"{dir_output()}/asm/{_batch}"
+    return f"{dir_intermediate()}/asm/{_batch}"
 
 
 def fn_asm_seq(_batch, _sample):
-    return f"{dir_output()}/asm/{_batch}/{_sample}.fa"
+    return f"{dir_intermediate()}/asm/{_batch}/{_sample}.fa"
 
 
 def fn_asm_list(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.list"
+    return f"{dir_intermediate()}/asm/{_batch}.asm.list"
 
 
 def fn_asm_hist(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.hist"
+    return f"{dir_intermediate()}/asm/{_batch}.asm.hist"
 
 
 def fn_asm_hist_summary(_batch):
@@ -139,7 +143,7 @@ def fn_asm_hist_summary(_batch):
 
 
 def fn_asm_nscl(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.nscl"
+    return f"{dir_intermediate()}/asm/{_batch}.asm.nscl"
 
 
 def fn_asm_nscl_summary(_batch):
@@ -154,19 +158,19 @@ def fn_asm_compr_summary(_batch):
     return fn_asm_compr(_batch) + ".summary"
 
 
-#
+# Pre-propagation simplitigs
 
 
 def fn_pre_seq(_batch, _sample):
-    return f"{dir_output()}/pre/{_batch}/{_sample}.simpl"
+    return f"{dir_intermediate()}/pre/{_batch}/{_sample}.simpl"
 
 
 def fn_pre_list(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.list"
+    return f"{dir_intermediate()}/pre/{_batch}.pre.list"
 
 
 def fn_pre_hist(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.hist"
+    return f"{dir_intermediate()}/pre/{_batch}.pre.hist"
 
 
 def fn_pre_hist_summary(_batch):
@@ -174,7 +178,7 @@ def fn_pre_hist_summary(_batch):
 
 
 def fn_pre_nscl(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.nscl"
+    return f"{dir_intermediate()}/pre/{_batch}.pre.nscl"
 
 
 def fn_pre_nscl_summary(_batch):
@@ -189,23 +193,23 @@ def fn_pre_compr_summary(_batch):
     return fn_pre_compr(_batch) + ".summary"
 
 
-#
+# Post-propagation simplitigs
 
 
 def fn_post_seq0(_batch, _node):
-    return f"{dir_output()}/post/{_batch}/propagation/{_node}.reduced.fa"
+    return f"{dir_intermediate()}/post/{_batch}/propagation/{_node}.reduced.fa"
 
 
 def fn_post_seq(_batch, _node):
-    return f"{dir_output()}/post/{_batch}/{_node}.simpl"
+    return f"{dir_intermediate()}/post/{_batch}/{_node}.simpl"
 
 
 def fn_post_list(_batch):
-    return f"{dir_output()}/post/{_batch}.post.list"
+    return f"{dir_intermediate()}/post/{_batch}.post.list"
 
 
 def fn_post_hist(_batch):
-    return f"{dir_output()}/post/{_batch}.post.hist"
+    return f"{dir_intermediate()}/post/{_batch}.post.hist"
 
 
 def fn_post_hist_summary(_batch):
@@ -213,7 +217,7 @@ def fn_post_hist_summary(_batch):
 
 
 def fn_post_nscl(_batch):
-    return f"{dir_output()}/post/{_batch}.post.nscl"
+    return f"{dir_intermediate()}/post/{_batch}.post.nscl"
 
 
 def fn_post_nscl_summary(_batch):
