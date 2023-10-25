@@ -4,6 +4,4 @@ channels:
   - defaults
 dependencies:
   - seqtk ==1.4
-  - xopen ==1.7.0
-  - pandas ==2.1.1
-  - make ==4.3
+  - prophasm ==0.1.1
