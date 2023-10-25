@@ -1,0 +1,5 @@
+input/isolates/GCGS0001.fa
+input/isolates/GCGS0002.fa
+input/isolates/GCGS0003.fa
+input/isolates/GCGS0004.fa
+input/isolates/GCGS0005.fa
