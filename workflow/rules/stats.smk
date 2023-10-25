@@ -23,7 +23,6 @@ def get_stats_files():
             (
                 fn_asm_nscl_summary(_batch="{batch}"),
                 fn_asm_compr_summary(_batch="{batch}"),
-                fn_asm_seq_gz_sizegram_summary(_batch="{batch}"),
             )
         )
     if config["generate_prepropagation_stats"]:
