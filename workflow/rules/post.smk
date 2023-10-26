@@ -50,7 +50,7 @@ rule post_list:
         fa=w_batch_posts,
         dpp=dir_prophyle_propagation(_batch="{batch}"),
     output:
-        list=fn_post_list(_batch="{batch}"),
+        list=fn_list(_batch="{batch}", protocol="post"),
     run:
         generate_file_list(
             input.list,

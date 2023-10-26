@@ -15,38 +15,19 @@ rule global_stats:
 
 def get_stats_files():
     stats_files = []
-    if config["generate_assembly_stats"]:
-        if config["kmer_histograms"]:
-            stats_files.append(fn_asm_hist_summary(_batch="{batch}"))
 
-        stats_files.extend(
-            (
-                fn_asm_nscl_summary(_batch="{batch}"),
-                fn_asm_compr_summary(_batch="{batch}"),
+    for protocol in "asm", "pre", "post":
+        if config[f"compress_{protocol}"]:
+            if config["kmer_histograms"]:
+                stats_files.append(fn_hist_summary(_batch="{batch}", protocol=protocol))
+
+            stats_files.extend(
+                (
+                    fn_nscl_summary(_batch="{batch}", protocol=protocol),
+                    fn_compr_summary(_batch="{batch}", protocol=protocol),
+                )
             )
-        )
-    if config["generate_prepropagation_stats"]:
-        if config["kmer_histograms"]:
-            stats_files.append(
-                fn_pre_hist_summary(_batch="{batch}"),
-            )
-        stats_files.extend(
-            (
-                fn_pre_nscl_summary(_batch="{batch}"),
-                fn_pre_compr_summary(_batch="{batch}"),
-            )
-        )
-    if config["generate_postpropagation_stats"]:
-        if config["kmer_histograms"]:
-            stats_files.append(
-                fn_post_hist_summary(_batch="{batch}"),
-            )
-        stats_files.extend(
-            (
-                fn_post_nscl_summary(_batch="{batch}"),
-                fn_post_compr_summary(_batch="{batch}"),
-            )
-        )
+
     return stats_files
 
 

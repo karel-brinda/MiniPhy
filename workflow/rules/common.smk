@@ -60,7 +60,7 @@ for x in res:
 wildcard_constraints:
     sample=r"[a-zA-Z0-9_-]+",
     batch=r"[a-zA-Z0-9_-]+",
-    stage=r"(asm|pre|post)",
+    protocol=r"(asm|pre|post)",
 
 
 ## BATCHES
@@ -84,6 +84,11 @@ def dir_prophyle_propagation(_batch):
 ## FILE PATHS
 
 
+#####################################
+# Global files for individual batches
+#####################################
+
+
 def fn_stats_global():
     return f"{dir_output()}/global_stats.tsv"
 
@@ -94,13 +99,6 @@ def fn_stats_batch_global(_batch):
 
 def fn_stats_samples(_batch):
     return f"{dir_intermediate()}/stats/{_batch}.samples.tsv"
-
-
-# *_list - list of files for compression in that order
-# *_hist - k-mer histogram
-# *_nscl - number of sequence and cumulative length
-# *_seq - files with sequences (fa / simpl
-# *_compr - compressed dataset
 
 
 def fn_tree_sorted(_batch):
@@ -119,7 +117,51 @@ def fn_nodes_sorted(_batch):
     return f"{dir_intermediate()}/tree/{_batch}.nodes"
 
 
-# Assemblies
+####################################################################
+# Files of the same type for individual protocols (asm / pre / post)
+####################################################################
+#
+# *_list - list of files for compression in that order
+# *_hist - k-mer histogram
+# *_nscl - number of sequence and cumulative length
+# *_seq - files with sequences (fa / simpl)
+# *_compr - compressed dataset
+#
+
+
+def fn_compr(_batch, protocol):
+    return f"{dir_output()}/{protocol}/{_batch}.{protocol}.tar.xz"
+
+
+def fn_compr_summary(_batch, protocol):
+    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.tar.xz.summary"
+
+
+def fn_nscl(_batch, protocol):
+    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.nscl"
+
+
+def fn_nscl_summary(_batch, protocol):
+    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.summary"
+
+
+def fn_hist(_batch, protocol):
+    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.hist"
+
+
+def fn_hist_summary(_batch, protocol):
+    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.hist.summary"
+
+
+def fn_list(_batch, protocol):
+    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.list"
+
+
+############################################
+# Specialized files for individual protocols
+############################################
+
+# ASM
 
 
 def fn_asm_seq_dir(_batch):
@@ -130,70 +172,14 @@ def fn_asm_seq(_batch, _sample):
     return f"{dir_intermediate()}/asm/{_batch}/{_sample}.fa"
 
 
-def fn_asm_list(_batch):
-    return f"{dir_intermediate()}/asm/{_batch}.asm.list"
-
-
-def fn_asm_hist(_batch):
-    return f"{dir_intermediate()}/asm/{_batch}.asm.hist"
-
-
-def fn_asm_hist_summary(_batch):
-    return fn_asm_hist(_batch) + ".summary"
-
-
-def fn_asm_nscl(_batch):
-    return f"{dir_intermediate()}/asm/{_batch}.asm.nscl"
-
-
-def fn_asm_nscl_summary(_batch):
-    return fn_asm_nscl(_batch) + ".summary"
-
-
-def fn_asm_compr(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.tar.xz"
-
-
-def fn_asm_compr_summary(_batch):
-    return fn_asm_compr(_batch) + ".summary"
-
-
-# Pre-propagation simplitigs
+# PRE
 
 
 def fn_pre_seq(_batch, _sample):
     return f"{dir_intermediate()}/pre/{_batch}/{_sample}.simpl"
 
 
-def fn_pre_list(_batch):
-    return f"{dir_intermediate()}/pre/{_batch}.pre.list"
-
-
-def fn_pre_hist(_batch):
-    return f"{dir_intermediate()}/pre/{_batch}.pre.hist"
-
-
-def fn_pre_hist_summary(_batch):
-    return fn_pre_hist(_batch) + ".summary"
-
-
-def fn_pre_nscl(_batch):
-    return f"{dir_intermediate()}/pre/{_batch}.pre.nscl"
-
-
-def fn_pre_nscl_summary(_batch):
-    return fn_pre_nscl(_batch) + ".summary"
-
-
-def fn_pre_compr(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.tar.xz"
-
-
-def fn_pre_compr_summary(_batch):
-    return fn_pre_compr(_batch) + ".summary"
-
-
-# Post-propagation simplitigs
+# POST
 
 
 def fn_post_seq0(_batch, _node):
@@ -202,34 +188,6 @@ def fn_post_seq0(_batch, _node):
 
 def fn_post_seq(_batch, _node):
     return f"{dir_intermediate()}/post/{_batch}/{_node}.simpl"
-
-
-def fn_post_list(_batch):
-    return f"{dir_intermediate()}/post/{_batch}.post.list"
-
-
-def fn_post_hist(_batch):
-    return f"{dir_intermediate()}/post/{_batch}.post.hist"
-
-
-def fn_post_hist_summary(_batch):
-    return fn_post_hist(_batch) + ".summary"
-
-
-def fn_post_nscl(_batch):
-    return f"{dir_intermediate()}/post/{_batch}.post.nscl"
-
-
-def fn_post_nscl_summary(_batch):
-    return fn_post_nscl(_batch) + ".summary"
-
-
-def fn_post_compr(_batch):
-    return f"{dir_output()}/post/{_batch}.post.tar.xz"
-
-
-def fn_post_compr_summary(_batch):
-    return fn_post_compr(_batch) + ".summary"
 
 
 ## WILDCARD FUNCTIONS

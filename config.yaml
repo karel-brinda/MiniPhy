@@ -22,7 +22,7 @@ output_dir: output
 # output configuration
 kmer_histograms: False
 
-generate_assembly_stats: True  # True or False
-generate_prepropagation_stats: False  # True or False
-generate_postpropagation_stats: False  # True or False
+compress_asm: True  # True or False
+compress_pre: False  # True or False
+compress_post: False  # True or False
 ########################################################################################################################
