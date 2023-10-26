@@ -7,17 +7,17 @@ intermediate_dir:     intermediate
 output_dir:           output
 
 
-#####################################
-# COMPRESSION / ANALYSES TO INCLUDE #
-#####################################
+###############################################
+# COMPRESSION PROTOCOLS / ANALYSES TO INCLUDE #
+###############################################
 
-# Protocol 1: compr. of asms
+# Protocol 1: compr. of genome assemblies
 protocol_asm:         True
 
-# Protocol 2: compr. of dbgs (w/o k-mer propagation)
+# Protocol 2: compr. of dBGs (w/o k-mer propagation; pre-propagation simplitigs)
 protocol_pre:         True
 
-# Protocol 3: compr. of dbgs (w/ k-mer propagation)
+# Protocol 3: compr. of dBGs (w/ k-mer propagation; post-propagation simplitigs)
 protocol_post:        True
 
 
