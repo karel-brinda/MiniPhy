@@ -39,12 +39,9 @@ rule tar_xz_summary:
         """
 
 
-rule histogram:
+rule kmer_histogram:
     """
-    Compute histogram from a list of files
-       - todo: pass the number of threads as a params
-       - todo: check tmp dir; might run out on the cluster
-
+    Compute a k-mer histogram from a list of txt/fasta files.
     """
     output:
         hist=fn_hist("{batch}", "{protocol}"),

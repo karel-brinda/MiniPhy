@@ -16,7 +16,7 @@ if [[ $NARGS -ne 1 ]]; then
 fi
 
 x="$1"
-y=$(mktemp -d)/count.jf
+y="$(mktemp -d)/count.jf"
 
 >&2 echo "Input file: $x"
 >&2 echo "Counting file: $y"

@@ -1,11 +1,7 @@
-# The main entry point of your workflow.
-# After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
 from snakemake.utils import min_version
-
 min_version("6.2.0")
 
 shell.prefix("set -euo pipefail")
-
 
 report: "report/workflow.rst"
 
