@@ -50,9 +50,8 @@ rule kmer_histogram:
     params:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
-    threads: config["jellyfish_threads"]
-    params:
         k=config["kmer_length"],
+    threads: config["jellyfish_threads"]
     conda:
         "../envs/jellyfish.yaml"
     shell:

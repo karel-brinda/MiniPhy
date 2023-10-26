@@ -64,12 +64,13 @@ rule tree_newick_mashtree:
     params:
         k=config["mashtree_kmer_length"],
         s=config["mashtree_sketch_size"],
+        t=min(int(config["mashtree_threads"]), workflow.cores),  # ensure that the number of cores for MashTree doesn't go too low
     conda:
         "../envs/mashtree.yaml"
     shell:
         """
         mashtree \\
-            --numcpus {threads} \\
+            --numcpus {params.t} \\
             --kmerlength {params.k} \\
             --sketch-size {params.s} \\
             --seed 42  \\
