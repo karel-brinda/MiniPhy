@@ -6,24 +6,57 @@ SHELL=/usr/bin/env bash -eo pipefail
 
 .SUFFIXES:
 
-mkfile_dir := $(shell pwd)
-condaparams=--use-conda --conda-prefix="$(mkfile_dir)/.conda"
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# WARNING:!! whenever '-d .test/' is used, important to re-mark TOPLEVEL_DIR
+#         !! so that conda environments aren't recreated again
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+TOPLEVEL_DIR := .
+USE_CONDA     = $(shell grep "^use_conda:" config.yaml | awk '{print $$2}')
+
+ifeq ($(strip $(USE_CONDA)),True)
+	CONDA_PARAMS  =	--use-conda --conda-prefix="$(TOPLEVEL_DIR)/.conda"
+endif
+
+#############
+# FOR USERS #
+#############
 
 all: ## Run everything
-	snakemake -j $(condaparams) -p --rerun-incomplete
-
-test: ## Run the workflow on test data
-	#snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs
-	snakemake -d .test -j $(condaparams) -p --show-failed-logs --rerun-incomplete
-
-testreport:
-	snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs --report test_report.html
+	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete
 
 help: ## Print help message
 	@echo "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\1:\2/' | column -c2 -t -s : | sort)"
 
+conda: ## Create the conda environments
+	$(eval TOPLEVEL_DIR=..)
+	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
+
+clean: ## Clean
+	rm -fvr {.,.test}/{intermediate,output}/*
+
+cleanall: clean ## Clean all
+
+rmstats: ## Remove stats
+	find output .test/output -name 'stats*.tsv' | xargs rm -fv
+	find output .test/output -name '*.summary' | xargs rm -fv
+
+
+##################
+# FOR DEVELOPERS #
+##################
+
+
+test: ## Run the workflow on test data
+	$(eval TOPLEVEL_DIR=..)
+	snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
+
+testreport:
+	$(eval TOPLEVEL_DIR=..)
+	snakemake -d .test -j 1 $(CONDA_PARAMS) -p --show-failed-logs --report test_report.html
+
 report: ## Create html report
-	snakemake $(condaparams) --report report.html
+	snakemake $(CONDA_PARAMS) --report report.html
 
 format: ## Reformat all source code (developers)
 	snakefmt workflow
@@ -32,20 +65,6 @@ format: ## Reformat all source code (developers)
 checkformat: ## Check source code format (developers)
 	snakefmt --check workflow
 	yapf --diff --recursive workflow
-
-clean: ## Clean
-	rm -fvr {.,.test}/{intermediate,output}/*
-
-cleanall: clean ## Clean all
-
-conda: ## Create the conda environments
-	# as test tests everything, it requires all the environments, unlike the default conf
-	snakemake -p -j -d .test $(condaparams) --conda-create-envs-only
-
-
-rmstats: ## Remove stats
-	find output .test/output -name 'stats*.tsv' | xargs rm -fv
-	find output .test/output -name '*.summary' | xargs rm -fv
 
 edit:
 	nvim -p workflow/Snakefile workflow/rules/*.smk
