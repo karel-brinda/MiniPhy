@@ -31,6 +31,17 @@ rule tree_postprocessing:
         """
 
 
+rule cp_final_tree_for_post_output:
+    output:
+        nw=fn_post_output_tree(_batch="{batch}"),
+    input:
+        nw=fn_tree_sorted(_batch="{batch}"),
+    shell:
+        """
+        cp "{input.nw}" "{output.nw}"
+        """
+
+
 ruleorder: symlink_nw_tree > tree_newick_mashtree
 
 

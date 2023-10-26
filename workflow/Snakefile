@@ -11,7 +11,7 @@ report: "report/workflow.rst"
 ##### Target rules #####
 
 
-include: "rules/common.smk"
+include: "rules/init.smk"
 
 
 ## WILDCARDS CONSTRAINS
@@ -31,9 +31,13 @@ rule all:
 ##### Modules #####
 
 
+#
+include: "rules/tree.smk"
+#
+include: "rules/shared.smk"
+#
 include: "rules/asm.smk"
 include: "rules/pre.smk"
-include: "rules/tree.smk"
 include: "rules/post.smk"
+#
 include: "rules/stats.smk"
-include: "rules/other.smk"

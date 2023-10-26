@@ -55,10 +55,13 @@ for x in res:
                 sample = _get_sample_from_fn(sample_fn)
                 BATCHES_FN[batch][sample] = sample_fn
 
-assert len(BATCHES_FN)!=0, "\nERROR: No input files provided. Please provide at least one batch in '{dir_input()}/'.\n"
+assert (
+    len(BATCHES_FN) != 0
+), "\nERROR: No input files provided. Please provide at least one batch in '{dir_input()}/'.\n"
 
 
 ## BATCHES
+
 
 def get_batches():
     return BATCHES_FN.keys()
@@ -177,6 +180,9 @@ def dir_prophyle(_batch):
 def dir_prophyle_propagation(_batch):
     return f"{dir_intermediate()}/post/{_batch}/propagation"
 
+
+def fn_post_output_tree(_batch):
+    return fn_compr(_batch, "post") + ".nw"
 
 
 ## WILDCARD FUNCTIONS
