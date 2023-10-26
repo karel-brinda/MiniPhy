@@ -14,10 +14,17 @@ report: "report/workflow.rst"
 include: "rules/common.smk"
 
 
+## WILDCARDS CONSTRAINS
+wildcard_constraints:
+    sample=r"[a-zA-Z0-9_-]+",
+    batch=r"[a-zA-Z0-9_-]+",
+    protocol=r"(asm|pre|post)",
+
+
+# TODO: add genome stats, make it configurable
 rule all:
     input:
         fn_stats_batches(),
-        # TODO: add genome stats, make it configurable
         #fn_stats_genomes(),
 
 
