@@ -11,7 +11,7 @@ readonly -a ARGS=("$@")
 readonly NARGS="$#"
 
 if [[ $NARGS -ne 1 ]]; then
-	>&2 echo "usage: $PROGNAME input.fa"
+	>&2 echo "usage: $PROGNAME -t {threads} -k {kmer_length} input.fa"
 	exit 1
 fi
 
@@ -54,7 +54,7 @@ jellyfish count \
 
 printf 'freq\tkmers\n'
 jellyfish histo \
-	--threads $threads \
+	--threads "$threads" \
 	--high 1000000 \
 	"$y" \
 	| perl -pe 's/ /\t/g'
