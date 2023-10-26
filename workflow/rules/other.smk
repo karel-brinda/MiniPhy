@@ -12,10 +12,14 @@ rule tar_xz:
     input:
         #list=f"{dir_intermediate()}/{pre}/{_batch}.pre.list",
         list=fn_list("{batch}", "{protocol}"),
+    threads:
+        config["xz_threads"]
+    params:
+        xz_params=config["xz_params"]
     shell:
         """
         tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
-            | xz -T1 -9 \\
+            | xz -T {threads} {params.xz_params} \\
             > {output.xz}
         """
 

@@ -21,6 +21,9 @@ output_dir: output
 ########################################################################################################################
 kmer_histograms: True
 
+xz_threads: 1
+xz_params: "-9"
+
 compress_asm: True  # True or False
 compress_pre: True  # True or False
 compress_post: True  # True or False

@@ -22,6 +22,9 @@ output_dir: output
 # output configuration
 kmer_histograms: False
 
+xz_threads: 1
+xz_params: "-9"
+
 compress_asm: True  # True or False
 compress_pre: False  # True or False
 compress_post: False  # True or False
