@@ -6,6 +6,8 @@ input_dir:            input
 intermediate_dir:     intermediate
 output_dir:           output
 
+use_conda:            True # build conda environments automatically by Snakemake
+
 
 ###############################################
 # COMPRESSION PROTOCOLS / ANALYSES TO INCLUDE #
