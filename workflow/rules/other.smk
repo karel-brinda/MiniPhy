@@ -7,11 +7,11 @@ rule tar_xz:
     """
     Compress files using xz in a given order
     """
+    output:
+        xz=fn_compr("{batch}", "{protocol}"),
     input:
         #list=f"{dir_intermediate()}/{pre}/{_batch}.pre.list",
         list=fn_list("{batch}", "{protocol}"),
-    output:
-        xz=fn_compr("{batch}", "{protocol}"),
     shell:
         """
         tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
@@ -24,15 +24,15 @@ rule tar_xz_summary:
     """
     Compress files using xz in a given order
     """
+    output:
+        summary=fn_compr_summary("{batch}", "{protocol}"),
     input:
         xz=fn_compr("{batch}", "{protocol}"),
-    output:
-        xz_summary=fn_compr_summary("{batch}", "{protocol}"),
     shell:
         """
         printf '%s\\t%s\\n' \\
             {wildcards.protocol}_xz_size $(wc -c < "{input.xz}") \\
-            > {output}
+            > {output.summary}
         """
 
 
@@ -43,10 +43,10 @@ rule histogram:
        - todo: check tmp dir; might run out on the cluster
 
     """
-    input:
-        list=fn_list("{batch}", "{protocol}"),
     output:
         hist=fn_hist("{batch}", "{protocol}"),
+    input:
+        list=fn_list("{batch}", "{protocol}"),
     params:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
@@ -61,10 +61,10 @@ rule histogram:
 
 
 rule histogram_summary:
+    output:
+        summary=fn_hist_summary("{batch}", "{protocol}"),
     input:
         hist=fn_hist("{batch}", "{protocol}"),
-    output:
-        hist_summary=fn_hist_summary("{batch}", "{protocol}"),
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
     conda:
@@ -73,15 +73,15 @@ rule histogram_summary:
         """
         {params.s} {input.hist} \\
             --add-prefix {wildcards.protocol}_ \\
-            > {output.hist_summary}
+            > {output.summary}
         """
 
 
 rule nscl:
-    input:
-        list=fn_list("{batch}", "{protocol}"),
     output:
         nscl=fn_nscl("{batch}", "{protocol}"),
+    input:
+        list=fn_list("{batch}", "{protocol}"),
     params:
         ss=snakemake.workflow.srcdir("../scripts/file_list_to_seq_summaries.py"),
     conda:
@@ -94,10 +94,10 @@ rule nscl:
 
 
 rule nscl_summary:
+    output:
+        summary=fn_nscl_summary("{batch}", "{protocol}"),
     input:
         nscl=fn_nscl("{batch}", "{protocol}"),
-    output:
-        nscl_summary=fn_nscl("{batch}", "{protocol}"),
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_nscl.py"),
     conda:
@@ -106,5 +106,5 @@ rule nscl_summary:
         """
         {params.s} {input.nscl} \\
             --add-prefix {wildcards.protocol}_ \\
-            > {output.nscl_summary}
+            > {output.summary}
         """

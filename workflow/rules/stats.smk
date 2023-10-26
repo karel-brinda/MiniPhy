@@ -36,6 +36,7 @@ def get_stats_files(protocol):
                 fn_compr_summary(_batch="{batch}", _protocol=protocol),
             )
         )
+    print(stats_files)
 
     return stats_files
 

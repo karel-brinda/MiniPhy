@@ -90,7 +90,7 @@ def dir_prophyle_propagation(_batch):
 
 
 def fn_stats_batches():
-    return f"{dir_output()}/global_stats.tsv"
+    return f"{dir_output()}/stats_batches.tsv"
 
 
 def fn_stats_batches_1batch(_batch):
@@ -146,7 +146,7 @@ def fn_nscl(_batch, _protocol):
 
 
 def fn_nscl_summary(_batch, _protocol):
-    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.summary"
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.nscl.summary"
 
 
 def fn_hist(_batch, _protocol):
