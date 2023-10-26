@@ -22,7 +22,7 @@ protocol_post:        False
 
 
 # additional data analyses
-nscl_analyses:        True   # calculate #seqs and their cumulative lenght
+nscl_analyses:        True   # calculate #seqs and their cumulative length
 kmer_counting:        False  # include analyses based on k-mer counting
 
 
