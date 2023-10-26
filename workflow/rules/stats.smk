@@ -30,12 +30,10 @@ def get_stats_files(protocol):
         if config["kmer_counting"]:
             stats_files.append(fn_hist_summary(_batch="{batch}", _protocol=protocol))
 
-        stats_files.extend(
-            (
-                fn_nscl_summary(_batch="{batch}", _protocol=protocol),
-                fn_compr_summary(_batch="{batch}", _protocol=protocol),
-            )
-        )
+        if config["nscl_analyses"]:
+            stats_files.append(fn_nscl_summary(_batch="{batch}", _protocol=protocol))
+
+        stats_files.append(fn_compr_summary(_batch="{batch}", _protocol=protocol))
 
     return stats_files
 
