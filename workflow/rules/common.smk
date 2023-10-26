@@ -55,33 +55,13 @@ for x in res:
                 sample = _get_sample_from_fn(sample_fn)
                 BATCHES_FN[batch][sample] = sample_fn
 
-
-## WILDCARDS CONSTRAINS
-wildcard_constraints:
-    sample=r"[a-zA-Z0-9_-]+",
-    batch=r"[a-zA-Z0-9_-]+",
-    protocol=r"(asm|pre|post)",
+assert len(BATCHES_FN)!=0, "\nERROR: No input files provided. Please provide at least one batch in '{dir_input()}/'.\n"
 
 
 ## BATCHES
 
-
 def get_batches():
     return BATCHES_FN.keys()
-
-
-## DIR PATHS
-
-
-def dir_prophyle(_batch):
-    return f"{dir_intermediate()}/post/{_batch}"
-
-
-def dir_prophyle_propagation(_batch):
-    return f"{dir_intermediate()}/post/{_batch}/propagation"
-
-
-## FILE PATHS
 
 
 #####################################
@@ -188,6 +168,15 @@ def fn_post_seq0(_batch, _node):
 
 def fn_post_seq(_batch, _node):
     return f"{dir_intermediate()}/post/{_batch}/{_node}.simpl"
+
+
+def dir_prophyle(_batch):
+    return f"{dir_intermediate()}/post/{_batch}"
+
+
+def dir_prophyle_propagation(_batch):
+    return f"{dir_intermediate()}/post/{_batch}/propagation"
+
 
 
 ## WILDCARD FUNCTIONS
