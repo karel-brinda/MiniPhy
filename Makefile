@@ -13,7 +13,8 @@ all: ## Run everything
 	snakemake -j $(condaparams) -p --rerun-incomplete
 
 test: ## Run the workflow on test data
-	snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs
+	#snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs
+	snakemake -d .test -j $(condaparams) -p --show-failed-logs --rerun-incomplete
 
 testreport:
 	snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs --report test_report.html

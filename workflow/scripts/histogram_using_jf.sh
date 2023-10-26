@@ -5,35 +5,57 @@ set -o pipefail
 set -u
 #set -f
 
+while getopts ":k:t:" opt; do
+  case $opt in
+    k) k="$OPTARG" ;;
+    t) t="$OPTARG" ;;
+  esac
+done
+shift $((OPTIND-1))
+
+
 readonly PROGNAME=$(basename $0)
 readonly PROGDIR=$(dirname $0)
 readonly -a ARGS=("$@")
 readonly NARGS="$#"
 
+
 if [[ $NARGS -ne 1 ]]; then
-	>&2 echo "usage: $PROGNAME input.fa"
+	>&2 echo "usage: $PROGNAME -t {threads} -k {kmer_length} input.fa"
 	exit 1
 fi
 
 x="$1"
-y=$(mktemp -d)/count.jf
+y="$(mktemp -d)/count.jf"
 
 >&2 echo "Input file: $x"
 >&2 echo "Counting file: $y"
 
-threads=7
+
+(
+set +u
+if [[ -z "$k" ]]; then
+	echo "Error: k-mer length not provided (-k)" 1>&2
+    exit 1
+fi
+
+if [[ -z "$t" ]]; then
+	echo "Error: The number of threads not provided (-t)" 1>&2
+    exit 1
+fi
+)
 
 jellyfish count \
-	--threads $threads \
+	--threads "$t" \
 	--canonical \
-	--mer-len 31 \
+	--mer-len "$k" \
 	--size 20M \
 	--output "$y" \
 	"$x"
 
 printf 'freq\tkmers\n'
 jellyfish histo \
-	--threads $threads \
+	--threads "$t" \
 	--high 1000000 \
 	"$y" \
 	| perl -pe 's/ /\t/g'

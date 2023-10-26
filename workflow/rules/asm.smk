@@ -28,10 +28,12 @@ rule asm_seq_formatting:
         fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
     input:
         fa=w_sample_source,
+    params:
+        seqtk_params="-U" if config["asms_to_uppercase"] else "",
     conda:
         "../envs/env.yaml"
     shell:
         """
-        seqtk seq -U "{input.fa}" \\
+        seqtk seq {params.seqtk_params} "{input.fa}" \\
             > "{output.fa}"
         """

@@ -12,10 +12,9 @@ rule tar_xz:
     input:
         #list=f"{dir_intermediate()}/{pre}/{_batch}.pre.list",
         list=fn_list("{batch}", "{protocol}"),
-    threads:
-        config["xz_threads"]
+    threads: config["xz_threads"]
     params:
-        xz_params=config["xz_params"]
+        xz_params=config["xz_params"],
     shell:
         """
         tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
@@ -40,12 +39,9 @@ rule tar_xz_summary:
         """
 
 
-rule histogram:
+rule kmer_histogram:
     """
-    Compute histogram from a list of files
-       - todo: pass the number of threads as a params
-       - todo: check tmp dir; might run out on the cluster
-
+    Compute a k-mer histogram from a list of txt/fasta files.
     """
     output:
         hist=fn_hist("{batch}", "{protocol}"),
@@ -54,12 +50,16 @@ rule histogram:
     params:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
-    threads: 7
+        k=config["kmer_length"],
+    threads: config["jellyfish_threads"]
     conda:
         "../envs/jellyfish.yaml"
     shell:
         """
-        {params.hjf} <({params.lfa} {input.list}) \\
+        {params.hjf} \\
+            -t {threads} \\
+            -k {params.k} \\
+            <({params.lfa} {input.list}) \\
             > {output.hist}
         """
 
