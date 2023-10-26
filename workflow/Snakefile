@@ -1,7 +1,9 @@
 from snakemake.utils import min_version
+
 min_version("6.2.0")
 
 shell.prefix("set -euo pipefail")
+
 
 report: "report/workflow.rst"
 

@@ -26,8 +26,8 @@ rule stats_batches:
 def get_stats_files(protocol):
     stats_files = []
 
-    if config[f"compress_{protocol}"]:
-        if config["kmer_histograms"]:
+    if config[f"protocol_{protocol}"]:
+        if config["kmer_counting"]:
             stats_files.append(fn_hist_summary(_batch="{batch}", _protocol=protocol))
 
         stats_files.extend(
