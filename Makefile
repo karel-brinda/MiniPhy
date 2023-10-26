@@ -43,8 +43,8 @@ conda: ## Create the conda environments
 
 
 rmstats: ## Remove stats
-	find results .test/results -name '*.global.tsv' | xargs rm -fv
-	find results .test/results -name '*.summary' | xargs rm -fv
+	find output .test/output -name 'stats*.tsv' | xargs rm -fv
+	find output .test/output -name '*.summary' | xargs rm -fv
 
 edit:
 	nvim -p workflow/Snakefile workflow/rules/*.smk
