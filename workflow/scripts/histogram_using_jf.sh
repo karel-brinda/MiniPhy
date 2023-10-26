@@ -5,10 +5,20 @@ set -o pipefail
 set -u
 #set -f
 
+while getopts ":k:t:" opt; do
+  case $opt in
+    k) k="$OPTARG" ;;
+    t) t="$OPTARG" ;;
+  esac
+done
+shift $((OPTIND-1))
+
+
 readonly PROGNAME=$(basename $0)
 readonly PROGDIR=$(dirname $0)
 readonly -a ARGS=("$@")
 readonly NARGS="$#"
+
 
 if [[ $NARGS -ne 1 ]]; then
 	>&2 echo "usage: $PROGNAME -t {threads} -k {kmer_length} input.fa"
@@ -21,15 +31,6 @@ y="$(mktemp -d)/count.jf"
 >&2 echo "Input file: $x"
 >&2 echo "Counting file: $y"
 
-threads=7
-k=31
-
-while getopts ":a:b:" opt; do
-  case $opt in
-    k) k="$OPTARG" ;;
-    t) t="$OPTARG" ;;
-  esac
-done
 
 (
 set +u
@@ -54,7 +55,7 @@ jellyfish count \
 
 printf 'freq\tkmers\n'
 jellyfish histo \
-	--threads "$threads" \
+	--threads "$t" \
 	--high 1000000 \
 	"$y" \
 	| perl -pe 's/ /\t/g'
