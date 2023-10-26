@@ -11,7 +11,7 @@ checkpoint prophyle_index:
         d2=directory(dir_prophyle_propagation(_batch="{batch}")),
     input:
         w_batch_asms,
-        nw=fn_tree_sorted(_batch="{batch}"),
+        nw=fn_post_output_tree(_batch="{batch}"),
     params:
         k=config["kmer_length"],
         asm_dir=fn_asm_seq_dir("{batch}"),
