@@ -129,32 +129,34 @@ def fn_nodes_sorted(_batch):
 #
 
 
-def fn_compr(_batch, protocol):
-    return f"{dir_output()}/{protocol}/{_batch}.{protocol}.tar.xz"
+def fn_list(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.list"
 
 
-def fn_compr_summary(_batch, protocol):
-    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.tar.xz.summary"
+def fn_compr(_batch, _protocol):
+    return f"{dir_output()}/{_protocol}/{_batch}.{_protocol}.tar.xz"
 
 
-def fn_nscl(_batch, protocol):
-    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.nscl"
+def fn_compr_summary(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.tar.xz.summary"
 
 
-def fn_nscl_summary(_batch, protocol):
-    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.summary"
+def fn_nscl(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.nscl"
 
 
-def fn_hist(_batch, protocol):
-    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.hist"
+def fn_nscl_summary(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.summary"
 
 
-def fn_hist_summary(_batch, protocol):
-    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.hist.summary"
+def fn_hist(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.hist"
 
 
-def fn_list(_batch, protocol):
-    return f"{dir_intermediate()}/{protocol}/{_batch}.{protocol}.list"
+def fn_hist_summary(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.hist.summary"
+
+
 
 
 ############################################

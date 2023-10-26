@@ -32,7 +32,7 @@ rule pre_list:
         list=fn_leaves_sorted(_batch="{batch}"),
         fa=w_batch_pres,
     output:
-        list=fn_list(_batch="{batch}", protocol="pre"),
+        list=fn_list(_batch="{batch}", _protocol="pre"),
     run:
         generate_file_list(
             input.list,

@@ -8,7 +8,7 @@ rule asm_list:
     Make a list of assemblies as they will appear in the .tar.xz archive
     """
     output:
-        list=fn_list(_batch="{batch}", protocol="asm"),
+        list=fn_list(_batch="{batch}", _protocol="asm"),
     input:
         list=fn_leaves_sorted(_batch="{batch}"),
         fa=w_batch_asms,
