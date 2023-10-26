@@ -12,10 +12,9 @@ rule tar_xz:
     input:
         #list=f"{dir_intermediate()}/{pre}/{_batch}.pre.list",
         list=fn_list("{batch}", "{protocol}"),
-    threads:
-        config["xz_threads"]
+    threads: config["xz_threads"]
     params:
-        xz_params=config["xz_params"]
+        xz_params=config["xz_params"],
     shell:
         """
         tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
@@ -54,12 +53,17 @@ rule histogram:
     params:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
-    threads: 7
+    threads: config["jellyfish_threads"]
+    params:
+        kmer_length=config["kmer_length"],
     conda:
         "../envs/jellyfish.yaml"
     shell:
         """
-        {params.hjf} <({params.lfa} {input.list}) \\
+        {params.hjf} \\
+            -t {threads} \\
+            -k {params.kmer_length} \\
+            <({params.lfa} {input.list}) \\
             > {output.hist}
         """
 

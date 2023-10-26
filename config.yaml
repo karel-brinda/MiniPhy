@@ -30,8 +30,8 @@ kmer_counting:        False  # include k-mer counting analyses
 # PARAMETERS #
 ##############
 
+kmer_length:          31     # used in Protocols 2 and 3 for dbgs, and for k-mer counting
 asms_to_uppercase:    True   # used in Protocol 1
-dbg_kmer_length:      31     # used in Protocols 2 and 3
 
 xz_threads:           1      # best compression with 1, can be increased for accelarating testing
 xz_params:            "-9"   # additional params for xz can be added here

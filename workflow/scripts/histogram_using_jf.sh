@@ -22,11 +22,32 @@ y=$(mktemp -d)/count.jf
 >&2 echo "Counting file: $y"
 
 threads=7
+k=31
+
+while getopts ":a:b:" opt; do
+  case $opt in
+    k) k="$OPTARG" ;;
+    t) t="$OPTARG" ;;
+  esac
+done
+
+(
+set +u
+if [[ -z "$k" ]]; then
+	echo "Error: k-mer length not provided (-k)" 1>&2
+    exit 1
+fi
+
+if [[ -z "$t" ]]; then
+	echo "Error: The number of threads not provided (-t)" 1>&2
+    exit 1
+fi
+)
 
 jellyfish count \
-	--threads $threads \
+	--threads "$t" \
 	--canonical \
-	--mer-len 31 \
+	--mer-len "$k" \
 	--size 20M \
 	--output "$y" \
 	"$x"
