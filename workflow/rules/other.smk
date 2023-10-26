@@ -7,10 +7,11 @@ rule tar_xz:
     """
     Compress files using xz in a given order
     """
-    input:
-        list="{pref}.{stage}.list",
     output:
-        xz="{pref}.{stage}.tar.xz",
+        xz=fn_compr("{batch}", "{protocol}"),
+    input:
+        #list=f"{dir_intermediate()}/{pre}/{_batch}.pre.list",
+        list=fn_list("{batch}", "{protocol}"),
     shell:
         """
         tar cvf - -C $(dirname "{input.list}") -T "{input.list}" --dereference \\
@@ -23,15 +24,15 @@ rule tar_xz_summary:
     """
     Compress files using xz in a given order
     """
-    input:
-        xz="{pref}.{stage}.tar.xz",
     output:
-        xz="{pref}.{stage}.tar.xz.summary",
+        summary=fn_compr_summary("{batch}", "{protocol}"),
+    input:
+        xz=fn_compr("{batch}", "{protocol}"),
     shell:
         """
         printf '%s\\t%s\\n' \\
-            {wildcards.stage}_xz_size $(wc -c < "{input.xz}") \\
-            > {output}
+            {wildcards.protocol}_xz_size $(wc -c < "{input.xz}") \\
+            > {output.summary}
         """
 
 
@@ -42,10 +43,10 @@ rule histogram:
        - todo: check tmp dir; might run out on the cluster
 
     """
-    input:
-        list="{pref}.{stage}.list",
     output:
-        hist="{pref}.{stage}.hist",
+        hist=fn_hist("{batch}", "{protocol}"),
+    input:
+        list=fn_list("{batch}", "{protocol}"),
     params:
         hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
         lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
@@ -60,10 +61,10 @@ rule histogram:
 
 
 rule histogram_summary:
-    input:
-        hist="{pref}.{stage}.hist",
     output:
-        summ="{pref}.{stage}.hist.summary",
+        summary=fn_hist_summary("{batch}", "{protocol}"),
+    input:
+        hist=fn_hist("{batch}", "{protocol}"),
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
     conda:
@@ -71,16 +72,16 @@ rule histogram_summary:
     shell:
         """
         {params.s} {input.hist} \\
-            --add-prefix {wildcards.stage}_ \\
-            > {output.summ}
+            --add-prefix {wildcards.protocol}_ \\
+            > {output.summary}
         """
 
 
 rule nscl:
-    input:
-        list="{pref}.{stage}.list",
     output:
-        nscl="{pref}.{stage}.nscl",
+        nscl=fn_nscl("{batch}", "{protocol}"),
+    input:
+        list=fn_list("{batch}", "{protocol}"),
     params:
         ss=snakemake.workflow.srcdir("../scripts/file_list_to_seq_summaries.py"),
     conda:
@@ -93,10 +94,10 @@ rule nscl:
 
 
 rule nscl_summary:
-    input:
-        nscl="{pref}.{stage}.nscl",
     output:
-        summ="{pref}.{stage}.nscl.summary",
+        summary=fn_nscl_summary("{batch}", "{protocol}"),
+    input:
+        nscl=fn_nscl("{batch}", "{protocol}"),
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_nscl.py"),
     conda:
@@ -104,6 +105,6 @@ rule nscl_summary:
     shell:
         """
         {params.s} {input.nscl} \\
-            --add-prefix {wildcards.stage}_ \\
-            > {output.summ}
+            --add-prefix {wildcards.protocol}_ \\
+            > {output.summary}
         """

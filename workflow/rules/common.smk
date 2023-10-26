@@ -13,6 +13,10 @@ def dir_input():
     return Path(config["input_dir"])
 
 
+def dir_intermediate():
+    return Path(config["intermediate_dir"])
+
+
 def dir_output():
     return config["output_dir"]
 
@@ -56,7 +60,7 @@ for x in res:
 wildcard_constraints:
     sample=r"[a-zA-Z0-9_-]+",
     batch=r"[a-zA-Z0-9_-]+",
-    stage=r"(asm|pre|post)",
+    protocol=r"(asm|pre|post)",
 
 
 ## BATCHES
@@ -70,162 +74,120 @@ def get_batches():
 
 
 def dir_prophyle(_batch):
-    return f"{dir_output()}/post/{_batch}"
+    return f"{dir_intermediate()}/post/{_batch}"
 
 
 def dir_prophyle_propagation(_batch):
-    return f"{dir_output()}/post/{_batch}/propagation"
+    return f"{dir_intermediate()}/post/{_batch}/propagation"
 
 
 ## FILE PATHS
 
 
-def fn_stats_global():
-    return f"{dir_output()}/global_stats.tsv"
+#####################################
+# Global files for individual batches
+#####################################
 
 
-def fn_stats_batch_global(_batch):
-    return f"{dir_output()}/stats/{_batch}.global.tsv"
+def fn_stats_batches():
+    return f"{dir_output()}/stats_batches.tsv"
 
 
-def fn_stats_samples(_batch):
-    return f"{dir_output()}/stats/{_batch}.samples.tsv"
+def fn_stats_batches_1batch(_batch):
+    return f"{dir_intermediate()}/stats/{_batch}.global.tsv"
 
 
-# *_list - list of files for compression in that order
-# *_hist - k-mer histogram
-# *_nscl - number of sequence and cumulative length
-# *_seq - files with sequences (fa / simpl
-# *_compr - compressed dataset
+def fn_stats_genomes(_batch):
+    return f"{dir_intermediate()}/stats/{_batch}.samples.tsv"
 
 
 def fn_tree_sorted(_batch):
-    return f"{dir_output()}/tree/{_batch}.nw"
+    return f"{dir_intermediate()}/tree/{_batch}.nw"
 
 
 def fn_tree_dirty(_batch):
-    return f"{dir_output()}/tree/{_batch}.nw_dirty"
+    return f"{dir_intermediate()}/tree/{_batch}.nw_dirty"
 
 
 def fn_leaves_sorted(_batch):
-    return f"{dir_output()}/tree/{_batch}.leaves"
+    return f"{dir_intermediate()}/tree/{_batch}.leaves"
 
 
 def fn_nodes_sorted(_batch):
-    return f"{dir_output()}/tree/{_batch}.nodes"
+    return f"{dir_intermediate()}/tree/{_batch}.nodes"
 
 
+####################################################################
+# Files of the same type for individual protocols (asm / pre / post)
+####################################################################
 #
+# *_list - list of files for compression in that order
+# *_hist - k-mer histogram
+# *_nscl - number of sequence and cumulative length
+# *_seq - files with sequences (fa / simpl)
+# *_compr - compressed dataset
+#
+
+
+def fn_list(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.list"
+
+
+def fn_compr(_batch, _protocol):
+    return f"{dir_output()}/{_protocol}/{_batch}.{_protocol}.tar.xz"
+
+
+def fn_compr_summary(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.tar.xz.summary"
+
+
+def fn_nscl(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.nscl"
+
+
+def fn_nscl_summary(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.nscl.summary"
+
+
+def fn_hist(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.hist"
+
+
+def fn_hist_summary(_batch, _protocol):
+    return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.hist.summary"
+
+
+############################################
+# Specialized files for individual protocols
+############################################
+
+# ASM
 
 
 def fn_asm_seq_dir(_batch):
-    return f"{dir_output()}/asm/{_batch}"
+    return f"{dir_intermediate()}/asm/{_batch}"
 
 
 def fn_asm_seq(_batch, _sample):
-    return f"{dir_output()}/asm/{_batch}/{_sample}.fa"
+    return f"{dir_intermediate()}/asm/{_batch}/{_sample}.fa"
 
 
-def fn_asm_list(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.list"
-
-
-def fn_asm_hist(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.hist"
-
-
-def fn_asm_hist_summary(_batch):
-    return fn_asm_hist(_batch) + ".summary"
-
-
-def fn_asm_nscl(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.nscl"
-
-
-def fn_asm_nscl_summary(_batch):
-    return fn_asm_nscl(_batch) + ".summary"
-
-
-def fn_asm_compr(_batch):
-    return f"{dir_output()}/asm/{_batch}.asm.tar.xz"
-
-
-def fn_asm_compr_summary(_batch):
-    return fn_asm_compr(_batch) + ".summary"
-
-
-#
+# PRE
 
 
 def fn_pre_seq(_batch, _sample):
-    return f"{dir_output()}/pre/{_batch}/{_sample}.simpl"
+    return f"{dir_intermediate()}/pre/{_batch}/{_sample}.simpl"
 
 
-def fn_pre_list(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.list"
-
-
-def fn_pre_hist(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.hist"
-
-
-def fn_pre_hist_summary(_batch):
-    return fn_pre_hist(_batch) + ".summary"
-
-
-def fn_pre_nscl(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.nscl"
-
-
-def fn_pre_nscl_summary(_batch):
-    return fn_pre_nscl(_batch) + ".summary"
-
-
-def fn_pre_compr(_batch):
-    return f"{dir_output()}/pre/{_batch}.pre.tar.xz"
-
-
-def fn_pre_compr_summary(_batch):
-    return fn_pre_compr(_batch) + ".summary"
-
-
-#
+# POST
 
 
 def fn_post_seq0(_batch, _node):
-    return f"{dir_output()}/post/{_batch}/propagation/{_node}.reduced.fa"
+    return f"{dir_intermediate()}/post/{_batch}/propagation/{_node}.reduced.fa"
 
 
 def fn_post_seq(_batch, _node):
-    return f"{dir_output()}/post/{_batch}/{_node}.simpl"
-
-
-def fn_post_list(_batch):
-    return f"{dir_output()}/post/{_batch}.post.list"
-
-
-def fn_post_hist(_batch):
-    return f"{dir_output()}/post/{_batch}.post.hist"
-
-
-def fn_post_hist_summary(_batch):
-    return fn_post_hist(_batch) + ".summary"
-
-
-def fn_post_nscl(_batch):
-    return f"{dir_output()}/post/{_batch}.post.nscl"
-
-
-def fn_post_nscl_summary(_batch):
-    return fn_post_nscl(_batch) + ".summary"
-
-
-def fn_post_compr(_batch):
-    return f"{dir_output()}/post/{_batch}.post.tar.xz"
-
-
-def fn_post_compr_summary(_batch):
-    return fn_post_compr(_batch) + ".summary"
+    return f"{dir_intermediate()}/post/{_batch}/{_node}.simpl"
 
 
 ## WILDCARD FUNCTIONS

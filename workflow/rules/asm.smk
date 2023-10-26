@@ -8,7 +8,7 @@ rule asm_list:
     Make a list of assemblies as they will appear in the .tar.xz archive
     """
     output:
-        list=fn_asm_list(_batch="{batch}"),
+        list=fn_list(_batch="{batch}", _protocol="asm"),
     input:
         list=fn_leaves_sorted(_batch="{batch}"),
         fa=w_batch_asms,
@@ -24,10 +24,10 @@ rule asm_seq_formatting:
     """
     Turn an assembly file from the input into a well-behaved fasta file
     """
-    input:
-        fa=w_sample_source,
     output:
         fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
+    input:
+        fa=w_sample_source,
     conda:
         "../envs/env.yaml"
     shell:

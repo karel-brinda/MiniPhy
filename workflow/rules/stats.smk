@@ -1,8 +1,18 @@
-rule global_stats:
-    input:
-        [fn_stats_batch_global(batch) for batch in get_batches()],
+"""
+    2 types of statistics to compute:
+    - batch statistics: 1 record per batch; 1 file
+    - genome statistics: 1 record per genome, 1 file per 1 batch
+"""
+
+
+rule stats_batches:
+    """
+    Create global statistics file by merging individual stats from all batches
+    """
     output:
-        fn_stats_global(),
+        fn_stats_batches(),
+    input:
+        [fn_stats_batches_1batch(_batch=batch) for batch in get_batches()],
     params:
         s=snakemake.workflow.srcdir("../scripts/merge_global_stats.py"),
     conda:
@@ -13,48 +23,31 @@ rule global_stats:
         """
 
 
-def get_stats_files():
+def get_stats_files(protocol):
     stats_files = []
-    if config["generate_assembly_stats"]:
+
+    if config[f"compress_{protocol}"]:
         if config["kmer_histograms"]:
-            stats_files.append(fn_asm_hist_summary(_batch="{batch}"))
+            stats_files.append(fn_hist_summary(_batch="{batch}", _protocol=protocol))
 
         stats_files.extend(
             (
-                fn_asm_nscl_summary(_batch="{batch}"),
-                fn_asm_compr_summary(_batch="{batch}"),
+                fn_nscl_summary(_batch="{batch}", _protocol=protocol),
+                fn_compr_summary(_batch="{batch}", _protocol=protocol),
             )
         )
-    if config["generate_prepropagation_stats"]:
-        if config["kmer_histograms"]:
-            stats_files.append(
-                fn_pre_hist_summary(_batch="{batch}"),
-            )
-        stats_files.extend(
-            (
-                fn_pre_nscl_summary(_batch="{batch}"),
-                fn_pre_compr_summary(_batch="{batch}"),
-            )
-        )
-    if config["generate_postpropagation_stats"]:
-        if config["kmer_histograms"]:
-            stats_files.append(
-                fn_post_hist_summary(_batch="{batch}"),
-            )
-        stats_files.extend(
-            (
-                fn_post_nscl_summary(_batch="{batch}"),
-                fn_post_compr_summary(_batch="{batch}"),
-            )
-        )
+
     return stats_files
 
 
-rule stats_global_sample:
-    input:
-        get_stats_files(),
+rule stats_batches_1batch:
+    """
+    For a given batch, merge stats from individual protocols
+    """
     output:
-        fn_stats_batch_global(_batch="{batch}"),
+        fn_stats_batches_1batch(_batch="{batch}"),
+    input:
+        [get_stats_files(protocol=x) for x in ("asm", "pre", "post")],
     shell:
         """
         (

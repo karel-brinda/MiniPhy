@@ -18,7 +18,9 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        fn_stats_global(),
+        fn_stats_batches(),
+        # TODO: add genome stats, make it configurable
+        #fn_stats_genomes(),
 
 
 ##### Modules #####
