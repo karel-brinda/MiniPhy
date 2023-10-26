@@ -6,24 +6,26 @@ SHELL=/usr/bin/env bash -eo pipefail
 
 .SUFFIXES:
 
-mkfile_dir := $(shell pwd)
-condaparams=--use-conda --conda-prefix="$(mkfile_dir)/.conda"
+TOPLEVEL_DIR := $(shell pwd)
+CONDA_PARAMS = --use-conda --conda-prefix="$(TOPLEVEL_DIR)/.conda"
+
+THREADS=$(shell grep "^threads:" config.yaml | awk '{print $$2}')
 
 all: ## Run everything
-	snakemake -j $(condaparams) -p --rerun-incomplete
+	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete
 
 test: ## Run the workflow on test data
 	#snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs
-	snakemake -d .test -j $(condaparams) -p --show-failed-logs --rerun-incomplete
+	snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
 
 testreport:
-	snakemake -d .test -j 1 $(condaparams) -p --show-failed-logs --report test_report.html
+	snakemake -d .test -j 1 $(CONDA_PARAMS) -p --show-failed-logs --report test_report.html
 
 help: ## Print help message
 	@echo "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\1:\2/' | column -c2 -t -s : | sort)"
 
 report: ## Create html report
-	snakemake $(condaparams) --report report.html
+	snakemake $(CONDA_PARAMS) --report report.html
 
 format: ## Reformat all source code (developers)
 	snakefmt workflow
@@ -40,7 +42,7 @@ cleanall: clean ## Clean all
 
 conda: ## Create the conda environments
 	# as test tests everything, it requires all the environments, unlike the default conf
-	snakemake -p -j -d .test $(condaparams) --conda-create-envs-only
+	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
 
 
 rmstats: ## Remove stats
