@@ -17,7 +17,7 @@ rule tree_postprocessing:
     params:
         script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
     conda:
-        "../envs/env.yaml"
+        "../envs/basic_env.yaml"
     shell:
         """
         {params.script} \\

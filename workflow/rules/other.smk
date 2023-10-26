@@ -72,7 +72,7 @@ rule histogram_summary:
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
     conda:
-        "../envs/env.yaml"
+        "../envs/basic_env.yaml"
     shell:
         """
         {params.s} {input.hist} \\
@@ -89,7 +89,7 @@ rule nscl:
     params:
         ss=snakemake.workflow.srcdir("../scripts/file_list_to_seq_summaries.py"),
     conda:
-        "../envs/env.yaml"
+        "../envs/basic_env.yaml"
     shell:
         """
         {params.ss} {input.list} \\
@@ -105,7 +105,7 @@ rule nscl_summary:
     params:
         s=snakemake.workflow.srcdir("../scripts/summarize_nscl.py"),
     conda:
-        "../envs/env.yaml"
+        "../envs/basic_env.yaml"
     shell:
         """
         {params.s} {input.nscl} \\

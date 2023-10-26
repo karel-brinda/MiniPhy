@@ -31,7 +31,7 @@ rule asm_seq_formatting:
     params:
         seqtk_params="-U" if config["asms_to_uppercase"] else "",
     conda:
-        "../envs/env.yaml"
+        "../envs/basic_env.yaml"
     shell:
         """
         seqtk seq {params.seqtk_params} "{input.fa}" \\

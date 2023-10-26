@@ -16,7 +16,7 @@ rule stats_batches:
     params:
         s=snakemake.workflow.srcdir("../scripts/merge_global_stats.py"),
     conda:
-        "../envs/env.yaml"
+        "../envs/basic_env.yaml"
     shell:
         """
         {params.s} {input} > {output}

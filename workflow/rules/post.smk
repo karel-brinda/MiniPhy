@@ -34,7 +34,7 @@ rule post_seq:
     input:
         fa=fn_post_seq0(_batch="{batch}", _node="{node}"),
     conda:
-        "../envs/env.yaml"
+        "../envs/basic_env.yaml"
     shell:
         """
         seqtk seq {input.fa} \\
