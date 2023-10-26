@@ -13,7 +13,7 @@ checkpoint prophyle_index:
         w_batch_asms,
         nw=fn_tree_sorted(_batch="{batch}"),
     params:
-        k=31,
+        k=config["kmer_length"],
         asm_dir=fn_asm_seq_dir("{batch}"),
     conda:
         "../envs/prophyle.yaml"

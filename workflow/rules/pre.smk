@@ -12,7 +12,7 @@ rule pre_seq_prophasm:
     output:
         txt=fn_pre_seq(_batch="{batch}", _sample="{sample}"),
     params:
-        k=31,
+        k=config["kmer_length"],
     conda:
         "../envs/prophasm.yaml"
     shell:

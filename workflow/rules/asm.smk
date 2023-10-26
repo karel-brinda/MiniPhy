@@ -29,7 +29,7 @@ rule asm_seq_formatting:
     input:
         fa=w_sample_source,
     params:
-        seqtk_params="-U" if config["asms_to_uppercase"] else ""
+        seqtk_params="-U" if config["asms_to_uppercase"] else "",
     conda:
         "../envs/env.yaml"
     shell:

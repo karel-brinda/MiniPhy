@@ -22,8 +22,8 @@ protocol_post:        False
 
 
 # additional data analyses
-nscl_analyses:        True   # include #seqs, their cum. leng. stats
-kmer_counting:        False  # include k-mer counting analyses
+nscl_analyses:        True   # calculate #seqs and their cumulative lenght
+kmer_counting:        False  # include analyses based on k-mer counting
 
 
 ##############
@@ -31,7 +31,7 @@ kmer_counting:        False  # include k-mer counting analyses
 ##############
 
 kmer_length:          31     # used in Protocols 2 and 3 for dbgs, and for k-mer counting
-asms_to_uppercase:    True   # used in Protocol 1
+asms_to_uppercase:    True   # used in Protocol 1, converting sequences to upper case (recommended)
 
 xz_threads:           1      # best compression with 1, can be increased for accelarating testing
 xz_params:            "-9"   # additional params for xz can be added here
