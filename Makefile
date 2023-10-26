@@ -7,7 +7,7 @@ SHELL=/usr/bin/env bash -eo pipefail
 .SUFFIXES:
 
 mkfile_dir := $(shell pwd)
-condaparams=--use-conda --conda-prefix="$(mkfile_dir)/conda"
+condaparams=--use-conda --conda-prefix="$(mkfile_dir)/.conda"
 
 all: ## Run everything
 	snakemake -j $(condaparams) -p --rerun-incomplete
