@@ -28,11 +28,11 @@ rule pre_list:
     """
     Make a list of pre-propagation simplitig files
     """
+    output:
+        list=fn_list(_batch="{batch}", _protocol="pre"),
     input:
         list=fn_leaves_sorted(_batch="{batch}"),
         fa=w_batch_pres,
-    output:
-        list=fn_list(_batch="{batch}", _protocol="pre"),
     run:
         generate_file_list(
             input.list,

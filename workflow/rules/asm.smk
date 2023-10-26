@@ -24,10 +24,10 @@ rule asm_seq_formatting:
     """
     Turn an assembly file from the input into a well-behaved fasta file
     """
-    input:
-        fa=w_sample_source,
     output:
         fa=fn_asm_seq(_batch="{batch}", _sample="{sample}"),
+    input:
+        fa=w_sample_source,
     conda:
         "../envs/env.yaml"
     shell:

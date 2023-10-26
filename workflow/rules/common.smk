@@ -89,15 +89,15 @@ def dir_prophyle_propagation(_batch):
 #####################################
 
 
-def fn_stats_global():
+def fn_stats_batches():
     return f"{dir_output()}/global_stats.tsv"
 
 
-def fn_stats_batch_global(_batch):
+def fn_stats_batches_1batch(_batch):
     return f"{dir_intermediate()}/stats/{_batch}.global.tsv"
 
 
-def fn_stats_samples(_batch):
+def fn_stats_genomes(_batch):
     return f"{dir_intermediate()}/stats/{_batch}.samples.tsv"
 
 
@@ -155,8 +155,6 @@ def fn_hist(_batch, _protocol):
 
 def fn_hist_summary(_batch, _protocol):
     return f"{dir_intermediate()}/{_protocol}/{_batch}.{_protocol}.hist.summary"
-
-
 
 
 ############################################

@@ -8,12 +8,12 @@ rule tree_postprocessing:
     """
     Get a cleaned tree and all auxiliary files
     """
-    input:
-        nw=fn_tree_dirty(_batch="{batch}"),
     output:
         nw=fn_tree_sorted(_batch="{batch}"),
         leaves=fn_leaves_sorted(_batch="{batch}"),
         nodes=fn_nodes_sorted(_batch="{batch}"),
+    input:
+        nw=fn_tree_dirty(_batch="{batch}"),
     params:
         script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
     conda:
@@ -38,10 +38,10 @@ rule symlink_nw_tree:
     """
     Symlink a phylogenetic tree if possible (nw)
     """
-    input:
-        nw=dir_input() / "{batch}.nw",
     output:
         nw=fn_tree_dirty(_batch="{batch}"),
+    input:
+        nw=dir_input() / "{batch}.nw",
     params:
         relative_path=lambda wildcards, input, output: os.path.relpath(
             input.nw, start=os.path.dirname(output.nw)
@@ -56,10 +56,10 @@ rule tree_newick_mashtree:
     """
     Infer a phylogenetic tree from the assemblies belonging to a given batch
     """
-    input:
-        w_batch_asms,
     output:
         nw=fn_tree_dirty(_batch="{batch}"),
+    input:
+        w_batch_asms,
     threads: 8
     conda:
         "../envs/mashtree.yaml"

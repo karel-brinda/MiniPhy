@@ -1,8 +1,18 @@
-rule global_stats:
-    input:
-        [fn_stats_batch_global(batch) for batch in get_batches()],
+"""
+    2 types of statistics to compute:
+    - batch statistics: 1 record per batch; 1 file
+    - genome statistics: 1 record per genome, 1 file per 1 batch
+"""
+
+
+rule stats_batches:
+    """
+    Create global statistics file by merging individual stats from all batches
+    """
     output:
-        fn_stats_global(),
+        fn_stats_batches(),
+    input:
+        [fn_stats_batches_1batch(_batch=batch) for batch in get_batches()],
     params:
         s=snakemake.workflow.srcdir("../scripts/merge_global_stats.py"),
     conda:
@@ -30,11 +40,14 @@ def get_stats_files(protocol):
     return stats_files
 
 
-rule stats_global_sample:
+rule stats_batches_1batch:
+    """
+    For a given batch, merge stats from individual protocols
+    """
+    output:
+        fn_stats_batches_1batch(_batch="{batch}"),
     input:
         [get_stats_files(protocol=x) for x in ("asm", "pre", "post")],
-    output:
-        fn_stats_batch_global(_batch="{batch}"),
     shell:
         """
         (
