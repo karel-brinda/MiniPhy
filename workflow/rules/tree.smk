@@ -60,15 +60,19 @@ rule tree_newick_mashtree:
         nw=fn_tree_dirty(_batch="{batch}"),
     input:
         w_batch_asms,
-    threads: 8
+    threads: config["mashtree_threads"]
+    params:
+        k=config["mashtree_kmer_length"],
+        s=config["mashtree_sketch_size"],
     conda:
         "../envs/mashtree.yaml"
     shell:
         """
         mashtree \\
             --numcpus {threads} \\
+            --kmerlength {params.k} \\
+            --sketch-size {params.s} \\
             --seed 42  \\
-            --sort-order ABC \\
             {input} \\
             | tee {output.nw}
         """
