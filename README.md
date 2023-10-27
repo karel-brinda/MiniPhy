@@ -1,5 +1,18 @@
 # MOF-Compress
 
+
+<p>
+<img src="docs/logo.png" align="left" style="width:100px;" />
+MOF-Compress is a central package of MOF that performs phylogenetic compression, a technique based
+on using estimated evolutionary history to guide compression and efficiently
+search large collections of microbial genomes using existing algorithms and
+data structures.
+</p>
+
+<br />
+
+<h2>Contents</h2>
+
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
@@ -23,10 +36,7 @@
 
 ## Introduction
 
-MOF-Compress is a central package of MOF that performs phylogenetic compression, a technique based
-on using estimated evolutionary history to guide compression and efficiently
-search large collections of microbial genomes using existing algorithms and
-data structures. In short, input data are reorganized according to the topology
+ In short, input data are reorganized according to the topology
 of the estimated phylogenies, which makes data highly locally compressible even
 using basic techniques. The resulting performance gains come from a wide range of benefits of
 phylogenetic compression, including easy parallelization, small memory
