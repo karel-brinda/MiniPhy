@@ -1,5 +1,20 @@
 # MOF-Compress
 
+
+<p>
+<img src="docs/logo.png" align="left" style="width:100px;" />
+MOF-Compress is a central package of MOF that performs phylogenetic compression, a technique based
+on using estimated evolutionary history to guide compression and efficiently
+search large collections of microbial genomes using existing algorithms and
+data structures. In short, input data are reorganized according to the topology
+of the estimated phylogenies, which makes data highly locally compressible even
+using basic techniques.
+</p>
+
+<br />
+
+<h2>Contents</h2>
+
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
@@ -23,27 +38,18 @@
 
 ## Introduction
 
-MOF-Compress is a central package of MOF that performs phylogenetic compression, a technique based
-on using estimated evolutionary history to guide compression and efficiently
-search large collections of microbial genomes using existing algorithms and
-data structures. In short, input data are reorganized according to the topology
-of the estimated phylogenies, which makes data highly locally compressible even
-using basic techniques. The resulting performance gains come from a wide range of benefits of
-phylogenetic compression, including easy parallelization, small memory
-requirements, small database size, better memory locality, and better branch
-prediction.
+This pipeline performs phylogenetic compression of one or more
+genome batches,
+and calculates the associated statistics, using the
+following protocols:
+<ol>
+<li> phylogenetic compression of assemblies based on a left-to-right reordering
+<li> phylogenetic compression of de Bruijn graphs represented by simplitigs based on the left-to-right reordering
+<li> phylogenetic compression of de Bruijn graphs using bottom-up k-mer propagation using ProPhyle.
 
-This pipeline performs phylogenetic compression of several batches and calculates the
-associated statistics. It implements the following three protocols: 1) phylogenetic compression of assemblies based on
-a left-to-right reordering, 2) phylogenetic compression of de Bruijn graphs represented by simplitigs based on the
-left-to-right reordering, and 3) phylogenetic compression of de Bruijn graphs using bottom-up k-mer propagation using
-ProPhyle.
-
-For more information about phylogenetic compression and implementation details, see the [corresponding
-paper](https://www.biorxiv.org/content/10.1101/2023.04.15.536996v2) (and its
-[supplementary](https://www.biorxiv.org/content/biorxiv/early/2023/04/18/2023.04.15.536996/DC1/embed/media-1.pdf)
-and the associated website for the whole [MOF
-framework](http://karel-brinda.github.io/mof)).
+For more information about phylogenetic compression and implementation details, see
+the [main website](http://karel-brinda.github.io/mof)) and
+the [paper](https://www.biorxiv.org/content/10.1101/2023.04.15.536996v2).
 
 
 ### Citation
@@ -69,7 +75,6 @@ The last three packages can be installed using Conda by running
     conda install -c conda-forge -c bioconda -c defaults -y "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
-
 ### Step 2: Clone the repository
 
 ```bash
@@ -77,34 +82,38 @@ The last three packages can be installed using Conda by running
    cd mof-compress
 ```
 
-### Step 3: Run a simple test
+### Step 3 (optional): Install conda environments
 
-Run `make test` to ensure the pipeline works for the sample data present in the [`.test` directory](.test).
+```bash
+   make conda
+```
 
-**Notes:**
-* `make test` should display the following message on a successful exection:
+### Step 4 (optional): Run a simple test
+
+```bash
+   make test
 ```
-94 of 94 steps (100%) done
-```
+
 
 ## Usage
 
-### Step 1: Adjust configuration
+### Step 1: Provide your input files
 
-Edit the [`config.yaml`](config.yaml) file for your desired search. All available options are
-documented directly there.
+Individual batches of genomes in the `.fa[.gz]` formats are to be specified
+in the form of files of files in the `input/` directory,
+as a file `{batch_name}.txt`.
 
-See the [test config](.test/config.yaml) and the [test input dir](.test/resources) for an example.
+**Note:** Use either absolute paths (recommended), or paths relative to the root of the Github repository.
 
-### Step 2: Run the pipeline
 
-Simply run `make`, which will execute Snakemake with the corresponding parameters.
+### Step 2: Adjust configuration
 
-### Step 3: Analyze your results
+Edit the [`config.yaml`](config.yaml) to specify the compression protocols to be used, as well as all options for individual programs.
+All available options are documented directly there.
 
-Check the output files in `output_dir` (defined in `config.yaml`).
+### Step 3: Run the pipeline
 
-If the results don't correspond to what you expected and you need to re-adjust your parameters, go to Step 1.
+Simply run `make`, which will execute Snakemake with the corresponding parameters. The computed files will then be located in `output/`.
 
 ## Additional information
 
@@ -116,28 +125,17 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
 ```
-######################
-## General commands ##
-######################
-all         Run everything (the default rule)
-report      Create html report
-test        Run the workflow on test data
-testreport  Create html report for the test dir
-cleanall    Clean all
-clean       Clean
-format      Reformat source codes
-help        Print help message
-rmstats     Remove stats
+all           Run everything
+checkformat   Check source code format (developers)
+clean         Clean
+cleanall      Clean all
+conda         Create the conda environments
+format        Reformat all source code (developers)
+help          Print help message
+report        Create html report
+rmstats       Remove stats
+test          Run the workflow on test data
 ```
-
-### Directories in the output dir
-
-* `asm/`: TODO
-* `post/`: TODO
-* `pre/`: TODO
-* `stats/`: TODO
-* `tree/`: TODO
-* `global_stats.tsv`: TODO
 
 
 ## License
