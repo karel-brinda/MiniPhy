@@ -20,16 +20,8 @@ using basic techniques.
 * [Introduction](#introduction)
   * [Citation](#citation)
 * [Installation](#installation)
-  * [Step 1: Install dependencies](#step-1-install-dependencies)
-  * [Step 2: Clone the repository](#step-2-clone-the-repository)
-  * [Step 3: Run a simple test](#step-3-run-a-simple-test)
 * [Usage](#usage)
-  * [Step 1: Adjust configuration](#step-1-adjust-configuration)
-  * [Step 2: Run the pipeline](#step-2-run-the-pipeline)
-  * [Step 3: Analyze your results](#step-3-analyze-your-results)
 * [Additional information](#additional-information)
-  * [List of workflow commands](#list-of-workflow-commands)
-  * [Directories in the output dir](#directories-in-the-output-dir)
 * [License](#license)
 * [Contacts](#contacts)
 
@@ -38,14 +30,13 @@ using basic techniques.
 
 ## Introduction
 
-This pipeline performs phylogenetic compression of one or more
-genome batches,
-and calculates the associated statistics, using the
-following protocols:
+This pipeline performs phylogenetic compression of one or more genome batches,
+and calculates the associated statistics, using the following protocols:
 <ol>
 <li> phylogenetic compression of assemblies based on a left-to-right reordering
 <li> phylogenetic compression of de Bruijn graphs represented by simplitigs based on the left-to-right reordering
 <li> phylogenetic compression of de Bruijn graphs using bottom-up k-mer propagation using ProPhyle.
+</ol>
 
 For more information about phylogenetic compression and implementation details, see
 the [main website](http://karel-brinda.github.io/mof)) and
@@ -59,8 +50,7 @@ the [paper](https://www.biorxiv.org/content/10.1101/2023.04.15.536996v2).
 
 ## Installation
 
-### Step 1: Install dependencies
-
+**Step 1: Install dependencies.**
 MOF-Compress is implemented as a [Snakemake](https://snakemake.github.io)
 pipeline, using the Conda system to manage all non-standard dependencies. It requires the following packages pre-installed:
 
@@ -75,20 +65,20 @@ The last three packages can be installed using Conda by running
     conda install -c conda-forge -c bioconda -c defaults -y "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
-### Step 2: Clone the repository
+**Step 2: Clone the repository.**
 
 ```bash
    git clone https://github.com/karel-brinda/mof-compress
    cd mof-compress
 ```
 
-### Step 3 (optional): Install conda environments
+**Step 3 (optional): Install conda environments.**
 
 ```bash
    make conda
 ```
 
-### Step 4 (optional): Run a simple test
+**Step 4 (optional): Run a simple test.**
 
 ```bash
    make test
@@ -97,30 +87,24 @@ The last three packages can be installed using Conda by running
 
 ## Usage
 
-### Step 1: Provide your input files
-
+**Step 1: Provide your input files.**
 Individual batches of genomes in the `.fa[.gz]` formats are to be specified
 in the form of files of files in the `input/` directory,
-as a file `{batch_name}.txt`.
+as a file `{batch_name}.txt`. Use either absolute paths (recommended),
+or paths relative to the root of the Github repository.
 
-**Note:** Use either absolute paths (recommended), or paths relative to the root of the Github repository.
 
-
-### Step 2: Adjust configuration
-
+**Step 2: Adjust configuration.**
 Edit the [`config.yaml`](config.yaml) to specify the compression protocols to be used, as well as all options for individual programs.
 All available options are documented directly there.
 
-### Step 3: Run the pipeline
-
+**Step 3: Run the pipeline.**
 Simply run `make`, which will execute Snakemake with the corresponding parameters. The computed files will then be located in `output/`.
 
 ## Additional information
 
-### List of workflow commands
-
+**List of workflow commands.**
 MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
-
 Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
