@@ -10,7 +10,6 @@ data structures. In short, input data are reorganized according to the topology
 of the estimated phylogenies, which makes data highly locally compressible even
 using basic techniques.
 </p>
-
 <br />
 
 <h2>Contents</h2>
