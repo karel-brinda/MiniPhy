@@ -4,9 +4,9 @@
 <img src="docs/logo.png" align="left" style="width:100px;" />
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
 of microbial genomes, producing highly compressed <code>.tar.xz</code> files.
-MOF-Compress first estimates the evolutionary history
-of user-provided genomes
-(unless a phylogeny is provided by the user),
+MOF-Compress first estimates the evolutionary tree
+of the user-provided genomes
+(unless already accompanied by a phylogeny),
 and uses it compress compress the genomes.
 More information about the technique can be found
 on the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
@@ -26,8 +26,9 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 * [Introduction](#introduction)
 * [Dependencies](#dependencies)
 * [Installation](#installation)
-* [Basic usage](#basic-usage)
-* [Advanced usage](#advanced-usage)
+* [Usage](#usage)
+  * [Basic example](#basic-example)
+  * [Adjusting configuration](#adjusting-configuration)
   * [List of implemented protocols](#list-of-implemented-protocols)
   * [List of workflow commands](#list-of-workflow-commands)
   * [Troubleshooting](#troubleshooting)
@@ -74,6 +75,7 @@ and can be installed by Conda by
 ```
 
 <h3>Protocol-specific dependencies</h3>
+
 These are installed automatically by
 Snakemake when they are required/
 Their lists can be found in [`workflow/envs/`](workflow/envs/)
@@ -99,28 +101,64 @@ Clone the repository and enter the directory by
 ```
 
 
-## Basic usage
+## Usage
 
-<h3>Step 1: Provide your input files</h3>
+### Basic example
 
-Individual batches of genomes in the `.fa[.gz]` formats are to be specified
-in the form of files of files in the `input/` directory,
-as a file `{batch_name}.txt`. Use either absolute paths (recommended),
-or paths relative to the root of the Github repository.
+<h4><u>Step 1:</u> Provide lists of input files</h4>
 
+For every batch, create a txt list of input files in the `input/`
+directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
+or paths relative to the root of the Github repository (not relative to the txt files).
 
-<h3>Step 2: Adjust configuration</h3>
+Such lists can generated, for instance, by `find` by something like:
+```
+find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
+```
 
-Edit the [`config.yaml`](config.yaml) to specify the compression protocols to be used, as well as all options for individual programs.
-All available options are documented directly there.
-
-<h3>Step 3: Run the pipeline</h3>
-
-Simply run `make`, which will execute Snakemake with the corresponding parameters. The computed files will then be located in `output/`.
+The supported input file formats include FASTA and FASTQ, possibly gzipped.
 
 
+<h4><u>Step 2 (optional):</u> Provide corresponding phylogenies</h4>
 
-## Advanced usage
+In the default setting, phylogenies are estimated using MashTree,
+which already provides a sufficiently good resolution.
+
+In case you want to use custom phylogenies (in Newick),
+put them into `input/{batch_name}.nw`. Leave names should correspond
+to the names of your input FASTA files without the FASTA suffixes.
+
+
+<h4><u>Step 3 (optional):</u> Adjust configuration</h4>
+
+Edit the [`config.yaml`](config.yaml) to specify compression protocols and data analyzes
+to be included, as well as specific parameters.
+
+
+<h4><u>Step 4:</u> Run the pipeline</h4>
+
+Run the pipeline by `make`. This will execute Snakemake with the corresponding parameters.
+
+
+<h4><u>Step 5:</u> Retrieve the output files</h4>
+
+All output files will be located in `output/`.
+
+
+### Adjusting configuration
+
+The workflow can be configured via the [`config.yaml`](./config.yaml) file.
+All options are documented directly there.
+
+The configurable functionality includes:
+* switching off Conda
+* protocols to use (asm, dGSs, dBGs with propagation)
+* analyzes to include (sequence and k-mer statistics)
+* k for de Bruijn graph and k-mer counting
+* Mashtree parameters (phylogeny estimation)
+* XZ parameters (low-level compression)
+* JellyFish parameters (k-mer counting)
+
 
 ### List of implemented protocols
 
@@ -128,7 +166,7 @@ Simply run `make`, which will execute Snakemake with the corresponding parameter
 
 <thead>
   <td>Protocol
-  <td>Compressed representation
+  <td>Representation
   <td>Description
   <td>Product
 

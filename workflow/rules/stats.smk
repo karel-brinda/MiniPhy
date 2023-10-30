@@ -27,10 +27,10 @@ def get_stats_files(protocol):
     stats_files = []
 
     if config[f"protocol_{protocol}"]:
-        if config["kmer_counting"]:
+        if config["kmer_statistics"]:
             stats_files.append(fn_hist_summary(_batch="{batch}", _protocol=protocol))
 
-        if config["nscl_analyses"]:
+        if config["sequence_statistics"]:
             stats_files.append(fn_nscl_summary(_batch="{batch}", _protocol=protocol))
 
         stats_files.append(fn_compr_summary(_batch="{batch}", _protocol=protocol))

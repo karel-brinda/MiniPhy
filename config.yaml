@@ -25,15 +25,15 @@ protocol_pre:         False
 protocol_post:        False
 
 
-#######################################
-# ADDITIONAL DATA ANALYSES TO INCLUDE #
-#######################################
+############################
+# DATA ANALYSES TO INCLUDE #
+############################
 
 # Calculate #seqs and their cumulative length
-nscl_analyses:        True
+sequence_statistics:  True
 
 # Include analyses based on k-mer counts (using JellyFish 2)
-kmer_counting:        False
+kmer_statistics:      False
 
 
 ##############
@@ -43,15 +43,15 @@ kmer_counting:        False
 # (1) General parameters; notes:
 #     - kmer length defines k for dBGs in Protocols 2 and 3
 #     - the same k-mer length is used also for k-mer counting (all protocols)
-#     - converting sequences to upper case used in Protocol 1
+#     - converting sequences to upper case is used in Protocol 1
 kmer_length:          31
 asms_to_uppercase:    True
 
 
 # (2) XZ parameters; notes:
-#     - best compression always achieved with 1 thread
-#     - increasing xz_threads useful for acceleration, but the files get >2x bigger
-#     - for all XZ params see 'man xz'
+#     - best compression is always achieved with 1 thread
+#     - increasing xz_threads is useful for acceleration, but the files get >2x bigger
+#     - for all XZ params, see 'man xz'
 xz_threads:           1
 xz_params:            "-9"
 
