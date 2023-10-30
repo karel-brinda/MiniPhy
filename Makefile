@@ -7,11 +7,12 @@ SHELL=/usr/bin/env bash -eo pipefail
 .SUFFIXES:
 
 
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#!! WARNING: !! TOPDIR changes to .. when run from .test/ !!
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!! WARNING: !! TOPDIR changes automatically to .. when run from .test/ !!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-TOPDIR = .
+#TOPDIR = .
+TOPDIR = $(shell if [ -d ".test" ]; then echo . ; else echo .. ; fi)
 
 
 # test if this is run from the .test/ directory
@@ -87,7 +88,7 @@ viewconf: ## View configuration without comments
 reports: ## Create html report
 	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR) --report report.html
 	@if [ -d ".test" ]; then \
-		$(MAKE) -C .test TOPDIR=.. reports; \
+		$(MAKE) -C .test reports; \
 	fi
 
 
@@ -98,7 +99,7 @@ reports: ## Create html report
 test: ## Run the workflow on test data
 	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
 	@if [ -d ".test" ]; then \
-		$(MAKE) -C .test TOPDIR=..; \
+		$(MAKE) -C .test; \
 	fi
 
 format: ## Reformat all source code
