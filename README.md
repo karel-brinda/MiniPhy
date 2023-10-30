@@ -136,7 +136,7 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
   compression protocols, data analyzes,
   and low-level parameters (see below).
 
-* ***Step 4: Run the pipeline*** \
+* ***Step 4: Run the pipeline.*** \
   Run the pipeline by `make`; this is run
   Snakemake with the corresponding parameters.
 
@@ -243,17 +243,27 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
 ```
-all           Run everything
-checkformat   Check source code format (developers)
-clean         Clean
-cleanall      Clean all
-conda         Create the conda environments
-format        Reformat all source code (developers)
-help          Print help message
-report        Create html report
-rmstats       Remove stats
-test          Run the workflow on test data
-testreport    Create html report for the test
+######################
+## General commands ##
+######################
+    all                  Run everything
+    help                 Print help messages
+    conda                Create the conda environments
+    clean                Clean
+    cleanall             Clean all
+    rmstats              Remove statistics
+###############
+## Reporting ##
+###############
+    viewconf             View configuration without comments
+    report               Create html report
+    testreport           Create html report for the test
+####################
+## For developers ##
+####################
+    test                 Run the workflow on test data
+    format               Reformat all source code (developers)
+    checkformat          Check source code format (developers)
 ```
 
 
