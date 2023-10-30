@@ -37,15 +37,17 @@ ifeq ($(strip $(USE_CONDA)),True)
 endif
 
 
-#############
-# FOR USERS #
-#############
+######################
+## General commands ##
+######################
 
 all: ## Run everything
 	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR)
 
-help: ## Print help message
-	@echo "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\1:\2/' | column -c2 -t -s : | sort)"
+help: ## Print help messages
+	@echo "$$(grep -hE '^\S*(:.*)?##' $(MAKEFILE_LIST) \
+		| sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\\x1b[36m\1\\x1b[m:\2/' -e 's/^\([^#]\)/    \1/g'\
+		| column -c2 -t -s : )"
 
 conda: ## Create the conda environments
 	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
@@ -71,17 +73,17 @@ viewconf: ## View configuration without comments
 		| grep --color='auto' -E '.*\:'
 	@#| grep -Ev ^$$
 
+report: ## Create html report
+	snakemake $(CONDA_PARAMS) --report report.html $(SNAKEMAKE_PARAM_DIR)
+
 testreport: ## Create html report for the test
 	$(MAKE) -C .test TOPLEVEL_DIR=.. report
 	#snakemake -d .test -j 1 $(CONDA_PARAMS) -p --show-failed-logs --report test_report.html
 
-report: ## Create html report
-	snakemake $(CONDA_PARAMS) --report report.html $(SNAKEMAKE_PARAM_DIR)
 
-
-##################
-# FOR DEVELOPERS #
-##################
+####################
+## For developers ##
+####################
 
 test: ## Run the workflow on test data
 	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
