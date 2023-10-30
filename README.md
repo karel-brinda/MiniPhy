@@ -110,7 +110,7 @@ Clone the repository and enter the directory by
 
 ### 4a. Basic example
 
-<h4><i>Step 1:</i> Provide lists of input files</h4>
+<h4><i>Step 1: Provide lists of input files</i></h4>
 
 For every batch, create a txt list of input files in the `input/`
 directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
@@ -124,7 +124,7 @@ find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
 The supported input file formats include FASTA and FASTQ, possibly gzipped.
 
 
-<h4><i>Step 2 (optional):</i> Provide corresponding phylogenies</h4>
+<h4><i>Step 2 (optional): Provide corresponding phylogenies</i></h4>
 
 In the default setting, phylogenies are estimated using MashTree,
 which already provides a sufficiently good resolution.
@@ -134,18 +134,18 @@ put them into `input/{batch_name}.nw`. Leave names should correspond
 to the names of your input FASTA files without the FASTA suffixes.
 
 
-<h4><i>Step 3 (optional):</i> Adjust configuration</h4>
+<h4><i>Step 3 (optional): Adjust configuration</i></h4>
 
 Edit the [`config.yaml`](config.yaml) to specify compression protocols and data analyzes
 to be included, as well as specific parameters.
 
 
-<h4><i>Step 4:</i> Run the pipeline</h4>
+<h4><i>Step 4: Run the pipeline</i></h4>
 
 Run the pipeline by `make`. This will execute Snakemake with the corresponding parameters.
 
 
-<h4><i>Step 5:</i> Retrieve the output files</h4>
+<h4><i>Step 5: Retrieve the output files</i></h4>
 
 All output files will be located in `output/`.
 
