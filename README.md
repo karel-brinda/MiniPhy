@@ -179,7 +179,7 @@ all options are documented directly there. The configurable functionality includ
 
   <td>
     <code>output/asm/{batch}.tar.xz</code><br/>
-    original assemblies in FASTA <b>(1)</b>
+    original assemblies in FASTA <sup><b>(1)</b></sup>
 
 
 <tr>
@@ -212,21 +212,21 @@ all options are documented directly there. The configurable functionality includ
 
   <td>
     Bottom-up <i>k</i>-mer propagation using <a href="http://prophyle.github.io">ProPhyle</a>,
-    <a href="https://doi.org/10.1186/s13059-021-02297-z">simplitigs</a>at individual nodes of the tree,
-    and left-to-right re-ordering of the obtained files
+    <a href="https://doi.org/10.1186/s13059-021-02297-z">simplitigs</a>
+    at individual nodes of the tree, and left-to-right re-ordering of the obtained files
 
   <td>
     <code>output/post/{batch}.tar.xz</code><br/>
     <code>output/post/{batch}.nw</code><br/>
-    simplitig text files per individual nodes of the tree <b>(2)</b>
+    simplitig text files per individual nodes of the tree <sup><b>(2)</b></sup>
 
 </table>
 
 
 <small>
-  <b>(1):</b> In 1 line format and sequences in uppercase.
+  <sup><b>(1)</b></sup> In 1 line format and sequences in uppercase.
   <br />
-  <b>(2):</b> For obtaining the represented de Bruijn graphs,
+  <sup><b>(2)</b></sup> For obtaining the represented de Bruijn graphs,
   one needs to merge <i>k</i>-mer sets along
   the respetive root-to-leaf paths.
 </small>
