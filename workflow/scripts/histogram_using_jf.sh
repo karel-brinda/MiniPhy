@@ -75,9 +75,11 @@ fi
 echo "Parameters: s=$s k=$k t=$t" 1>&2
 
 jellyfish count \
-	--threads "$t" \
 	--canonical \
+	--threads "$t" \
 	--mer-len "$k" \
+	--counter-len 16 \
+	--out-counter-len 7 \
 	--size "$s" \
 	--output "$y" \
 	"$x"
@@ -89,5 +91,5 @@ jellyfish histo \
 	"$y" \
 	| perl -pe 's/ /\t/g'
 
-rm -f "$y"
+rm -fv "$y"
 
