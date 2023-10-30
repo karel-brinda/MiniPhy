@@ -226,16 +226,16 @@ test          Run the workflow on test data
 K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression.** bioRxiv 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
 
 ```bibtex
-@article {B{\v r}inda2023.04.15.536996,
-  author = {Karel B{\v r}inda and Leandro Lima and Simone Pignotti
-    and Natalia Quinones-Olvera and Kamil Salikhov and Rayan Chikhi
-    and Gregory Kucherov and Zamin Iqbal and Michael Baym},
-  title = {Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression},
-  elocation-id = {2023.04.15.536996},
-  year = {2023},
-  doi = {10.1101/2023.04.15.536996},
-  URL = {https://www.biorxiv.org/content/early/2023/04/16/2023.04.15.536996},
-  journal = {bioRxiv}
+@article {PhylogeneticCompression,
+   author  = {Karel B{\v r}inda and Leandro Lima and Simone Pignotti
+               and Natalia Quinones-Olvera and Kamil Salikhov and Rayan Chikhi
+               and Gregory Kucherov and Zamin Iqbal and Michael Baym},
+   title   = {Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression},
+   journal = {bioRxiv},
+   elocation-id = {2023.04.15.536996},
+   year    = {2023},
+   doi     = {10.1101/2023.04.15.536996},
+   url     = {https://www.biorxiv.org/content/early/2023/04/16/2023.04.15.536996}
 }
 ```
 
