@@ -7,8 +7,8 @@
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
 of microbial genomes, producing highly compressed <code>.tar.xz</code> genome archives.
 MOF-Compress first estimates the phylogeny
-of the user-provided genomes
-and uses the tree for guiding their compression.
+of user-provided genomes
+and then uses the obtained tree for guiding their compression using XZ.
 More information about the technique can be found
 on the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
 and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
@@ -45,19 +45,19 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 
 ## 1. Introduction
 
-It is assumed that the input genomes are provided as batches of
-phylogenetically related genomes, of up to approx. 10k genomes per batch
-(for more information on batching strategies,
-see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
-
 The user provides files of files for individual batches
 in the `input/` directory
 and specifies the requested compression protocols in the
 [configuration file](config.yaml).
-
-Upon execution of the pipeline by `make`,
-MOF-Compress performs phylogenetic compression,
-and the compressed output can then be found in `output/`.
+It is assumed that the input genomes are provided as batches of
+phylogenetically related genomes, of up to approx. 10k genomes per batch
+(for more information on batching strategies,
+see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
+Upon the execution of the pipeline by `make`,
+MOF-Compress performs phylogenetic compression
+of the assemblies or associated de Bruijn graphs.
+All the compressed outputs and calculated statistics
+are then placed in `output/`.
 
 
 
@@ -81,9 +81,16 @@ bash conda install -c conda-forge -c bioconda -c defaults \
 These are installed automatically by
 Snakemake when they are required/
 Their lists can be found in [`workflow/envs/`](workflow/envs/)
-and involve ETE 3, Seqtk, Xopen, Pandas, Jellyfish (v2),
-Mashtree, ProphAsm, and ProPhyle. For instance, ProPhyle is
-not installed unless Protocol 3 is used.
+and involve
+[ETE 3](http://etetoolkit.org/),
+[SeqTK](https://github.com/lh3/seqtk),
+[xopen](https://pypi.org/project/xopen/),
+[Pandas](https://pandas.pydata.org/),
+[Jellyfish 2](https://github.com/gmarcais/Jellyfish),
+[Mashtree](https://github.com/lskatz/mashtree),
+[ProphAsm](https://github.com/prophyle/prophasm),
+and [ProPhyle](https://prophyle.github.io).
+For instance, ProPhyle is not installed unless Protocol 3 is used.
 
 All non-essential dependencies across all protocols can also be
 installed by `make conda`.
