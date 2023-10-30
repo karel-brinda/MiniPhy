@@ -5,8 +5,8 @@
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
 of microbial genomes (produces a highly compressed `.tar.xz` files).
 MOF-Compress first estimates the evolutionary history
-of the provided genomes
-(or takes a user-provided phylogeny)
+of user-provided genomes
+(unless a phylogeny is provided by the user),
 and uses it compress compress the genomes.
 More information about the technique can be found
 on the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
@@ -19,6 +19,9 @@ or in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
+  * [Protocol 1 (default)](#protocol-1-default)
+  * [Protocol 2 (optional)](#protocol-2-optional)
+  * [Protocol 3 (optional)](#protocol-3-optional)
 * [Installation](#installation)
   * [Dependencies](#dependencies)
   * [Installation](#installation-1)
@@ -35,27 +38,49 @@ or in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a
 
 ## Introduction
 
-MOF-Compress is implemented as a Snakemake pipeline,
-with automatic installation of dependencies using Conda.
-
-It is assumed that the input genomes are already split into batches of
+It is assumed that the input genomes are provided as batches of
 phylogenetically related genomes, of up to ≈10k genomes per batch
-(for more information about how to perform batching,
+(for more information on batching strategies,
 see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
 
 The user then provides files of files for individual batches
-into the `input/` directory (possibly accompanied with phylogenies,
-otherwise they will be estimated by MashTree),
+into the `input/` directory
 and specifies the requested compression protocol in the
 [configuration file](config.yaml).
 
-This pipeline then performs phylogenetic compression of all batches,
-and calculates the associated statistics, using the following protocols:
-<ol>
-<li> phylogenetic compression of assemblies based on a left-to-right reordering (<b>the default protocol</b>),
-<li> phylogenetic compression of de Bruijn graphs represented by simplitigs based on the left-to-right reordering (optional),
-<li> phylogenetic compression of de Bruijn graphs using bottom-up <i>k</i>-mer propagation using ProPhyle (optional).
-</ol>
+MOF-Compress then performs phylogenetic compression of all batches,
+and calculates the associated statistics, using one or more of the following protocols.
+
+### Protocol 1 (default)
+Phylogenetic compression of *assemblies*.
+based on a left-to-right reordering of the assemblies.
+
+**Final product:**
+A `.tar.xz` file of the original
+assemblies in FASTA (reformatted to 1 line format and
+sequenced converted to upper case).
+
+
+###  Protocol 2 (optional)
+Phylogenetic compression of *de Bruijn graphs*,
+based on computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z)
+from individual assemblies,
+followed by a the left-to-right reordering of the simplitig files.
+
+**Final product:**
+A `.tar.xz` with simplitig text files, representing individual de Bruijn graphs.
+
+
+###  Protocol 3 (optional)
+Phylogenetic compression of *de Bruijn graphs*,
+based on bottom-up *k*-mer propagation using [ProPhyle](http://prophyle.github.io),
+computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z) at individual nodes
+of the tree, and left-to-right re-ordering of the obtained files.
+
+**Final product:**
+A `.tar.xz` and a `.nw` tree, the former containing simplitig text files for individual nodes of the tree in the latter. For obtaining the represented de Bruijn graphs, one needs to merge *k*-mer sets along the respetive root-to-leaf paths.
+
+
 
 ## Installation
 
@@ -70,7 +95,7 @@ and calculates the associated statistics, using the following protocols:
 
 and can be installed by Conda by
 ```bash
-    conda install -c conda-forge -c bioconda -c defaults \\
+    conda install -c conda-forge -c bioconda -c defaults \
       "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
