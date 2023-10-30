@@ -112,7 +112,7 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
 
 ### 4a. Basic example
 
-***Step 1: Provide lists of input files.***
+* ***Step 1: Provide lists of input files.***
 For every batch, create a txt list of input files in the `input/`
 directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
 or paths relative to the root of the Github repository (not relative to the txt files). Such lists can generated, for instance, by `find` by something like
@@ -121,22 +121,22 @@ find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
 ```
 The supported input file formats include FASTA and FASTQ, possibly gzipped.
 
-***Step 2 (optional): Provide corresponding phylogenies.***
+* ***Step 2 (optional): Provide corresponding phylogenies.***
 If estimating phylogenies by MashTree is not desired,
 it is possible to supply custom phylogenies in the Newick format,
 named `input/{batch_name}.nw`. Leave names in the tree should correspond
 to the names of the input FASTA files (with removed FASTA suffixes).
 
-***Step 3 (optional): Adjust configuration.***
+* ***Step 3 (optional): Adjust configuration.***
 Edit the [`config.yaml`](config.yaml) to specify compression protocols and data analyzes
 to be included, as well as specific parameters
 (more information about the configuration can be found below).
 
-***Step 4: Run the pipeline***
+* ***Step 4: Run the pipeline***
 Run the pipeline by `make`. This will execute
 Snakemake with the corresponding parameters.
 
-***Step 5: Retrieve the output files.***
+* ***Step 5: Retrieve the output files.***
 All output files will be located in `output/`.
 
 
