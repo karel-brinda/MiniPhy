@@ -1,13 +1,15 @@
 # MOF-Compress
 
 <p>
-<img src="docs/logo.png" align="left" style="width:100px;" />
+<a href="https://github.com/karel-brinda/mof-compress">
+    <img src="docs/logo.png" align="left" style="width:100px;" />
+</a>
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
-of microbial genomes, producing highly compressed <code>.tar.xz</code> files.
+of microbial genomes, producing highly compressed <code>.tar.xz</code> archives
 MOF-Compress first estimates the evolutionary history
 of user-provided genomes
-(unless they are already provided with phylogeny),
-and uses it compress compress the genomes.
+(unless they are accompanied by a phylogeny),
+and uses the tree for guiding the compression of the genomes.
 More information about the technique can be found
 on the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
 and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
