@@ -6,6 +6,7 @@
 input_dir:            input
 intermediate_dir:     intermediate
 output_dir:           output
+conda_dir:            .conda
 
 # (2) Parameters for Snakemake execution
 use_conda:            True # build conda environments automatically by Snakemake

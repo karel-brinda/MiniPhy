@@ -12,10 +12,13 @@ SHELL=/usr/bin/env bash -eo pipefail
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 TOPLEVEL_DIR := .
+CONDA_DIR     = $(shell grep "^conda_dir:" config.yaml | awk '{print $$2}')
 USE_CONDA     = $(shell grep "^use_conda:" config.yaml | awk '{print $$2}')
 
+CONDA_DIR_ADJ = "$(TOPLEVEL_DIR)/$(CONDA_DIR)"
+
 ifeq ($(strip $(USE_CONDA)),True)
-	CONDA_PARAMS  =	--use-conda --conda-prefix="$(TOPLEVEL_DIR)/.conda"
+	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR_ADJ)"
 endif
 
 #############
