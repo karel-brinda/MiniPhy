@@ -24,28 +24,30 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 
 <!-- vim-markdown-toc GFM -->
 
-* [Introduction](#introduction)
-* [Dependencies](#dependencies)
-* [Installation](#installation)
-* [Usage](#usage)
-  * [Basic example](#basic-example)
-  * [Adjusting configuration](#adjusting-configuration)
-  * [List of implemented protocols](#list-of-implemented-protocols)
-  * [List of workflow commands](#list-of-workflow-commands)
-  * [Troubleshooting](#troubleshooting)
-* [Citation](#citation)
-* [Issues](#issues)
-* [Changelog](#changelog)
-* [License](#license)
-* [Contacts](#contacts)
+* [1. Introduction](#1-introduction)
+* [2. Dependencies](#2-dependencies)
+  * [2a. Essential dependencies](#2a-essential-dependencies)
+  * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
+* [3. Installation](#3-installation)
+* [4. Usage](#4-usage)
+  * [4a. Basic example](#4a-basic-example)
+  * [4b. Adjusting configuration](#4b-adjusting-configuration)
+  * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
+  * [4d. List of workflow commands](#4d-list-of-workflow-commands)
+  * [4e. Troubleshooting](#4e-troubleshooting)
+* [5. Citation](#5-citation)
+* [6. Issues](#6-issues)
+* [7. Changelog](#7-changelog)
+* [8. License](#8-license)
+* [9. Contacts](#9-contacts)
 
 <!-- vim-markdown-toc -->
 
 
-## Introduction
+## 1. Introduction
 
 It is assumed that the input genomes are provided as batches of
-phylogenetically related genomes, of up to ≈10k genomes per batch
+phylogenetically related genomes, of up to approx. 10k genomes per batch
 (for more information on batching strategies,
 see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
 
@@ -60,22 +62,22 @@ and the compressed output can then be found in `output/`.
 
 
 
-## Dependencies
+## 2. Dependencies
 
-<h3>Essential dependencies</h3>
+### 2a. Essential dependencies
 
-* [Conda](https://docs.conda.io/en/latest/miniconda.html) (unless the use of Conda is switched off in the configuration), ideally also [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0)
+* [Conda](https://docs.conda.io/en/latest/miniconda.html) (unless the use of Conda is switched off in the configuration) and ideally also [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0)
 * [GNU Make](https://www.gnu.org/software/make/)
 * [Python](https://www.python.org/) (>=3.7)
 * [Snakemake](https://snakemake.github.io) (>=6.2.0)
 
 and can be installed by Conda by
 ```bash
-    conda install -c conda-forge -c bioconda -c defaults \
-      "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+bash conda install -c conda-forge -c bioconda -c defaults \
+  make "python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
-<h3>Protocol-specific dependencies</h3>
+### 2b. Protocol-specific dependencies
 
 These are installed automatically by
 Snakemake when they are required/
@@ -84,84 +86,78 @@ and involve ETE 3, Seqtk, Xopen, Pandas, Jellyfish (v2),
 Mashtree, ProphAsm, and ProPhyle. For instance, ProPhyle is
 not installed unless Protocol 3 is used.
 
-The installation of all non-essential dependencies across
-all protocols can also be achieved by:
+All non-essential dependencies across all protocols can also be
+installed by `make conda`.
+
+
+
+## 3. Installation
+
+Clone and enter the repository by
 
 ```bash
-   make conda
+git clone https://github.com/karel-brinda/mof-compress
+cd mof-compress
 ```
 
-
-## Installation
-
-Clone the repository and enter the directory by
-
+Alternatively, the repository can also be installed using cURL by
 ```bash
-   git clone https://github.com/karel-brinda/mof-compress
-   cd mof-compress
+mkdir mof-compress
+cd mof-compress
+curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
+    | tar xvf - --strip-components=1
 ```
 
 
-## Usage
+## 4. Usage
 
-### Basic example
+### 4a. Basic example
 
-<h4><u>Step 1:</u> Provide lists of input files</h4>
+* ***Step 1: Provide lists of input files.*** \
+  For every batch, create a txt list of input files in the `input/`
+  directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
+  or paths relative to the root of the Github repository (not relative to the txt files).
 
-For every batch, create a txt list of input files in the `input/`
-directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
-or paths relative to the root of the Github repository (not relative to the txt files).
+  Such a list can be generated, for instance, by `find` by
+  ```bash
+  find ~/dir_with_my_genomes -name '*.fa' > input/my_first_batch.txt
+  ```
+  The supported input file formats include FASTA and FASTQ (possibly compressed by GZip).
 
-Such lists can generated, for instance, by `find` by something like:
-```
-find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
-```
+* ***Step 2 (optional): Provide corresponding phylogenies.*** \
+  Instead of estimating phylogenies by MashTree,
+  it is possible to supply custom phylogenies in the Newick format.
+  The tree files should be named `input/{batch_name}.nw`,
+  and the leave names inside should correspond
+  to FASTA filenames (without FASTA suffixes).
 
-The supported input file formats include FASTA and FASTQ, possibly gzipped.
+* ***Step 3 (optional): Adjust configuration.*** \
+  By editting [`config.yaml`](config.yaml) it is possible to specify
+  compression protocols, data analyzes,
+  and low-level parameters (see below).
 
+* ***Step 4: Run the pipeline.*** \
+  Run the pipeline by `make`; this is run
+  Snakemake with the corresponding parameters.
 
-<h4><u>Step 2 (optional):</u> Provide corresponding phylogenies</h4>
-
-In the default setting, phylogenies are estimated using MashTree,
-which already provides a sufficiently good resolution.
-
-In case you want to use custom phylogenies (in Newick),
-put them into `input/{batch_name}.nw`. Leave names should correspond
-to the names of your input FASTA files without the FASTA suffixes.
-
-
-<h4><u>Step 3 (optional):</u> Adjust configuration</h4>
-
-Edit the [`config.yaml`](config.yaml) to specify compression protocols and data analyzes
-to be included, as well as specific parameters.
-
-
-<h4><u>Step 4:</u> Run the pipeline</h4>
-
-Run the pipeline by `make`. This will execute Snakemake with the corresponding parameters.
+* ***Step 5: Retrieve the output files.*** \
+  All output files will be located in `output/`.
 
 
-<h4><u>Step 5:</u> Retrieve the output files</h4>
+### 4b. Adjusting configuration
 
-All output files will be located in `output/`.
-
-
-### Adjusting configuration
-
-The workflow can be configured via the [`config.yaml`](./config.yaml) file.
-All options are documented directly there.
-
-The configurable functionality includes:
-* switching off Conda
-* protocols to use (asm, dGSs, dBGs with propagation)
-* analyzes to include (sequence and k-mer statistics)
-* k for de Bruijn graph and k-mer counting
-* Mashtree parameters (phylogeny estimation)
-* XZ parameters (low-level compression)
-* JellyFish parameters (k-mer counting)
+The workflow can be configured via the [`config.yaml`](./config.yaml) file, and
+all options are documented directly there. The configurable functionality includes:
+* switching off Conda,
+* protocols to use (asm, dGSs, dBGs with propagation),
+* analyzes to include (sequence and *k*-mer statistics),
+* *k* for de Bruijn graph and *k*-mer counting,
+* Mashtree parameters (phylogeny estimation),
+* XZ parameters (low-level compression), or
+* JellyFish parameters (*k*-mer counting).
 
 
-### List of implemented protocols
+### 4c. List of implemented protocols
 
 <table>
 
@@ -186,7 +182,7 @@ The configurable functionality includes:
 
   <td>
     <code>output/asm/{batch}.tar.xz</code><br/>
-    original assemblies in FASTA  (<b>(1)</b>)
+    original assemblies in FASTA <sup><b>(1)</b></sup>
 
 
 <tr>
@@ -219,58 +215,65 @@ The configurable functionality includes:
 
   <td>
     Bottom-up <i>k</i>-mer propagation using <a href="http://prophyle.github.io">ProPhyle</a>,
-    <a href="https://doi.org/10.1186/s13059-021-02297-z">simplitigs</a>at individual nodes of the tree,
-    and left-to-right re-ordering of the obtained files
+    <a href="https://doi.org/10.1186/s13059-021-02297-z">simplitigs</a>
+    at individual nodes of the tree, and left-to-right re-ordering of the obtained files
 
   <td>
     <code>output/post/{batch}.tar.xz</code><br/>
     <code>output/post/{batch}.nw</code><br/>
-    simplitig text files per individual nodes of the tree (<b>(2)</b>)
+    simplitig text files per individual nodes of the tree <sup><b>(2)</b></sup>
 
 </table>
 
 
 <small>
-  <b>(1):</b> In 1 line format and sequences in uppercase.
+  <sup><b>(1)</b></sup> In FASTA 1-line format and all sequences converted to uppercase
+  (unless switche off in the configuration).
   <br />
-  <b>(2):</b> For obtaining the represented de Bruijn graphs,
-  one needs to merge <i>k</i>-mer sets along
+  <sup><b>(2)</b></sup> The original de Bruijn graphs can
+  be obtained by merging <i>k</i>-mer sets along
   the respetive root-to-leaf paths.
 </small>
 
 
-### List of workflow commands
+### 4d. List of workflow commands
 
 MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
 Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
+```yaml
+######################
+## General commands ##
+######################
+    all                  Run everything
+    help                 Print help messages
+    conda                Create the conda environments
+    clean                Clean all output archives and files with statistics
+    cleanall             Clean everything but Conda, Snakemake, and input files
+    cleanallall          Clean everything but Conda, Snakemake, and input files
+###############
+## Reporting ##
+###############
+    viewconf             View configuration without comments
+    reports              Create html report
+####################
+## For developers ##
+####################
+    test                 Run the workflow on test data
+    format               Reformat all source code
+    checkformat          Check source code format
 ```
-all           Run everything
-checkformat   Check source code format (developers)
-clean         Clean
-cleanall      Clean all
-conda         Create the conda environments
-format        Reformat all source code (developers)
-help          Print help message
-report        Create html report
-rmstats       Remove stats
-test          Run the workflow on test data
-```
 
 
-### Troubleshooting
+### 4e. Troubleshooting
 
-Tests can be run by
-
-```bash
-   make test
-```
+Tests can be run by `make test`.
 
 
-## Citation
+## 5. Citation
 
-> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression](https://doi.org/10.1101/2023.04.15.536996).** *bioRxiv* 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
+> K. Brinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression](https://doi.org/10.1101/2023.04.15.536996).** *bioRxiv* 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
 
 ```bibtex
 @article {PhylogeneticCompression,
@@ -287,22 +290,25 @@ Tests can be run by
 ```
 
 
-## Issues
+## 6. Issues
 
 Please use [Github issues](https://github.com/karel-brinda/mof-compress/issues).
 
 
-## Changelog
+
+## 7. Changelog
 
 See [Releases](https://github.com/karel-brinda/mof-compress/releases).
 
 
-## License
+
+## 8. License
 
 [MIT](https://github.com/karel-brinda/mof-search/blob/master/LICENSE)
 
-## Contacts
+
+
+## 9. Contacts
 
 * [Karel Brinda](http://karel-brinda.github.io) \<karel.brinda@inria.fr\>
 * [Leandro Lima](https://github.com/leoisl) \<leandro@ebi.ac.uk\>
-
