@@ -42,7 +42,6 @@ rule cp_final_tree_for_post_output:
         """
 
 
-ruleorder: symlink_nw_tree > tree_newick_mashtree
 
 
 rule symlink_nw_tree:
@@ -62,29 +61,30 @@ rule symlink_nw_tree:
         ln -sf {params.relative_path} {output.nw}
         """
 
-
-rule tree_newick_mashtree:
-    """
-    Infer a phylogenetic tree from the assemblies belonging to a given batch
-    """
-    output:
-        nw=fn_tree_dirty(_batch="{batch}"),
-    input:
-        w_batch_asms,
-    threads: config["mashtree_threads"]
-    params:
-        k=config["mashtree_kmer_length"],
-        s=config["mashtree_sketch_size"],
-        t=min(int(config["mashtree_threads"]), workflow.cores),  # ensure that the number of cores for MashTree doesn't go too low
-    conda:
-        "../envs/mashtree.yaml"
-    shell:
+if not config["trees_required"]:
+    ruleorder: symlink_nw_tree > tree_newick_mashtree
+    rule tree_newick_mashtree:
         """
-        mashtree \\
-            --numcpus {params.t} \\
-            --kmerlength {params.k} \\
-            --sketch-size {params.s} \\
-            --seed 42  \\
-            {input} \\
-            | tee {output.nw}
+        Infer a phylogenetic tree from the assemblies belonging to a given batch
         """
+        output:
+            nw=fn_tree_dirty(_batch="{batch}"),
+        input:
+            w_batch_asms,
+        threads: config["mashtree_threads"]
+        params:
+            k=config["mashtree_kmer_length"],
+            s=config["mashtree_sketch_size"],
+            t=min(int(config["mashtree_threads"]), workflow.cores),  # ensure that the number of cores for MashTree doesn't go too low
+        conda:
+            "../envs/mashtree.yaml"
+        shell:
+            """
+            mashtree \\
+                --numcpus {params.t} \\
+                --kmerlength {params.k} \\
+                --sketch-size {params.s} \\
+                --seed 42  \\
+                {input} \\
+                | tee {output.nw}
+            """

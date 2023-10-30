@@ -11,7 +11,6 @@ conda_dir:            .conda
 # (2) Parameters for Snakemake execution
 use_conda:            True # build conda environments automatically by Snakemake
 
-
 ####################################
 # COMPRESSION PROTOCOLS TO INCLUDE #
 ####################################
@@ -45,8 +44,10 @@ kmer_statistics:      False
 #     - kmer length defines k for dBGs in Protocols 2 and 3
 #     - the same k-mer length is used also for k-mer counting (all protocols)
 #     - converting sequences to upper case is used in Protocol 1
+#     - if trees_required is true, then the workflow will insist on user-provided trees
 kmer_length:          31
 asms_to_uppercase:    True
+trees_required:       False
 
 
 # (2) XZ parameters; notes:

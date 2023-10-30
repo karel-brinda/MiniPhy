@@ -47,6 +47,7 @@ kmer_statistics:      True
 #     - converting sequences to upper case is used in Protocol 1
 kmer_length:          31
 asms_to_uppercase:    True
+trees_required:       False
 
 
 # (2) XZ parameters; notes:
