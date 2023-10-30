@@ -10,12 +10,12 @@ of user-provided genomes
 and uses it compress compress the genomes.
 More information about the technique can be found
 on the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
-or in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
+and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
 </p>
 <br />
 
-![MOF-Compress test](https://github.com/karel-brinda/mof-compress/actions/workflows/main.yaml/badge.svg)
-![Paper DOI](https://zenodo.org/badge/DOI/10.1101/2023.04.15.536996.svg)
+[![MOF-Compress test](https://github.com/karel-brinda/mof-compress/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/mof-compress/actions/)
+[![Paper DOI](https://zenodo.org/badge/DOI/10.1101/2023.04.15.536996.svg)](https://doi.org/10.1101/2023.04.15.536996)
 
 <h2>Contents</h2>
 
