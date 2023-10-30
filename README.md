@@ -69,6 +69,7 @@ are then placed in `output/`.
 * [GNU Make](https://www.gnu.org/software/make/)
 * [Python](https://www.python.org/) (>=3.7)
 * [Snakemake](https://snakemake.github.io) (>=6.2.0)
+* [XZ](https://tukaani.org/xz/)
 
 and can be installed by Conda by
 ```bash
