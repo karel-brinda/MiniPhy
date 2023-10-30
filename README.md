@@ -28,18 +28,18 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 * [2. Dependencies](#2-dependencies)
   * [2a. Essential dependencies](#2a-essential-dependencies)
   * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
-* [Installation](#installation)
-* [3. Usage](#3-usage)
-  * [3a. Basic example](#3a-basic-example)
-  * [3b. Adjusting configuration](#3b-adjusting-configuration)
-  * [3c. List of implemented protocols](#3c-list-of-implemented-protocols)
-  * [3d. List of workflow commands](#3d-list-of-workflow-commands)
-  * [3e. Troubleshooting](#3e-troubleshooting)
-* [4. Citation](#4-citation)
-* [5. Issues](#5-issues)
-* [6. Changelog](#6-changelog)
-* [7. License](#7-license)
-* [8. Contacts](#8-contacts)
+* [3. Installation](#3-installation)
+* [4. Usage](#4-usage)
+  * [4a. Basic example](#4a-basic-example)
+  * [4b. Adjusting configuration](#4b-adjusting-configuration)
+  * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
+  * [4d. List of workflow commands](#4d-list-of-workflow-commands)
+  * [4e. Troubleshooting](#4e-troubleshooting)
+* [5. Citation](#5-citation)
+* [6. Issues](#6-issues)
+* [7. Changelog](#7-changelog)
+* [8. License](#8-license)
+* [9. Contacts](#9-contacts)
 
 <!-- vim-markdown-toc -->
 
@@ -95,7 +95,7 @@ all protocols can also be achieved by:
 
 
 
-## Installation
+## 3. Installation
 
 Clone the repository and enter the directory by
 
@@ -106,9 +106,9 @@ Clone the repository and enter the directory by
 
 
 
-## 3. Usage
+## 4. Usage
 
-### 3a. Basic example
+### 4a. Basic example
 
 <h4><i>Step 1:</i> Provide lists of input files</h4>
 
@@ -150,7 +150,7 @@ Run the pipeline by `make`. This will execute Snakemake with the corresponding p
 All output files will be located in `output/`.
 
 
-### 3b. Adjusting configuration
+### 4b. Adjusting configuration
 
 The workflow can be configured via the [`config.yaml`](./config.yaml) file.
 All options are documented directly there.
@@ -165,7 +165,7 @@ The configurable functionality includes:
 * JellyFish parameters (k-mer counting)
 
 
-### 3c. List of implemented protocols
+### 4c. List of implemented protocols
 
 <table>
 
@@ -243,7 +243,7 @@ The configurable functionality includes:
 </small>
 
 
-### 3d. List of workflow commands
+### 4d. List of workflow commands
 
 MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
 Here's a list of all implemented commands (to be executed as `make {command}`):
@@ -264,7 +264,7 @@ testreport    Create html report for the test
 ```
 
 
-### 3e. Troubleshooting
+### 4e. Troubleshooting
 
 Tests can be run by
 
@@ -273,7 +273,7 @@ Tests can be run by
 ```
 
 
-## 4. Citation
+## 5. Citation
 
 > K. Brinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression](https://doi.org/10.1101/2023.04.15.536996).** *bioRxiv* 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
 
@@ -292,25 +292,25 @@ Tests can be run by
 ```
 
 
-## 5. Issues
+## 6. Issues
 
 Please use [Github issues](https://github.com/karel-brinda/mof-compress/issues).
 
 
 
-## 6. Changelog
+## 7. Changelog
 
 See [Releases](https://github.com/karel-brinda/mof-compress/releases).
 
 
 
-## 7. License
+## 8. License
 
 [MIT](https://github.com/karel-brinda/mof-search/blob/master/LICENSE)
 
 
 
-## 8. Contacts
+## 9. Contacts
 
 * [Karel Brinda](http://karel-brinda.github.io) \<karel.brinda@inria.fr\>
 * [Leandro Lima](https://github.com/leoisl) \<leandro@ebi.ac.uk\>
