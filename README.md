@@ -6,7 +6,7 @@ Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
 of microbial genomes, producing highly compressed <code>.tar.xz</code> files.
 MOF-Compress first estimates the evolutionary history
 of user-provided genomes
-(unless a phylogeny is provided by the user),
+(unless they are already provided with phylogeny),
 and uses it compress compress the genomes.
 More information about the technique can be found
 on the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
