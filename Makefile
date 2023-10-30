@@ -8,13 +8,13 @@ SHELL=/usr/bin/env bash -eo pipefail
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#!! WARNING: !! TOPLEVEL_DIR changes to .. when run from .test/ !!
+#!! WARNING: !! TOPDIR changes to .. when run from .test/ !!
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-TOPLEVEL_DIR  = .
+TOPDIR  = .
 
 # test if this is run from the .test/ directory
-ifeq ($(strip $(TOPLEVEL_DIR)),..)
+ifeq ($(strip $(TOPDIR)),..)
 	SNAKEMAKE_PARAM_DIR = --snakefile ../workflow/Snakefile --show-failed-logs
 else
 	SNAKEMAKE_PARAM_DIR =
@@ -30,7 +30,7 @@ ifeq ($(USE_CONDA),)
     $(error 'use_conda' not found in the configuration)
 endif
 
-CONDA_DIR_ADJ = $(TOPLEVEL_DIR)/$(CONDA_DIR)
+CONDA_DIR_ADJ = $(TOPDIR)/$(CONDA_DIR)
 
 ifeq ($(strip $(USE_CONDA)),True)
 	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR_ADJ)"
@@ -74,10 +74,10 @@ viewconf: ## View configuration without comments
 	@#| grep -Ev ^$$
 
 report: ## Create html report
-	snakemake $(CONDA_PARAMS) --report report.html $(SNAKEMAKE_PARAM_DIR)
+	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR) --report report.html
 
 testreport: ## Create html report for the test
-	$(MAKE) -C .test TOPLEVEL_DIR=.. report
+	$(MAKE) -C .test TOPDIR=.. report
 	#snakemake -d .test -j 1 $(CONDA_PARAMS) -p --show-failed-logs --report test_report.html
 
 
@@ -87,7 +87,7 @@ testreport: ## Create html report for the test
 
 test: ## Run the workflow on test data
 	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
-	$(MAKE) -C .test TOPLEVEL_DIR=..
+	$(MAKE) -C .test TOPDIR=..
 
 format: ## Reformat all source code (developers)
 	snakefmt workflow
