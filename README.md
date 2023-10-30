@@ -25,7 +25,7 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 
 * [Introduction](#introduction)
 * [Dependencies](#dependencies)
-  * [Installation](#installation)
+* [Installation](#installation)
 * [Basic usage](#basic-usage)
 * [Advanced usage](#advanced-usage)
   * [List of implemented protocols](#list-of-implemented-protocols)
@@ -47,13 +47,14 @@ phylogenetically related genomes, of up to ≈10k genomes per batch
 (for more information on batching strategies,
 see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
 
-The user then provides files of files for individual batches
-into the `input/` directory
-and specifies the requested compression protocol in the
+The user provides files of files for individual batches
+in the `input/` directory
+and specifies the requested compression protocols in the
 [configuration file](config.yaml).
 
-MOF-Compress then performs phylogenetic compression of all batches,
-and calculates the associated statistics, using one or more of the following protocols.
+Upon execution of the pipeline by `make`,
+MOF-Compress performs phylogenetic compression,
+and the compressed output can then be found in `output/`.
 
 
 
@@ -88,9 +89,9 @@ all protocols can also be achieved by:
 ```
 
 
-### Installation
+## Installation
 
-Just clone and enter the repository:
+Clone the repository and enter the directory by
 
 ```bash
    git clone https://github.com/karel-brinda/mof-compress
