@@ -65,3 +65,5 @@ mashtree_sketch_size: 10000
 
 # (4) Jellyfish parameters
 jellyfish_threads:    8
+jellyfish_size:       "40M"
+

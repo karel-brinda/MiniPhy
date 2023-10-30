@@ -87,9 +87,9 @@ jellyfish count \
 printf 'freq\tkmers\n'
 jellyfish histo \
 	--threads "$t" \
-	--high 1000000 \
+	--high 10000000 \
 	"$y" \
 	| perl -pe 's/ /\t/g'
 
-rm -fv "$y"
+rm -f "$y"
 
