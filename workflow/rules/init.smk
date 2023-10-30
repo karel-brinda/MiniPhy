@@ -57,7 +57,7 @@ for x in res:
 
 assert (
     len(BATCHES_FN) != 0
-), "\nERROR: No input files provided. Please provide at least one batch in '{dir_input()}/'.\n"
+), f"\nERROR: No input files provided. Please provide at least one batch in '{dir_input()}/'.\n"
 
 
 ## BATCHES
