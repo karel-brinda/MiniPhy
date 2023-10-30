@@ -57,12 +57,9 @@ and calculates the associated statistics, using one or more of the following pro
 
 
 
+## Dependencies
 
-## Installation
-
-### Dependencies
-
-**The essential dependencies** include
+<h3>Essential dependencies</h3>
 
 * [Conda](https://docs.conda.io/en/latest/miniconda.html) (unless the use of Conda is switched off in the configuration), ideally also [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0)
 * [GNU Make](https://www.gnu.org/software/make/)
@@ -75,12 +72,20 @@ and can be installed by Conda by
       "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
-**Protocol-specific dependencies** are installed automatically by
-Snakemake and they are required;
-their lists can be found in [`workflow/envs/`](workflow/envs/)
+<h3>Protocol-specific dependencies</h3>
+These are installed automatically by
+Snakemake when they are required/
+Their lists can be found in [`workflow/envs/`](workflow/envs/)
 and involve ETE 3, Seqtk, Xopen, Pandas, Jellyfish (v2),
 Mashtree, ProphAsm, and ProPhyle. For instance, ProPhyle is
-not installed unless Protocol 3 is used for compression.
+not installed unless Protocol 3 is used.
+
+The installation of all non-essential dependencies across
+all protocols can also be achieved by:
+
+```bash
+   make conda
+```
 
 
 ### Installation
@@ -92,37 +97,31 @@ Just clone and enter the repository:
    cd mof-compress
 ```
 
-### Automatic installation of dependencies
 
-All non-essential dependencies will be installated autoamtically
-by Snakemake. To invoke installation all non-essential dependencies across
-all protocols manually, run:
+## Basic usage
 
-```bash
-   make conda
-```
+<h3>Step 1: Provide your input files</h3>
 
-
-## Usage (basic)
-
-**Step 1: Provide your input files.**
 Individual batches of genomes in the `.fa[.gz]` formats are to be specified
 in the form of files of files in the `input/` directory,
 as a file `{batch_name}.txt`. Use either absolute paths (recommended),
 or paths relative to the root of the Github repository.
 
 
-**Step 2: Adjust configuration.**
+<h3>Step 2: Adjust configuration</h3>
+
 Edit the [`config.yaml`](config.yaml) to specify the compression protocols to be used, as well as all options for individual programs.
 All available options are documented directly there.
 
-**Step 3: Run the pipeline.**
+<h3>Step 3: Run the pipeline</h3>
+
 Simply run `make`, which will execute Snakemake with the corresponding parameters. The computed files will then be located in `output/`.
 
 
 
-## Usage (advanced)
+## Advanced usage
 
+### List of implemented protocols
 
 <table>
 
@@ -147,7 +146,7 @@ Simply run `make`, which will execute Snakemake with the corresponding parameter
 
   <td>
     <code>output/asm/{batch}.tar.xz</code><br/>
-    original assemblies in FASTA
+    original assemblies in FASTA  (<b>(1)</b>)
 
 
 <tr>
@@ -186,24 +185,22 @@ Simply run `make`, which will execute Snakemake with the corresponding parameter
   <td>
     <code>output/post/{batch}.tar.xz</code><br/>
     <code>output/post/{batch}.nw</code><br/>
-    simplitig text files per individual nodes of the tree.
+    simplitig text files per individual nodes of the tree (<b>(2)</b>)
 
 </table>
 
 
-(1) In 1 line format and sequences in uppercase.
-
-(2) For obtaining the represented de Bruijn graphs,
+<small>
+  <b>(1):</b> In 1 line format and sequences in uppercase.
+  <br />
+  <b>(2):</b> For obtaining the represented de Bruijn graphs,
   one needs to merge <i>k</i>-mer sets along
   the respetive root-to-leaf paths.
+</small>
 
 
+### List of workflow commands
 
-**Final product:**
-
-
-
-**List of workflow commands.**
 MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
 Here's a list of all implemented commands (to be executed as `make {command}`):
 
@@ -221,7 +218,10 @@ rmstats       Remove stats
 test          Run the workflow on test data
 ```
 
-## Troubleshooting
+
+### Troubleshooting
+
+Tests can be run by
 
 ```bash
    make test
