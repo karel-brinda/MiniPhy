@@ -56,7 +56,7 @@ conda: ## Create the conda environments
 
 clean: ## Clean all output archives and files with statistics
 	rm -fvr output/* intermediate/stats/*
-	find intermediate -name '*.summary' | xargs rm -fv
+	find intermediate -name '*.summary' -or -name '*.nscl' -or -name '*.hist'  | xargs rm -fv
 	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test clean; \
 	fi
@@ -67,7 +67,7 @@ cleanall: clean ## Clean everything but Conda, Snakemake, and input files
 		$(MAKE) -C .test cleanall; \
 	fi
 
-cleanallall: cleanall ## Clean everything but Conda, Snakemake, and input files
+cleanallall: cleanall ## Clean completely everything
 	rm -fvr {input,$(CONDA_DIR)}/*
 	rm -fr .snakemake/
 	@if [ -d ".test" ]; then \
