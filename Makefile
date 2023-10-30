@@ -54,7 +54,7 @@ conda: ## Create the conda environments
 	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
 
 clean: ## Clean all output archives and files with statistics
-	rm -fvr output/*
+	rm -fvr output/* intermediate/stats/*
 	find intermediate -name '*.summary' | xargs rm -fv
 	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test clean; \
