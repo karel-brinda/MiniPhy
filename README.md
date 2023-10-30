@@ -118,28 +118,29 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
   directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
   or paths relative to the root of the Github repository (not relative to the txt files).
 
-  Such lists can generated, for instance, by `find` by something like
+  Such a list can be generated, for instance, by `find` by
   ```bash
-  find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
+  find ~/dir_with_my_genomes -name '*.fa' > input/my_first_batch.txt
   ```
-  The supported input file formats include FASTA and FASTQ, possibly gzipped.
+  The supported input file formats include FASTA and FASTQ (possibly compressed by GZip).
 
-* ***Step 2 (optional): Provide corresponding phylogenies.***
-  If estimating phylogenies by MashTree is not desired,
-  it is possible to supply custom phylogenies in the Newick format,
-  named `input/{batch_name}.nw`. Leave names in the tree should correspond
-  to the names of the input FASTA files (with removed FASTA suffixes).
+* ***Step 2 (optional): Provide corresponding phylogenies.*** \
+  Instead of estimating phylogenies by MashTree,
+  it is possible to supply custom phylogenies in the Newick format.
+  The tree files should be named `input/{batch_name}.nw`,
+  and the leave names inside should correspond
+  to FASTA filenames (without FASTA suffixes).
 
-* ***Step 3 (optional): Adjust configuration.***
-  Edit the [`config.yaml`](config.yaml) to specify compression protocols and data analyzes
-  to be included, as well as specific parameters
-  (more information about the configuration can be found below).
+* ***Step 3 (optional): Adjust configuration.*** \
+  By editting [`config.yaml`](config.yaml) it is possible to specify
+  compression protocols, data analyzes,
+  and low-level parameters (see below).
 
-* ***Step 4: Run the pipeline***
-  Run the pipeline by `make`. This will execute
+* ***Step 4: Run the pipeline*** \
+  Run the pipeline by `make`; this is run
   Snakemake with the corresponding parameters.
 
-* ***Step 5: Retrieve the output files.***
+* ***Step 5: Retrieve the output files.*** \
   All output files will be located in `output/`.
 
 
