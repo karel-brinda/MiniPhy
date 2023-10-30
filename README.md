@@ -30,6 +30,8 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 * [Usage (advanced)](#usage-advanced)
 * [Troubleshooting](#troubleshooting)
 * [Citation](#citation)
+* [Issues](#issues)
+* [Changelog](#changelog)
 * [License](#license)
 * [Contacts](#contacts)
 
@@ -241,6 +243,16 @@ test          Run the workflow on test data
    url     = {https://www.biorxiv.org/content/early/2023/04/16/2023.04.15.536996}
 }
 ```
+
+
+## Issues
+
+Please use [Github issues](https://github.com/karel-brinda/mof-compress/issues).
+
+
+## Changelog
+
+See [Releases](https://github.com/karel-brinda/mof-compress/releases).
 
 
 ## License
