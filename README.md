@@ -242,7 +242,7 @@ MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), whi
 Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
-```
+```yaml
 ######################
 ## General commands ##
 ######################
