@@ -7,11 +7,12 @@ SHELL=/usr/bin/env bash -eo pipefail
 .SUFFIXES:
 
 
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #!! WARNING: !! TOPDIR changes to .. when run from .test/ !!
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-TOPDIR  = .
+TOPDIR = .
+
 
 # test if this is run from the .test/ directory
 ifeq ($(strip $(TOPDIR)),..)
@@ -53,23 +54,22 @@ conda: ## Create the conda environments
 	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
 
 clean: ## Clean all output archives and files with statistics
-	find output -name 'stats*.tsv' | xargs rm -fv
-	find output -name '*.summary' | xargs rm -fv
-	rm -fvr {intermediate,output}/*
-	if [ -d ".test" ]; then \
-		$(MAKE -C) .test clean; \
+	rm -fvr output/*
+	find intermediate -name '*.summary' | xargs rm -fv
+	@if [ -d ".test" ]; then \
+		$(MAKE) -C .test clean; \
 	fi
 
 cleanall: clean ## Clean everything but Conda, Snakemake, and input files
-	rm -fvr {intermediate,output}/*
-	if [ -d ".test" ]; then \
+	rm -fvr intermediate/*
+	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test cleanall; \
 	fi
 
 cleanallall: cleanall ## Clean everything but Conda, Snakemake, and input files
 	rm -fvr {input,$(CONDA_DIR)}/*
 	rm -fr .snakemake/
-	if [ -d ".test" ]; then \
+	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test cleanallall; \
 	fi
 
@@ -86,7 +86,7 @@ viewconf: ## View configuration without comments
 
 reports: ## Create html report
 	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR) --report report.html
-	if [ -d ".test" ]; then \
+	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test TOPDIR=.. reports; \
 	fi
 
@@ -97,7 +97,7 @@ reports: ## Create html report
 
 test: ## Run the workflow on test data
 	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
-	if [ -d ".test" ]; then \
+	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test TOPDIR=..; \
 	fi
 
