@@ -14,7 +14,8 @@ or in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a
 </p>
 <br />
 
-![MOF-Compress test]([https://github.com/karel-brinda/mof-compress/actions/workflows/main.yml/badge.svg](https://github.com/karel-brinda/mof-compress/actions/workflows/main.yaml/badge.svg))
+![MOF-Compress test](https://github.com/karel-brinda/mof-compress/actions/workflows/main.yaml/badge.svg)
+![Paper DOI](https://zenodo.org/badge/DOI/10.1101/2023.04.15.536996.svg)
 
 <h2>Contents</h2>
 
