@@ -3,7 +3,7 @@
 <p>
 <img src="docs/logo.png" align="left" style="width:100px;" />
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
-of microbial genomes (produces a highly compressed `.tar.xz` files).
+of microbial genomes (produces a highly compressed <code>.tar.xz</code> files).
 MOF-Compress first estimates the evolutionary history
 of user-provided genomes
 (unless a phylogeny is provided by the user),
@@ -51,34 +51,6 @@ and specifies the requested compression protocol in the
 MOF-Compress then performs phylogenetic compression of all batches,
 and calculates the associated statistics, using one or more of the following protocols.
 
-### Protocol 1 (default)
-Phylogenetic compression of *assemblies*.
-based on a left-to-right reordering of the assemblies.
-
-**Final product:**
-A `.tar.xz` file of the original
-assemblies in FASTA (reformatted to 1 line format and
-sequenced converted to upper case).
-
-
-###  Protocol 2 (optional)
-Phylogenetic compression of *de Bruijn graphs*,
-based on computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z)
-from individual assemblies,
-followed by a the left-to-right reordering of the simplitig files.
-
-**Final product:**
-A `.tar.xz` with simplitig text files, representing individual de Bruijn graphs.
-
-
-###  Protocol 3 (optional)
-Phylogenetic compression of *de Bruijn graphs*,
-based on bottom-up *k*-mer propagation using [ProPhyle](http://prophyle.github.io),
-computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z) at individual nodes
-of the tree, and left-to-right re-ordering of the obtained files.
-
-**Final product:**
-A `.tar.xz` and a `.nw` tree, the former containing simplitig text files for individual nodes of the tree in the latter. For obtaining the represented de Bruijn graphs, one needs to merge *k*-mer sets along the respetive root-to-leaf paths.
 
 
 
@@ -146,6 +118,38 @@ Simply run `make`, which will execute Snakemake with the corresponding parameter
 
 
 ## Usage (advanced)
+
+
+### Protocol 1 (default)
+Phylogenetic compression of *assemblies*.
+based on a left-to-right reordering of the assemblies.
+
+**Final product:**
+A `.tar.xz` file of the original
+assemblies in FASTA (reformatted to 1 line format and
+sequenced converted to upper case).
+
+
+###  Protocol 2 (optional)
+Phylogenetic compression of *de Bruijn graphs*,
+based on computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z)
+from individual assemblies,
+followed by a the left-to-right reordering of the simplitig files.
+
+**Final product:**
+A `.tar.xz` with simplitig text files, representing individual de Bruijn graphs.
+
+
+###  Protocol 3 (optional)
+Phylogenetic compression of *de Bruijn graphs*,
+based on bottom-up *k*-mer propagation using [ProPhyle](http://prophyle.github.io),
+computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z) at individual nodes
+of the tree, and left-to-right re-ordering of the obtained files.
+
+**Final product:**
+A `.tar.xz` and a `.nw` tree, the former containing simplitig text files for individual nodes of the tree in the latter. For obtaining the represented de Bruijn graphs, one needs to merge *k*-mer sets along the respetive root-to-leaf paths.
+
+
 
 **List of workflow commands.**
 MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
