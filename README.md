@@ -19,9 +19,6 @@ or in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
-  * [Protocol 1 (default)](#protocol-1-default)
-  * [Protocol 2 (optional)](#protocol-2-optional)
-  * [Protocol 3 (optional)](#protocol-3-optional)
 * [Installation](#installation)
   * [Dependencies](#dependencies)
   * [Installation](#installation-1)
@@ -120,34 +117,82 @@ Simply run `make`, which will execute Snakemake with the corresponding parameter
 ## Usage (advanced)
 
 
-### Protocol 1 (default)
-Phylogenetic compression of *assemblies*.
-based on a left-to-right reordering of the assemblies.
+<table>
+
+<thead>
+  <td>Protocol
+  <td>Compressed representation
+  <td>Description
+  <td>Product
+
+
+<tr>
+
+  <td>
+    <b>Protocol&nbsp;1<br />
+    (default)</b>
+
+  <td>
+    Assemblies
+
+  <td>
+    Left-to-right reordering of the assemblies according to the phylogeny
+
+  <td>
+    <code>output/asm/{batch}.tar.xz</code><br/>
+    original assemblies in FASTA
+
+
+<tr>
+
+  <td>
+    <b>Protocol&nbsp;2</b><br />
+    (optional)
+
+  <td>
+    de Bruijn graphs
+
+  <td>
+    <a href="https://doi.org/10.1186/s13059-021-02297-z">Simplitigs</a>
+    from individual assemblies, left-to-right reordering of their files
+
+  <td>
+    <code>output/pre/{batch}.tar.xz</code><br/>
+    with simplitig text files,
+    representing individual de Bruijn graphs
+
+
+<tr>
+
+  <td>
+    <b>Protocol&nbsp;3</b><br />
+    (optional)
+
+  <td>
+    de Bruijn graphs
+
+  <td>
+    Bottom-up <i>k</i>-mer propagation using <a href="http://prophyle.github.io">ProPhyle</a>,
+    <a href="https://doi.org/10.1186/s13059-021-02297-z">simplitigs</a>at individual nodes of the tree,
+    and left-to-right re-ordering of the obtained files
+
+  <td>
+    <code>output/post/{batch}.tar.xz</code><br/>
+    <code>output/post/{batch}.nw</code><br/>
+    simplitig text files per individual nodes of the tree.
+
+</table>
+
+
+(1) In 1 line format and sequences in uppercase.
+
+(2) For obtaining the represented de Bruijn graphs,
+  one needs to merge <i>k</i>-mer sets along
+  the respetive root-to-leaf paths.
+
+
 
 **Final product:**
-A `.tar.xz` file of the original
-assemblies in FASTA (reformatted to 1 line format and
-sequenced converted to upper case).
-
-
-###  Protocol 2 (optional)
-Phylogenetic compression of *de Bruijn graphs*,
-based on computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z)
-from individual assemblies,
-followed by a the left-to-right reordering of the simplitig files.
-
-**Final product:**
-A `.tar.xz` with simplitig text files, representing individual de Bruijn graphs.
-
-
-###  Protocol 3 (optional)
-Phylogenetic compression of *de Bruijn graphs*,
-based on bottom-up *k*-mer propagation using [ProPhyle](http://prophyle.github.io),
-computing [simplitigs](https://doi.org/10.1186/s13059-021-02297-z) at individual nodes
-of the tree, and left-to-right re-ordering of the obtained files.
-
-**Final product:**
-A `.tar.xz` and a `.nw` tree, the former containing simplitig text files for individual nodes of the tree in the latter. For obtaining the represented de Bruijn graphs, one needs to merge *k*-mer sets along the respetive root-to-leaf paths.
 
 
 
