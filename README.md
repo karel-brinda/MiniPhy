@@ -66,16 +66,13 @@ and the compressed output can then be found in `output/`.
 
 ### 2a. Essential dependencies
 
-* [Conda](https://docs.conda.io/en/latest/miniconda.html) (unless the use of Conda is switched off in the configuration), ideally also [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0)
+* [Conda](https://docs.conda.io/en/latest/miniconda.html) (unless the use of Conda is switched off in the configuration) and ideally also [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0)
 * [GNU Make](https://www.gnu.org/software/make/)
 * [Python](https://www.python.org/) (>=3.7)
 * [Snakemake](https://snakemake.github.io) (>=6.2.0)
 
 and can be installed by Conda by
-```bash
-    conda install -c conda-forge -c bioconda -c defaults \
-      "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
-```
+`bash conda install -c conda-forge -c bioconda -c defaults "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"`
 
 ### 2b. Protocol-specific dependencies
 
@@ -86,24 +83,27 @@ and involve ETE 3, Seqtk, Xopen, Pandas, Jellyfish (v2),
 Mashtree, ProphAsm, and ProPhyle. For instance, ProPhyle is
 not installed unless Protocol 3 is used.
 
-The installation of all non-essential dependencies across
-all protocols can also be achieved by:
-
-```bash
-   make conda
-```
+All non-essential dependencies across
+all protocols can also be installed by `bash make conda`.
 
 
 
 ## 3. Installation
 
-Clone the repository and enter the directory by
+Clone and enter the repository by
 
 ```bash
    git clone https://github.com/karel-brinda/mof-compress
    cd mof-compress
 ```
 
+Alternatively, the repository can also be installed using cURL by
+```bash
+   mkdir mof-compress
+   cd mof-compress
+   curl -L https://github.com/karel-brinda/mof-compress/archive/refs/heads/main.tar.gz \
+      | tar xvf --strip-components=1 -
+```
 
 
 ## 4. Usage
