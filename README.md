@@ -14,8 +14,10 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 </p>
 <br />
 
-[![MOF-Compress test](https://github.com/karel-brinda/mof-compress/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/mof-compress/actions/)
+[![Info](https://img.shields.io/badge/Project-Info-blue)](https://brinda.eu/mof)
 [![Paper DOI](https://zenodo.org/badge/DOI/10.1101/2023.04.15.536996.svg)](https://doi.org/10.1101/2023.04.15.536996)
+[![MOF-Compress test](https://github.com/karel-brinda/mof-compress/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/mof-compress/actions/)
+[![GitHub release](https://img.shields.io/github/release/karel-brinda/mof-compress.svg)](https://github.com/karel-brinda/mof-compress/releases/)
 
 <h2>Contents</h2>
 
