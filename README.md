@@ -101,7 +101,7 @@ Alternatively, the repository can also be installed using cURL by
 ```bash
 mkdir mof-compress
 cd mof-compress
-curl -L https://github.com/karel-brinda/mof-compress/tarball/main/ \
+curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
     | tar xvf - --strip-components=1
 ```
 
@@ -110,59 +110,43 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main/ \
 
 ### 4a. Basic example
 
-<h4><i>Step 1: Provide lists of input files</i></h4>
-
+***Step 1: Provide lists of input files.***
 For every batch, create a txt list of input files in the `input/`
 directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
-or paths relative to the root of the Github repository (not relative to the txt files).
-
-Such lists can generated, for instance, by `find` by something like:
-```bash
-find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
-```
-
+or paths relative to the root of the Github repository (not relative to the txt files). Such lists can generated, for instance, by `find` by something like
+`bash find /home/data/genomes -name '*.fa' > input/my_first_batch.txt`.
 The supported input file formats include FASTA and FASTQ, possibly gzipped.
 
+***Step 2 (optional): Provide corresponding phylogenies.***
+If estimating phylogenies by MashTree is not desired,
+it is possible to supply custom phylogenies in the Newick format,
+named `input/{batch_name}.nw`. Leave names in the tree should correspond
+to the names of the input FASTA files (with removed FASTA suffixes).
 
-<h4><i>Step 2 (optional): Provide corresponding phylogenies</i></h4>
-
-In the default setting, phylogenies are estimated using MashTree,
-which already provides a sufficiently good resolution.
-
-In case you want to use custom phylogenies (in Newick),
-put them into `input/{batch_name}.nw`. Leave names should correspond
-to the names of your input FASTA files without the FASTA suffixes.
-
-
-<h4><i>Step 3 (optional): Adjust configuration</i></h4>
-
+***Step 3 (optional): Adjust configuration.***
 Edit the [`config.yaml`](config.yaml) to specify compression protocols and data analyzes
-to be included, as well as specific parameters.
+to be included, as well as specific parameters
+(more information about the configuration can be found below).
 
+***Step 4: Run the pipeline***
+Run the pipeline by `make`. This will execute
+Snakemake with the corresponding parameters.
 
-<h4><i>Step 4: Run the pipeline</i></h4>
-
-Run the pipeline by `make`. This will execute Snakemake with the corresponding parameters.
-
-
-<h4><i>Step 5: Retrieve the output files</i></h4>
-
+***Step 5: Retrieve the output files.***
 All output files will be located in `output/`.
 
 
 ### 4b. Adjusting configuration
 
-The workflow can be configured via the [`config.yaml`](./config.yaml) file.
-All options are documented directly there.
-
-The configurable functionality includes:
-* switching off Conda
-* protocols to use (asm, dGSs, dBGs with propagation)
-* analyzes to include (sequence and k-mer statistics)
-* k for de Bruijn graph and k-mer counting
-* Mashtree parameters (phylogeny estimation)
-* XZ parameters (low-level compression)
-* JellyFish parameters (k-mer counting)
+The workflow can be configured via the [`config.yaml`](./config.yaml) file, and
+all options are documented directly there. The configurable functionality includes:
+* switching off Conda,
+* protocols to use (asm, dGSs, dBGs with propagation),
+* analyzes to include (sequence and *k*-mer statistics),
+* *k* for de Bruijn graph and *k*-mer counting,
+* Mashtree parameters (phylogeny estimation),
+* XZ parameters (low-level compression), or
+* JellyFish parameters (*k*-mer counting).
 
 
 ### 4c. List of implemented protocols
