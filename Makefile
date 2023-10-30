@@ -1,4 +1,4 @@
-.PHONY: all help clean cleanall test report testreport format rmstats edit conda viewconf
+.PHONY: all help clean cleanall cleanallall test reports format edit conda viewconf
 
 SHELL=/usr/bin/env bash -eo pipefail
 
@@ -52,15 +52,26 @@ help: ## Print help messages
 conda: ## Create the conda environments
 	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
 
-clean: ## Clean
-	rm -fvr {.,.test}/{intermediate,output}/*
+clean: ## Clean all output archives and files with statistics
+	find output -name 'stats*.tsv' | xargs rm -fv
+	find output -name '*.summary' | xargs rm -fv
+	rm -fvr {intermediate,output}/*
+	if [ -d ".test" ]; then \
+		$(MAKE -C) .test clean; \
+	fi
 
-cleanall: clean ## Clean all
+cleanall: clean ## Clean everything but Conda, Snakemake, and input files
+	rm -fvr {intermediate,output}/*
+	if [ -d ".test" ]; then \
+		$(MAKE) -C .test cleanall; \
+	fi
 
-rmstats: ## Remove statistics
-	find output .test/output -name 'stats*.tsv' | xargs rm -fv
-	find output .test/output -name '*.summary' | xargs rm -fv
-
+cleanallall: cleanall ## Clean everything but Conda, Snakemake, and input files
+	rm -fvr {input,$(CONDA_DIR)}/*
+	rm -fr .snakemake/
+	if [ -d ".test" ]; then \
+		$(MAKE) -C .test cleanallall; \
+	fi
 
 
 ###############
@@ -73,12 +84,11 @@ viewconf: ## View configuration without comments
 		| grep --color='auto' -E '.*\:'
 	@#| grep -Ev ^$$
 
-report: ## Create html report
+reports: ## Create html report
 	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR) --report report.html
-
-testreport: ## Create html report for the test
-	$(MAKE) -C .test TOPDIR=.. report
-	#snakemake -d .test -j 1 $(CONDA_PARAMS) -p --show-failed-logs --report test_report.html
+	if [ -d ".test" ]; then \
+		$(MAKE) -C .test TOPDIR=.. reports; \
+	fi
 
 
 ####################
@@ -87,13 +97,15 @@ testreport: ## Create html report for the test
 
 test: ## Run the workflow on test data
 	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
-	$(MAKE) -C .test TOPDIR=..
+	if [ -d ".test" ]; then \
+		$(MAKE) -C .test TOPDIR=..; \
+	fi
 
-format: ## Reformat all source code (developers)
+format: ## Reformat all source code
 	snakefmt workflow
 	yapf -i --recursive workflow
 
-checkformat: ## Check source code format (developers)
+checkformat: ## Check source code format
 	snakefmt --check workflow
 	yapf --diff --recursive workflow
 

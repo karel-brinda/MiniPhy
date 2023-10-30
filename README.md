@@ -249,21 +249,20 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
     all                  Run everything
     help                 Print help messages
     conda                Create the conda environments
-    clean                Clean
-    cleanall             Clean all
-    rmstats              Remove statistics
+    clean                Clean all output archives and files with statistics
+    cleanall             Clean everything but Conda, Snakemake, and input files
+    cleanallall          Clean everything but Conda, Snakemake, and input files
 ###############
 ## Reporting ##
 ###############
     viewconf             View configuration without comments
-    report               Create html report
-    testreport           Create html report for the test
+    reports              Create html report
 ####################
 ## For developers ##
 ####################
     test                 Run the workflow on test data
-    format               Reformat all source code (developers)
-    checkformat          Check source code format (developers)
+    format               Reformat all source code
+    checkformat          Check source code format
 ```
 
 
