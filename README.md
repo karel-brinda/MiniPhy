@@ -72,8 +72,9 @@ and the compressed output can then be found in `output/`.
 * [Snakemake](https://snakemake.github.io) (>=6.2.0)
 
 and can be installed by Conda by
-```
-bash conda install -c conda-forge -c bioconda -c defaults "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+```bash
+bash conda install -c conda-forge -c bioconda -c defaults \
+  make "python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
 ### 2b. Protocol-specific dependencies
@@ -116,7 +117,8 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
   For every batch, create a txt list of input files in the `input/`
   directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
   or paths relative to the root of the Github repository (not relative to the txt files).
-  Such lists can generated,   for instance, by `find` by something like
+
+  Such lists can generated, for instance, by `find` by something like
   ```bash
   find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
   ```
@@ -224,10 +226,11 @@ all options are documented directly there. The configurable functionality includ
 
 
 <small>
-  <sup><b>(1)</b></sup> In 1 line format and sequences in uppercase.
+  <sup><b>(1)</b></sup> In FASTA 1-line format and all sequences converted to uppercase
+  (unless switche off in the configuration).
   <br />
-  <sup><b>(2)</b></sup> For obtaining the represented de Bruijn graphs,
-  one needs to merge <i>k</i>-mer sets along
+  <sup><b>(2)</b></sup> The original de Bruijn graphs can
+  be obtained by merging <i>k</i>-mer sets along
   the respetive root-to-leaf paths.
 </small>
 
