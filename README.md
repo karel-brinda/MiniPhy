@@ -72,7 +72,9 @@ and the compressed output can then be found in `output/`.
 * [Snakemake](https://snakemake.github.io) (>=6.2.0)
 
 and can be installed by Conda by
-`bash conda install -c conda-forge -c bioconda -c defaults "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"`
+```
+bash conda install -c conda-forge -c bioconda -c defaults "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+```
 
 ### 2b. Protocol-specific dependencies
 
@@ -83,8 +85,8 @@ and involve ETE 3, Seqtk, Xopen, Pandas, Jellyfish (v2),
 Mashtree, ProphAsm, and ProPhyle. For instance, ProPhyle is
 not installed unless Protocol 3 is used.
 
-All non-essential dependencies across
-all protocols can also be installed by `bash make conda`.
+All non-essential dependencies across all protocols can also be
+installed by `make conda`.
 
 
 
@@ -114,7 +116,9 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
 For every batch, create a txt list of input files in the `input/`
 directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
 or paths relative to the root of the Github repository (not relative to the txt files). Such lists can generated, for instance, by `find` by something like
-`bash find /home/data/genomes -name '*.fa' > input/my_first_batch.txt`.
+```bash
+find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
+```
 The supported input file formats include FASTA and FASTQ, possibly gzipped.
 
 ***Step 2 (optional): Provide corresponding phylogenies.***
@@ -250,11 +254,7 @@ testreport    Create html report for the test
 
 ### 4e. Troubleshooting
 
-Tests can be run by
-
-```bash
-   make test
-```
+Tests can be run by `make test`.
 
 
 ## 5. Citation
