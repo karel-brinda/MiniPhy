@@ -101,7 +101,7 @@ Alternatively, the repository can also be installed using cURL by
 ```bash
 mkdir mof-compress
 cd mof-compress
-curl -L https://github.com/karel-brinda/mof-compress/archive/refs/heads/main.tar.gz \
+curl -L https://github.com/karel-brinda/mof-compress/tarball/main/ \
     | tar xvf - --strip-components=1
 ```
 
