@@ -93,16 +93,16 @@ all protocols can also be installed by `bash make conda`.
 Clone and enter the repository by
 
 ```bash
-    git clone https://github.com/karel-brinda/mof-compress
-    cd mof-compress
+git clone https://github.com/karel-brinda/mof-compress
+cd mof-compress
 ```
 
 Alternatively, the repository can also be installed using cURL by
 ```bash
-    mkdir mof-compress
-    cd mof-compress
-    curl -L https://github.com/karel-brinda/mof-compress/archive/refs/heads/main.tar.gz \
-        | tar xvf --strip-components=1 -
+mkdir mof-compress
+cd mof-compress
+curl -L https://github.com/karel-brinda/mof-compress/archive/refs/heads/main.tar.gz \
+    | tar xvf --strip-components=1 -
 ```
 
 
@@ -117,7 +117,7 @@ directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recomme
 or paths relative to the root of the Github repository (not relative to the txt files).
 
 Such lists can generated, for instance, by `find` by something like:
-```
+```bash
 find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
 ```
 
