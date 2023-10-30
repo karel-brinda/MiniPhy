@@ -3,12 +3,16 @@
 
 <p>
 <img src="docs/logo.png" align="left" style="width:100px;" />
-MOF-Compress is a central package of MOF that performs phylogenetic compression, a technique based
-on using estimated evolutionary history to guide compression and efficiently
-search large collections of microbial genomes using existing algorithms and
-data structures. In short, input data are reorganized according to the topology
-of the estimated phylogenies, which makes data highly locally compressible even
-using basic techniques.
+Compression of microbial genomes
+using [phylogenetic compression](http://brinda.eu/mof)
+(produces a highly compressed `.tar.xz` files).
+MOF-Compress first estimates the evolutionary history
+of the provided genomes
+(or takes a user-provided phylogeny)
+and uses it compress compress the genomes.
+More information about the technique can be found
+on the [website of phylogenetic compression](http://brinda.eu/mof) or
+in [the associated paper](http://doi.org/10.1101/2023.04.15.536996).
 </p>
 <br />
 
@@ -17,10 +21,14 @@ using basic techniques.
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
-  * [Citation](#citation)
 * [Installation](#installation)
-* [Usage](#usage)
-* [Additional information](#additional-information)
+  * [Dependencies](#dependencies)
+  * [Installation](#installation-1)
+  * [Automatic installation of dependencies](#automatic-installation-of-dependencies)
+* [Usage (basic)](#usage-basic)
+* [Usage (advanced)](#usage-advanced)
+* [Troubleshooting](#troubleshooting)
+* [Citation](#citation)
 * [License](#license)
 * [Contacts](#contacts)
 
@@ -29,62 +37,74 @@ using basic techniques.
 
 ## Introduction
 
-This pipeline performs phylogenetic compression of one or more genome batches,
+MOF-Compress is implemented as a Snakemake pipeline,
+with automatic installation of dependencies using Conda.
+
+It is assumed that the input genomes are already split into batches of
+phylogenetically related genomes, of up to ≈10k genomes per batch
+(for more information about how to perform batching,
+see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
+
+The user then provides files of files for individual batches
+into the `input/` directory (possibly accompanied with phylogenies,
+otherwise they will be estimated by MashTree),
+and specifies the requested compression protocol in the
+[configuration file](config.yaml).
+
+This pipeline then performs phylogenetic compression of all batches,
 and calculates the associated statistics, using the following protocols:
 <ol>
-<li> phylogenetic compression of assemblies based on a left-to-right reordering
-<li> phylogenetic compression of de Bruijn graphs represented by simplitigs based on the left-to-right reordering
-<li> phylogenetic compression of de Bruijn graphs using bottom-up k-mer propagation using ProPhyle.
+<li> phylogenetic compression of assemblies based on a left-to-right reordering (<b>the default protocol</b>),
+<li> phylogenetic compression of de Bruijn graphs represented by simplitigs based on the left-to-right reordering (optional),
+<li> phylogenetic compression of de Bruijn graphs using bottom-up <i>k</i>-mer propagation using ProPhyle (optional).
 </ol>
-
-For more information about phylogenetic compression and implementation details, see
-the [main website](http://karel-brinda.github.io/mof)) and
-the [paper](https://www.biorxiv.org/content/10.1101/2023.04.15.536996v2).
-
-
-### Citation
-
-> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression.** bioRxiv 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
-
 
 ## Installation
 
-**Step 1: Install dependencies.**
-MOF-Compress is implemented as a [Snakemake](https://snakemake.github.io)
-pipeline, using the Conda system to manage all non-standard dependencies. It requires the following packages pre-installed:
+### Dependencies
 
-* [Conda](https://docs.conda.io/en/latest/miniconda.html)
+**The essential dependencies** include
+
+* [Conda](https://docs.conda.io/en/latest/miniconda.html) (unless the use of Conda is switched off in the configuration), ideally also [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0)
 * [GNU Make](https://www.gnu.org/software/make/)
 * [Python](https://www.python.org/) (>=3.7)
 * [Snakemake](https://snakemake.github.io) (>=6.2.0)
-* [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0) - optional, recommended
 
-The last three packages can be installed using Conda by running
+and can be installed by Conda by
 ```bash
-    conda install -c conda-forge -c bioconda -c defaults -y "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+    conda install -c conda-forge -c bioconda -c defaults \\
+      "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
-**Step 2: Clone the repository.**
+**Protocol-specific dependencies** are installed automatically by
+Snakemake and they are required;
+their lists can be found in [`workflow/envs/`](workflow/envs/)
+and involve ETE 3, Seqtk, Xopen, Pandas, Jellyfish (v2),
+Mashtree, ProphAsm, and ProPhyle. For instance, ProPhyle is
+not installed unless Protocol 3 is used for compression.
+
+
+### Installation
+
+Just clone and enter the repository:
 
 ```bash
    git clone https://github.com/karel-brinda/mof-compress
    cd mof-compress
 ```
 
-**Step 3 (optional): Install conda environments.**
+### Automatic installation of dependencies
+
+All non-essential dependencies will be installated autoamtically
+by Snakemake. To invoke installation all non-essential dependencies across
+all protocols manually, run:
 
 ```bash
    make conda
 ```
 
-**Step 4 (optional): Run a simple test.**
 
-```bash
-   make test
-```
-
-
-## Usage
+## Usage (basic)
 
 **Step 1: Provide your input files.**
 Individual batches of genomes in the `.fa[.gz]` formats are to be specified
@@ -100,7 +120,9 @@ All available options are documented directly there.
 **Step 3: Run the pipeline.**
 Simply run `make`, which will execute Snakemake with the corresponding parameters. The computed files will then be located in `output/`.
 
-## Additional information
+
+
+## Usage (advanced)
 
 **List of workflow commands.**
 MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
@@ -118,6 +140,31 @@ help          Print help message
 report        Create html report
 rmstats       Remove stats
 test          Run the workflow on test data
+```
+
+## Troubleshooting
+
+```bash
+   make test
+```
+
+
+## Citation
+
+K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression.** bioRxiv 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
+
+```
+@article {B{\v r}inda2023.04.15.536996,
+  author = {Karel B{\v r}inda and Leandro Lima and Simone Pignotti
+    and Natalia Quinones-Olvera and Kamil Salikhov and Rayan Chikhi
+    and Gregory Kucherov and Zamin Iqbal and Michael Baym},
+  title = {Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression},
+  elocation-id = {2023.04.15.536996},
+  year = {2023},
+  doi = {10.1101/2023.04.15.536996},
+  URL = {https://www.biorxiv.org/content/early/2023/04/16/2023.04.15.536996},
+  journal = {bioRxiv}
+}
 ```
 
 
