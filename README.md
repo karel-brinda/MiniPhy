@@ -24,28 +24,30 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 
 <!-- vim-markdown-toc GFM -->
 
-* [Introduction](#introduction)
-* [Dependencies](#dependencies)
+* [1. Introduction](#1-introduction)
+* [2. Dependencies](#2-dependencies)
+  * [2a. Essential dependencies](#2a-essential-dependencies)
+  * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
 * [Installation](#installation)
-* [Usage](#usage)
-  * [Basic example](#basic-example)
-  * [Adjusting configuration](#adjusting-configuration)
-  * [List of implemented protocols](#list-of-implemented-protocols)
-  * [List of workflow commands](#list-of-workflow-commands)
-  * [Troubleshooting](#troubleshooting)
-* [Citation](#citation)
-* [Issues](#issues)
-* [Changelog](#changelog)
-* [License](#license)
-* [Contacts](#contacts)
+* [3. Usage](#3-usage)
+  * [3a. Basic example](#3a-basic-example)
+  * [3b. Adjusting configuration](#3b-adjusting-configuration)
+  * [3c. List of implemented protocols](#3c-list-of-implemented-protocols)
+  * [3d. List of workflow commands](#3d-list-of-workflow-commands)
+  * [3e. Troubleshooting](#3e-troubleshooting)
+* [4. Citation](#4-citation)
+* [5. Issues](#5-issues)
+* [6. Changelog](#6-changelog)
+* [7. License](#7-license)
+* [8. Contacts](#8-contacts)
 
 <!-- vim-markdown-toc -->
 
 
-## Introduction
+## 1. Introduction
 
 It is assumed that the input genomes are provided as batches of
-phylogenetically related genomes, of up to ≈10k genomes per batch
+phylogenetically related genomes, of up to approx. 10k genomes per batch
 (for more information on batching strategies,
 see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
 
@@ -60,9 +62,9 @@ and the compressed output can then be found in `output/`.
 
 
 
-## Dependencies
+## 2. Dependencies
 
-<h3>Essential dependencies</h3>
+### 2a. Essential dependencies
 
 * [Conda](https://docs.conda.io/en/latest/miniconda.html) (unless the use of Conda is switched off in the configuration), ideally also [Mamba](https://mamba.readthedocs.io/) (>= 0.20.0)
 * [GNU Make](https://www.gnu.org/software/make/)
@@ -75,7 +77,7 @@ and can be installed by Conda by
       "make python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
 ```
 
-<h3>Protocol-specific dependencies</h3>
+### 2b. Protocol-specific dependencies
 
 These are installed automatically by
 Snakemake when they are required/
@@ -92,6 +94,7 @@ all protocols can also be achieved by:
 ```
 
 
+
 ## Installation
 
 Clone the repository and enter the directory by
@@ -102,11 +105,12 @@ Clone the repository and enter the directory by
 ```
 
 
-## Usage
 
-### Basic example
+## 3. Usage
 
-<h4><u>Step 1:</u> Provide lists of input files</h4>
+### 3a. Basic example
+
+<h4><i>Step 1:</i> Provide lists of input files</h4>
 
 For every batch, create a txt list of input files in the `input/`
 directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
@@ -120,7 +124,7 @@ find /home/data/genomes -name '*.fa' > input/my_first_batch.txt
 The supported input file formats include FASTA and FASTQ, possibly gzipped.
 
 
-<h4><u>Step 2 (optional):</u> Provide corresponding phylogenies</h4>
+<h4><i>Step 2 (optional):</i> Provide corresponding phylogenies</h4>
 
 In the default setting, phylogenies are estimated using MashTree,
 which already provides a sufficiently good resolution.
@@ -130,23 +134,23 @@ put them into `input/{batch_name}.nw`. Leave names should correspond
 to the names of your input FASTA files without the FASTA suffixes.
 
 
-<h4><u>Step 3 (optional):</u> Adjust configuration</h4>
+<h4><i>Step 3 (optional):</i> Adjust configuration</h4>
 
 Edit the [`config.yaml`](config.yaml) to specify compression protocols and data analyzes
 to be included, as well as specific parameters.
 
 
-<h4><u>Step 4:</u> Run the pipeline</h4>
+<h4><i>Step 4:</i> Run the pipeline</h4>
 
 Run the pipeline by `make`. This will execute Snakemake with the corresponding parameters.
 
 
-<h4><u>Step 5:</u> Retrieve the output files</h4>
+<h4><i>Step 5:</i> Retrieve the output files</h4>
 
 All output files will be located in `output/`.
 
 
-### Adjusting configuration
+### 3b. Adjusting configuration
 
 The workflow can be configured via the [`config.yaml`](./config.yaml) file.
 All options are documented directly there.
@@ -161,7 +165,7 @@ The configurable functionality includes:
 * JellyFish parameters (k-mer counting)
 
 
-### List of implemented protocols
+### 3c. List of implemented protocols
 
 <table>
 
@@ -239,7 +243,7 @@ The configurable functionality includes:
 </small>
 
 
-### List of workflow commands
+### 3d. List of workflow commands
 
 MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
 Here's a list of all implemented commands (to be executed as `make {command}`):
@@ -256,10 +260,11 @@ help          Print help message
 report        Create html report
 rmstats       Remove stats
 test          Run the workflow on test data
+testreport    Create html report for the test
 ```
 
 
-### Troubleshooting
+### 3e. Troubleshooting
 
 Tests can be run by
 
@@ -268,9 +273,9 @@ Tests can be run by
 ```
 
 
-## Citation
+## 4. Citation
 
-> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression](https://doi.org/10.1101/2023.04.15.536996).** *bioRxiv* 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
+> K. Brinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression](https://doi.org/10.1101/2023.04.15.536996).** *bioRxiv* 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
 
 ```bibtex
 @article {PhylogeneticCompression,
@@ -287,22 +292,25 @@ Tests can be run by
 ```
 
 
-## Issues
+## 5. Issues
 
 Please use [Github issues](https://github.com/karel-brinda/mof-compress/issues).
 
 
-## Changelog
+
+## 6. Changelog
 
 See [Releases](https://github.com/karel-brinda/mof-compress/releases).
 
 
-## License
+
+## 7. License
 
 [MIT](https://github.com/karel-brinda/mof-search/blob/master/LICENSE)
 
-## Contacts
+
+
+## 8. Contacts
 
 * [Karel Brinda](http://karel-brinda.github.io) \<karel.brinda@inria.fr\>
 * [Leandro Lima](https://github.com/leoisl) \<leandro@ebi.ac.uk\>
-
