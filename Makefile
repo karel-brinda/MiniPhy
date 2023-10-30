@@ -1,4 +1,4 @@
-.PHONY: all help clean cleanall test report testreport format rmstats edit conda
+.PHONY: all help clean cleanall test report testreport format rmstats edit conda viewconf
 
 SHELL=/usr/bin/env bash -eo pipefail
 
@@ -55,9 +55,28 @@ clean: ## Clean
 
 cleanall: clean ## Clean all
 
-rmstats: ## Remove stats
+rmstats: ## Remove statistics
 	find output .test/output -name 'stats*.tsv' | xargs rm -fv
 	find output .test/output -name '*.summary' | xargs rm -fv
+
+
+
+###############
+## Reporting ##
+###############
+
+viewconf: ## View configuration without comments
+	@cat config.yaml \
+		| perl -pe 's/ *#.*//g' \
+		| grep --color='auto' -E '.*\:'
+	@#| grep -Ev ^$$
+
+testreport: ## Create html report for the test
+	$(MAKE) -C .test TOPLEVEL_DIR=.. report
+	#snakemake -d .test -j 1 $(CONDA_PARAMS) -p --show-failed-logs --report test_report.html
+
+report: ## Create html report
+	snakemake $(CONDA_PARAMS) --report report.html $(SNAKEMAKE_PARAM_DIR)
 
 
 ##################
@@ -67,13 +86,6 @@ rmstats: ## Remove stats
 test: ## Run the workflow on test data
 	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
 	$(MAKE) -C .test TOPLEVEL_DIR=..
-
-testreport: ## Create html report for the test
-	$(MAKE) -C .test TOPLEVEL_DIR=.. report
-	#snakemake -d .test -j 1 $(CONDA_PARAMS) -p --show-failed-logs --report test_report.html
-
-report: ## Create html report
-	snakemake $(CONDA_PARAMS) --report report.html $(SNAKEMAKE_PARAM_DIR)
 
 format: ## Reformat all source code (developers)
 	snakefmt workflow
