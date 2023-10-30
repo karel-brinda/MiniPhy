@@ -3,7 +3,7 @@
 <p>
 <img src="docs/logo.png" align="left" style="width:100px;" />
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
-of microbial genomes (produces a highly compressed <code>.tar.xz</code> files).
+of microbial genomes, producing highly compressed <code>.tar.xz</code> files.
 MOF-Compress first estimates the evolutionary history
 of user-provided genomes
 (unless a phylogeny is provided by the user),
@@ -24,13 +24,13 @@ and in the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
-* [Installation](#installation)
-  * [Dependencies](#dependencies)
-  * [Installation](#installation-1)
-  * [Automatic installation of dependencies](#automatic-installation-of-dependencies)
-* [Usage (basic)](#usage-basic)
-* [Usage (advanced)](#usage-advanced)
-* [Troubleshooting](#troubleshooting)
+* [Dependencies](#dependencies)
+  * [Installation](#installation)
+* [Basic usage](#basic-usage)
+* [Advanced usage](#advanced-usage)
+  * [List of implemented protocols](#list-of-implemented-protocols)
+  * [List of workflow commands](#list-of-workflow-commands)
+  * [Troubleshooting](#troubleshooting)
 * [Citation](#citation)
 * [Issues](#issues)
 * [Changelog](#changelog)
