@@ -53,10 +53,10 @@ It is assumed that the input genomes are provided as batches of
 phylogenetically related genomes, of up to approx. 10k genomes per batch
 (for more information on batching strategies,
 see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
-Upon the execution of the pipeline by `make`,
+Upon the execution by `make`,
 MOF-Compress performs phylogenetic compression
 of the assemblies or associated de Bruijn graphs.
-All the compressed outputs and calculated statistics
+All the compressed outputs and the calculated statistics
 are then placed in `output/`.
 
 
@@ -79,9 +79,11 @@ bash conda install -c conda-forge -c bioconda -c defaults \
 ### 2b. Protocol-specific dependencies
 
 These are installed automatically by
-Snakemake when they are required/
-Their lists can be found in [`workflow/envs/`](workflow/envs/)
-and involve
+Snakemake when they are requested;
+for instance, ProPhyle is not installed unless Protocol 3 is used.
+The specifications of individual environments
+can be found in [`workflow/envs/`](workflow/envs/),
+and they contain:
 [ETE 3](http://etetoolkit.org/),
 [SeqTK](https://github.com/lh3/seqtk),
 [xopen](https://pypi.org/project/xopen/),
@@ -90,10 +92,10 @@ and involve
 [Mashtree](https://github.com/lskatz/mashtree),
 [ProphAsm](https://github.com/prophyle/prophasm),
 and [ProPhyle](https://prophyle.github.io).
-For instance, ProPhyle is not installed unless Protocol 3 is used.
+
 
 All non-essential dependencies across all protocols can also be
-installed by `make conda`.
+installed at once by `make conda`.
 
 
 
@@ -138,7 +140,7 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
   to FASTA filenames (without FASTA suffixes).
 
 * ***Step 3 (optional): Adjust configuration.*** \
-  By editting [`config.yaml`](config.yaml) it is possible to specify
+  By editing [`config.yaml`](config.yaml) it is possible to specify
   compression protocols, data analyzes,
   and low-level parameters (see below).
 
@@ -257,7 +259,7 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
     conda                Create the conda environments
     clean                Clean all output archives and files with statistics
     cleanall             Clean everything but Conda, Snakemake, and input files
-    cleanallall          Clean everything but Conda, Snakemake, and input files
+    cleanallall          Clean completely everything
 ###############
 ## Reporting ##
 ###############
