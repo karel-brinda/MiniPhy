@@ -1,7 +1,7 @@
 # MOF-Compress
 
 <p>
-<a href="https://github.com/karel-brinda/mof-compress">
+<a href="https://brinda.eu/mof">
     <img src="docs/logo.svg" align="left" style="width:100px;" />
 </a>
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
@@ -11,7 +11,7 @@ of user-provided genomes
 and then uses it for guiding their compression using XZ.
 The resulting archives can be distributed to users or
 re-compressed/indexed by other methods.
-For more information
+For more information,
 see the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
 and the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
 </p><br/>
