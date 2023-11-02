@@ -2,7 +2,7 @@
 
 <p>
 <a href="https://brinda.eu/mof">
-    <img src="docs/logo.png" align="left" style="width:100px;" style="background: white;" />
+    <img src="docs/logo.svg" align="left" style="width:100px;" />
 </a>
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
 of microbial genomes, producing highly compressed <code>.tar.xz</code> genome archives.
