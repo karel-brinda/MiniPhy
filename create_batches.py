@@ -7,9 +7,10 @@ import os
 import re
 import sys
 
-cluster_max_size = 4000
-cluster_min_size = 100
-dustbin_max_size = 1000
+DEFAULT_CLUSTER_MAX_SIZE = 4000
+DEFAULT_CLUSTER_MIN_SIZE = 100
+DEFAULT_DUSTBIN_MAX_SIZE = 1000
+DEFAULT_DIR=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input')
 
 
 def accession_from_fn(fn):
@@ -66,7 +67,7 @@ def batches():
             f.write("\n".join(dd[k]) + "\n")
 
 
-def main():
+def clusters():
     lists = collections.defaultdict(lambda: [])
     with lzma.open("../60_661k_main_table/661k_main_table.tsv.xz", "tr") as f:
         for x in csv.DictReader(f, delimiter="\t"):
@@ -81,6 +82,57 @@ def main():
         #ll = [x[0] for x in l]
         with open(f"{k}.txt", "w+") as f:
             f.write("\n".join(l) + "\n")
+
+
+def main():
+
+    parser = argparse.ArgumentParser(description="")
+
+    parser.add_argument(
+        'txt_fn',
+        metavar='input.txt',
+        help='',
+    )
+
+
+    parser.add_argument(
+        '-m',
+        metavar='int',
+        dest='cluster_min_size',
+        default=DEFAULT_CLUSTER_MIN_SIZE,
+        help=f'cluster min size [{DEFAULT_CLUSTER_MIN_SIZE}]',
+    )
+    parser.add_argument(
+        '-M',
+        metavar='int',
+        dest='cluster_max',
+        default=DEFAULT_CLUSTER_MAX_SIZE,
+        help=f'cluster max size [{DEFAULT_CLUSTER_MAX_SIZE}]',
+    )
+
+    parser.add_argument(
+        '-D',
+        metavar='int',
+        dest='',
+        default=DEFAULT_DUSTBIN_MAX_SIZE,
+        help=f'dustbin pseudocluster max size [{DEFAULT_DUSTBIN_MAX_SIZE}]',
+    )
+
+    parser.add_argument(
+        '-d',
+        metavar='str',
+        dest='param',
+        default=DEFAULT_DIR,
+        help=f'output directory [{DEFAULT_DIR}]',
+    )
+
+    args = parser.parse_args()
+
+    create_batches(args.output_dir, )
+
+DEFAULT_CLUSTER_MAX_SIZE = 4000
+DEFAULT_CLUSTER_MIN_SIZE = 100
+DEFAULT_DUSTBIN_MAX_SIZE = 1000
 
 if __name__ == "__main__":
     main()
