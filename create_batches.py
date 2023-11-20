@@ -33,7 +33,7 @@ re_acc = re.compile(r'([A-Z]+)([0-9]+)')
 #    return norm_acc
 
 
-def main():
+def batches():
     l = glob.glob("../61_661k_clusters/*.txt")
     d = collections.defaultdict(lambda: [])
 
@@ -65,6 +65,22 @@ def main():
         with open(f"{k}.txt", "w") as f:
             f.write("\n".join(dd[k]) + "\n")
 
+
+def main():
+    lists = collections.defaultdict(lambda: [])
+    with lzma.open("../60_661k_main_table/661k_main_table.tsv.xz", "tr") as f:
+        for x in csv.DictReader(f, delimiter="\t"):
+            #print(x)
+            species = x["hit1_species"]
+            fasta = x["path"]
+            lists[clean(species)].append(fasta)
+            #print(lists)
+    for k in lists:
+        l = lists[k]
+        #l.sort(key=lambda x: x[1])
+        #ll = [x[0] for x in l]
+        with open(f"{k}.txt", "w+") as f:
+            f.write("\n".join(l) + "\n")
 
 if __name__ == "__main__":
     main()
