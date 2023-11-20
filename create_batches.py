@@ -7,10 +7,10 @@ import os
 import re
 import sys
 
-DEFAULT_CLUSTER_MAX_SIZE = 4000
-DEFAULT_CLUSTER_MIN_SIZE = 100
+DEFAULT_BATCH_MAX_SIZE = 4000
+DEFAULT_BATCH_MIN_SIZE = 100
 DEFAULT_DUSTBIN_MAX_SIZE = 1000
-DEFAULT_DIR=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input')
+DEFAULT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input')
 
 
 def accession_from_fn(fn):
@@ -90,24 +90,23 @@ def main():
 
     parser.add_argument(
         'txt_fn',
-        metavar='input.txt',
+        metavar='clustered_fastas.tsv',
         help='',
     )
-
 
     parser.add_argument(
         '-m',
         metavar='int',
         dest='cluster_min_size',
-        default=DEFAULT_CLUSTER_MIN_SIZE,
-        help=f'cluster min size [{DEFAULT_CLUSTER_MIN_SIZE}]',
+        default=DEFAULT_BATCH_MIN_SIZE,
+        help=f'batch min size [{DEFAULT_BATCH_MIN_SIZE}]',
     )
     parser.add_argument(
         '-M',
         metavar='int',
         dest='cluster_max',
-        default=DEFAULT_CLUSTER_MAX_SIZE,
-        help=f'cluster max size [{DEFAULT_CLUSTER_MAX_SIZE}]',
+        default=DEFAULT_BATCH_MAX_SIZE,
+        help=f'batch max size [{DEFAULT_BATCH_MAX_SIZE}]',
     )
 
     parser.add_argument(
@@ -115,7 +114,7 @@ def main():
         metavar='int',
         dest='',
         default=DEFAULT_DUSTBIN_MAX_SIZE,
-        help=f'dustbin pseudocluster max size [{DEFAULT_DUSTBIN_MAX_SIZE}]',
+        help=f'dustbin batch max size [{DEFAULT_DUSTBIN_MAX_SIZE}]',
     )
 
     parser.add_argument(
@@ -130,9 +129,6 @@ def main():
 
     create_batches(args.output_dir, )
 
-DEFAULT_CLUSTER_MAX_SIZE = 4000
-DEFAULT_CLUSTER_MIN_SIZE = 100
-DEFAULT_DUSTBIN_MAX_SIZE = 1000
 
 if __name__ == "__main__":
     main()
