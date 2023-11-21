@@ -105,6 +105,7 @@ test: ## Run the workflow on test data
 format: ## Reformat all source code
 	snakefmt workflow
 	yapf -i --recursive workflow
+	yapf -i *.py
 
 checkformat: ## Check source code format
 	snakefmt --check workflow
