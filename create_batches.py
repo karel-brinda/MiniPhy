@@ -18,22 +18,6 @@ def accession_from_fn(fn):
     return b.split(".")[0]
 
 
-re_acc = re.compile(r'([A-Z]+)([0-9]+)')
-
-#def sorting_function(x):
-#    acc = accession_from_fn(x)
-#    #print(x, acc)
-#    m = re_acc.match(acc)
-#    assert m is not None, x
-#    letters, number = m.groups()
-#    assert len(letters) == 4, [acc, letters]
-#    assert 7 <= len(number) <= 7, [acc, number, len(number)]
-#    norm_acc = "{}{:013}".format(letters, int(number))
-#    #print(norm_acc)
-#    #print(acc, norm_acc)
-#    return norm_acc
-
-
 def batches():
     l = glob.glob("../61_661k_clusters/*.txt")
     d = collections.defaultdict(lambda: [])
@@ -84,12 +68,34 @@ def clusters():
             f.write("\n".join(l) + "\n")
 
 
+class Batching:
+
+    def __init__(self, input_fn, cluster_min_size, cluster_max_size,
+                 dustbin_max_size, output_d):
+        self._load_input(input_fn)
+        self.cluster_min_size = cluster_min_size
+        self.cluster_max_size = cluster_max_size
+        self.dustbin_max_size = dustbin_max_size
+        self.output_d = output_d
+
+        self.species = collections.default_dict(lambda: [])
+
+    def _load_input(self, fn):
+        with open(fn) as fo:
+            for genome_count, x in enumerate(fo):
+                species, fasta_fn = x.strip().split("\t")
+                self.species[species].append(fasta_fn)
+            print(
+                f"Loaded {genome_count} genomes of {len(self.species)} species",
+                file=sys.stderr)
+
+
 def main():
 
     parser = argparse.ArgumentParser(description="")
 
     parser.add_argument(
-        'txt_fn',
+        'input_fn',
         metavar='clustered_fastas.tsv',
         help='',
     )
@@ -104,7 +110,7 @@ def main():
     parser.add_argument(
         '-M',
         metavar='int',
-        dest='cluster_max',
+        dest='cluster_max_size',
         default=DEFAULT_BATCH_MAX_SIZE,
         help=f'batch max size [{DEFAULT_BATCH_MAX_SIZE}]',
     )
@@ -112,7 +118,7 @@ def main():
     parser.add_argument(
         '-D',
         metavar='int',
-        dest='',
+        dest='dustbin_max_size',
         default=DEFAULT_DUSTBIN_MAX_SIZE,
         help=f'dustbin batch max size [{DEFAULT_DUSTBIN_MAX_SIZE}]',
     )
@@ -120,14 +126,18 @@ def main():
     parser.add_argument(
         '-d',
         metavar='str',
-        dest='param',
+        dest='output_d',
         default=DEFAULT_DIR,
         help=f'output directory [{DEFAULT_DIR}]',
     )
 
     args = parser.parse_args()
 
-    create_batches(args.output_dir, )
+    create_batches(input_fn=args.input_fn,
+                   cluster_min_size=args.cluster_min_size,
+                   cluster_max_size=args.cluster_max_size,
+                   dustbin_max_size=args.dustbin_max_size,
+                   output_d=args.output_d)
 
 
 if __name__ == "__main__":
