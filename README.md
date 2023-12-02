@@ -1,6 +1,4 @@
-# MiniPhy – Minimization via Phylogenetic compression
-
-## former MOF-Compress
+# MiniPhy – Minimization via Phylogenetic compression (former MOF-Compress)
 
 
 <p>
