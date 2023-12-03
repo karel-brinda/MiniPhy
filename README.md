@@ -280,7 +280,7 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 *Note:* `make format` and `make checkformat` require
 [YAPF](https://github.com/google/yapf) and
 [Snakefmt](https://github.com/snakemake/snakefmt), which can be installed by
-`conda install -c conda-forge yapf`.
+`conda install -c conda-forge -bioconda yapf snakefmt`.
 
 
 ### 4e. Troubleshooting
