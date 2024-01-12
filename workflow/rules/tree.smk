@@ -62,8 +62,8 @@ rule symlink_nw_tree:
         """
 
 if not config["trees_required"]:
-    ruleorder: symlink_nw_tree > tree_newick_mashtree
-    rule tree_newick_mashtree:
+    ruleorder: symlink_nw_tree > tree_newick_attotree
+    rule tree_newick_attotree:
         """
         Infer a phylogenetic tree from the assemblies belonging to a given batch
         """
@@ -71,11 +71,11 @@ if not config["trees_required"]:
             nw=fn_tree_dirty(_batch="{batch}"),
         input:
             w_batch_asms,
-        threads: config["mashtree_threads"]
+        threads: config["attotree_threads"]
         params:
-            k=config["mashtree_kmer_length"],
-            s=config["mashtree_sketch_size"],
-            t=min(int(config["mashtree_threads"]), workflow.cores),  # ensure that the number of cores for MashTree doesn't go too low
+            k=config["attotree_kmer_length"],
+            s=config["attotree_sketch_size"],
+            t=min(int(config["attotree_threads"]), workflow.cores),  # ensure that the number of cores for Attotree doesn't go too low
         conda:
             "../envs/basic_env.yaml"
         shell:
