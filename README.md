@@ -88,12 +88,12 @@ for instance, ProPhyle is not installed unless Protocol 3 is used.
 The specifications of individual environments
 can be found in [`workflow/envs/`](workflow/envs/),
 and they contain:
+[Attotree](https://github.com/karel-brinda/attotree),
 [ETE 3](http://etetoolkit.org/),
 [SeqTK](https://github.com/lh3/seqtk),
 [xopen](https://pypi.org/project/xopen/),
 [Pandas](https://pandas.pydata.org/),
 [Jellyfish 2](https://github.com/gmarcais/Jellyfish),
-[Mashtree](https://github.com/lskatz/mashtree),
 [ProphAsm](https://github.com/prophyle/prophasm),
 and [ProPhyle](https://prophyle.github.io).
 
@@ -137,7 +137,8 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
   The supported input file formats include FASTA and FASTQ (possibly compressed by GZip).
 
 * ***Step 2 (optional): Provide corresponding phylogenies.*** \
-  Instead of estimating phylogenies by MashTree,
+  Instead of estimating phylogenies by [Attotree](https://github.com/karel-brinda/attotree)
+  (similar functionality like [Mashtree](https://github.com/lskatz/mashtree)),
   it is possible to supply custom phylogenies in the Newick format.
   The tree files should be named `input/{batch_name}.nw`,
   and the leave names inside should correspond
@@ -164,7 +165,7 @@ all options are documented directly there. The configurable functionality includ
 * protocols to use (asm, dGSs, dBGs with propagation),
 * analyzes to include (sequence and *k*-mer statistics),
 * *k* for de Bruijn graph and *k*-mer counting,
-* Mashtree parameters (phylogeny estimation),
+* Attotree parameters (phylogeny estimation),
 * XZ parameters (low-level compression), or
 * JellyFish parameters (*k*-mer counting).
 
