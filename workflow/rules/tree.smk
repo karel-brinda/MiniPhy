@@ -77,14 +77,13 @@ if not config["trees_required"]:
             s=config["mashtree_sketch_size"],
             t=min(int(config["mashtree_threads"]), workflow.cores),  # ensure that the number of cores for MashTree doesn't go too low
         conda:
-            "../envs/mashtree.yaml"
+            "../envs/basic_env.yaml"
         shell:
             """
-            mashtree \\
-                --numcpus {params.t} \\
-                --kmerlength {params.k} \\
-                --sketch-size {params.s} \\
-                --seed 42  \\
+            attotree \\
+                -t {params.t} \\
+                -k {params.k} \\
+                -s {params.s} \\
                 {input} \\
                 | tee {output.nw}
             """
