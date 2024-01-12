@@ -8,3 +8,4 @@ dependencies:
   - xopen ==1.7.0
   - pandas ==2.1.1
   - make ==4.3
+  - attotree ==0.1.0
