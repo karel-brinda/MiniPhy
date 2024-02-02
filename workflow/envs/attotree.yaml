@@ -1,0 +1,8 @@
+# attotree is in a sep. directory as it's changing quickly
+# so not to force to change the base env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - attotree ==0.1.0

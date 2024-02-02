@@ -77,7 +77,7 @@ if not config["trees_required"]:
             s=config["attotree_sketch_size"],
             t=min(int(config["attotree_threads"]), workflow.cores),  # ensure that the number of cores for Attotree doesn't go too low
         conda:
-            "../envs/basic_env.yaml"
+            "../envs/attotree.yaml"
         shell:
             """
             attotree \\
