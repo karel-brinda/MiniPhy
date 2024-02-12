@@ -28,15 +28,15 @@ and the <a href="https://doi.org/10.1101/2023.04.15.536996">associated paper</a>
 
 * [1. Introduction](#1-introduction)
 * [2. Dependencies](#2-dependencies)
-    * [2a. Essential dependencies](#2a-essential-dependencies)
-    * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
+  * [2a. Essential dependencies](#2a-essential-dependencies)
+  * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
 * [3. Installation](#3-installation)
 * [4. Usage](#4-usage)
-    * [4a. Basic example](#4a-basic-example)
-    * [4b. Adjusting configuration](#4b-adjusting-configuration)
-    * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
-    * [4d. List of workflow commands](#4d-list-of-workflow-commands)
-    * [4e. Troubleshooting](#4e-troubleshooting)
+  * [4a. Basic example](#4a-basic-example)
+  * [4b. Adjusting configuration](#4b-adjusting-configuration)
+  * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
+  * [4d. List of workflow commands](#4d-list-of-workflow-commands)
+  * [4e. Troubleshooting](#4e-troubleshooting)
 * [5. Citation](#5-citation)
 * [6. Issues](#6-issues)
 * [7. Changelog](#7-changelog)
@@ -76,8 +76,8 @@ are then placed in `output/`.
 
 and can be installed by Conda by
 ```bash
-bash conda install -c conda-forge -c bioconda -c defaults \
-  make "python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+conda install -c conda-forge -c bioconda -c defaults \
+  make "python>=3.7" "snakemake-minimal>=6.2.0" "mamba>=0.20.0"
 ```
 
 ### 2b. Protocol-specific dependencies
