@@ -14,16 +14,7 @@ SHELL=/usr/bin/env bash -eo pipefail
 #TOPDIR = .
 TOPDIR = $(shell if [ -d ".test" ]; then echo . ; else echo .. ; fi)
 
-THREADS0 = $(shell grep "^threads:" config.yaml | awk '{print $$2}')
-
-# workaround for the change in snakemake syntax for parallelism
-#   unlimited -> all for old versions (v6, v7)
-SNAKEMAKE_MAJOR = $(shell snakemake --version | tee  | cut -d. -f1)
-ifneq (,$(filter 6 7,$(SNAKEMAKE_MINOR)))
-	THREADS = $(subst unlimited,all,$(THREADS0))
-else
-	THREADS = $(THREADS0)
-endif
+THREADS = $(shell grep "^threads:" config.yaml | awk '{print $$2}')
 
 CONDA_DIR     = $(shell grep "^conda_dir:" config.yaml | awk '{print $$2}')
 ifeq ($(CONDA_DIR),)
@@ -43,9 +34,9 @@ endif
 
 # test if this is run from the .test/ directory
 ifeq ($(strip $(TOPDIR)),..)
-	SNAKEMAKE_PARAMS = -j $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs --snakefile ../workflow/Snakefile
+	SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs --snakefile ../workflow/Snakefile
 else
-	SNAKEMAKE_PARAMS = -j $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs
+	SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs
 endif
 
 
@@ -108,8 +99,8 @@ reports: ## Create html report
 ## For developers ##
 ####################
 
+#snakemake -d .test $(SNAKEMAKE_PARAMS)
 test: ## Run the workflow on test data
-	#snakemake -d .test $(SNAKEMAKE_PARAMS)
 	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test; \
 	fi
