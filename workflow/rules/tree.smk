@@ -42,8 +42,6 @@ rule cp_final_tree_for_post_output:
         """
 
 
-
-
 rule symlink_nw_tree:
     """
     Symlink a phylogenetic tree if possible (nw)
@@ -61,8 +59,11 @@ rule symlink_nw_tree:
         ln -sf {params.relative_path} {output.nw}
         """
 
+
 if not config["trees_required"]:
+
     ruleorder: symlink_nw_tree > tree_newick_attotree
+
     rule tree_newick_attotree:
         """
         Infer a phylogenetic tree from the assemblies belonging to a given batch

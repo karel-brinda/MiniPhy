@@ -89,7 +89,7 @@ rule nscl:
     input:
         list=fn_list("{batch}", "{protocol}"),
     params:
-        ss="workflow/scripts/file_list_to_seq_summaries.py"
+        ss="workflow/scripts/file_list_to_seq_summaries.py",
     conda:
         "../envs/basic_env.yaml"
     shell:
