@@ -28,7 +28,7 @@ jobs:
               - defaults
           create-args: >-
             python=${{ matrix.python-version }}
-            snakemake
+            snakemake-minimal
             mamba
             make
           init-shell: bash
