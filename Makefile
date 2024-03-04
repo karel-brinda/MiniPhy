@@ -39,6 +39,7 @@ else
 	SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs
 endif
 
+BIG_TEST_PARAMS = --config protocol_pre=True protocol_post=True
 
 
 
@@ -100,10 +101,21 @@ reports: ## Create html report
 ####################
 
 #snakemake -d .test $(SNAKEMAKE_PARAMS)
-test: ## Run the workflow on test data
+test: ## Run the workflow on test data (P1)
 	@if [ -d ".test" ]; then \
-		$(MAKE) -C .test; \
+		$(MAKE) -C .test test; \
+	else\
+		snakemake $(SNAKEMAKE_PARAMS); \
 	fi
+
+
+bigtest: ## Run the workflow on test data (P1, P2, P3)
+	@if [ -d ".test" ]; then \
+		$(MAKE) -C .test bigtest; \
+	else\
+		snakemake $(SNAKEMAKE_PARAMS) $(BIG_TEST_PARAMS); \
+	fi
+
 
 format: ## Reformat all source code
 	snakefmt workflow
