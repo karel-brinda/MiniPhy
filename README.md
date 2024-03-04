@@ -1,4 +1,5 @@
-# MOF-Compress
+# MiniPhy – Minimization via Phylogenetic compression (former MOF-Compress)
+
 
 <p>
 <a href="https://brinda.eu/mof">
@@ -6,20 +7,20 @@
 </a>
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
 of microbial genomes, producing highly compressed <code>.tar.xz</code> genome archives.
-MOF-Compress first estimates the evolutionary history
+MiniPhy first estimates the evolutionary history
 of user-provided genomes
 and then uses it for guiding their compression using XZ.
 The resulting archives can be distributed to users or
 re-compressed/indexed by other methods.
 For more information,
-see the <a href="http://brinda.eu/mof">website of phylogenetic compression</a>
-and the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
+see the <a href="https://brinda.eu/mof">website of phylogenetic compression</a>
+and the <a href="https://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
 </p><br/>
 
 [![Info](https://img.shields.io/badge/Project-Info-blue)](https://brinda.eu/mof)
 [![Paper DOI](https://zenodo.org/badge/DOI/10.1101/2023.04.15.536996.svg)](https://doi.org/10.1101/2023.04.15.536996)
-[![MOF-Compress test](https://github.com/karel-brinda/mof-compress/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/mof-compress/actions/)
-[![GitHub release](https://img.shields.io/github/release/karel-brinda/mof-compress.svg)](https://github.com/karel-brinda/mof-compress/releases/)
+[![MiniPhy test](https://github.com/karel-brinda/miniphy/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/miniphy/actions/)
+[![GitHub release](https://img.shields.io/github/release/karel-brinda/miniphy.svg)](https://github.com/karel-brinda/miniphy/releases/)
 
 <h2>Contents</h2>
 
@@ -27,15 +28,15 @@ and the <a href="http://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
 
 * [1. Introduction](#1-introduction)
 * [2. Dependencies](#2-dependencies)
-    * [2a. Essential dependencies](#2a-essential-dependencies)
-    * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
+  * [2a. Essential dependencies](#2a-essential-dependencies)
+  * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
 * [3. Installation](#3-installation)
 * [4. Usage](#4-usage)
-    * [4a. Basic example](#4a-basic-example)
-    * [4b. Adjusting configuration](#4b-adjusting-configuration)
-    * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
-    * [4d. List of workflow commands](#4d-list-of-workflow-commands)
-    * [4e. Troubleshooting](#4e-troubleshooting)
+  * [4a. Basic example](#4a-basic-example)
+  * [4b. Adjusting configuration](#4b-adjusting-configuration)
+  * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
+  * [4d. List of workflow commands](#4d-list-of-workflow-commands)
+  * [4e. Troubleshooting](#4e-troubleshooting)
 * [5. Citation](#5-citation)
 * [6. Issues](#6-issues)
 * [7. Changelog](#7-changelog)
@@ -56,7 +57,7 @@ phylogenetically related genomes, of up to approx. 10k genomes per batch
 (for more information on batching strategies,
 see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
 Upon the execution by `make`,
-MOF-Compress performs phylogenetic compression
+MiniPhy performs phylogenetic compression
 of the assemblies or associated de Bruijn graphs.
 All the compressed outputs and the calculated statistics
 are then placed in `output/`.
@@ -75,8 +76,8 @@ are then placed in `output/`.
 
 and can be installed by Conda by
 ```bash
-bash conda install -c conda-forge -c bioconda -c defaults \
-  make "python>=3.7" "snakemake>=6.2.0" "mamba>=0.20.0"
+conda install -c conda-forge -c bioconda -c defaults \
+  make "python>=3.7" "snakemake-minimal>=6.2.0" "mamba>=0.20.0"
 ```
 
 ### 2b. Protocol-specific dependencies
@@ -87,12 +88,12 @@ for instance, ProPhyle is not installed unless Protocol 3 is used.
 The specifications of individual environments
 can be found in [`workflow/envs/`](workflow/envs/),
 and they contain:
+[Attotree](https://github.com/karel-brinda/attotree),
 [ETE 3](http://etetoolkit.org/),
 [SeqTK](https://github.com/lh3/seqtk),
 [xopen](https://pypi.org/project/xopen/),
 [Pandas](https://pandas.pydata.org/),
 [Jellyfish 2](https://github.com/gmarcais/Jellyfish),
-[Mashtree](https://github.com/lskatz/mashtree),
 [ProphAsm](https://github.com/prophyle/prophasm),
 and [ProPhyle](https://prophyle.github.io).
 
@@ -107,15 +108,15 @@ installed at once by `make conda`.
 Clone and enter the repository by
 
 ```bash
-git clone https://github.com/karel-brinda/mof-compress
-cd mof-compress
+git clone https://github.com/karel-brinda/miniphy
+cd miniphy
 ```
 
 Alternatively, the repository can also be installed using cURL by
 ```bash
-mkdir mof-compress
-cd mof-compress
-curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
+mkdir miniphy
+cd miniphy
+curl -L https://github.com/karel-brinda/miniphy/tarball/main \
     | tar xvf - --strip-components=1
 ```
 
@@ -136,7 +137,8 @@ curl -L https://github.com/karel-brinda/mof-compress/tarball/main \
   The supported input file formats include FASTA and FASTQ (possibly compressed by GZip).
 
 * ***Step 2 (optional): Provide corresponding phylogenies.*** \
-  Instead of estimating phylogenies by MashTree,
+  Instead of estimating phylogenies by [Attotree](https://github.com/karel-brinda/attotree)
+  (similar functionality like [Mashtree](https://github.com/lskatz/mashtree)),
   it is possible to supply custom phylogenies in the Newick format.
   The tree files should be named `input/{batch_name}.nw`,
   and the leave names inside should correspond
@@ -163,7 +165,7 @@ all options are documented directly there. The configurable functionality includ
 * protocols to use (asm, dGSs, dBGs with propagation),
 * analyzes to include (sequence and *k*-mer statistics),
 * *k* for de Bruijn graph and *k*-mer counting,
-* Mashtree parameters (phylogeny estimation),
+* Attotree parameters (phylogeny estimation),
 * XZ parameters (low-level compression), or
 * JellyFish parameters (*k*-mer counting).
 
@@ -249,7 +251,7 @@ all options are documented directly there. The configurable functionality includ
 
 ### 4d. List of workflow commands
 
-MOF-Compress is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
+MiniPhy is executed via [GNU Make](https://www.gnu.org/software/make/), which handles all parameters and passes them to Snakemake.
 Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
@@ -275,6 +277,11 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
     format               Reformat all source code
     checkformat          Check source code format
 ```
+
+*Note:* `make format` and `make checkformat` require
+[YAPF](https://github.com/google/yapf) and
+[Snakefmt](https://github.com/snakemake/snakefmt), which can be installed by
+`conda install -c conda-forge -bioconda yapf snakefmt`.
 
 
 ### 4e. Troubleshooting
@@ -303,23 +310,23 @@ Tests can be run by `make test`.
 
 ## 6. Issues
 
-Please use [Github issues](https://github.com/karel-brinda/mof-compress/issues).
+Please use [Github issues](https://github.com/karel-brinda/miniphy/issues).
 
 
 
 ## 7. Changelog
 
-See [Releases](https://github.com/karel-brinda/mof-compress/releases).
+See [Releases](https://github.com/karel-brinda/miniphy/releases).
 
 
 
 ## 8. License
 
-[MIT](https://github.com/karel-brinda/mof-search/blob/master/LICENSE)
+[MIT](https://github.com/karel-brinda/miniphy/blob/master/LICENSE)
 
 
 
 ## 9. Contacts
 
-* [Karel Brinda](http://karel-brinda.github.io) \<karel.brinda@inria.fr\>
+* [Karel Brinda](https://brinda.eu) \<karel.brinda@inria.fr\>
 * [Leandro Lima](https://github.com/leoisl) \<leandro@ebi.ac.uk\>
