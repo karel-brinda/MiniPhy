@@ -21,6 +21,8 @@ and the <a href="https://doi.org/10.1101/2023.04.15.536996">associated paper</a>
 [![Paper DOI](https://zenodo.org/badge/DOI/10.1101/2023.04.15.536996.svg)](https://doi.org/10.1101/2023.04.15.536996)
 [![MiniPhy test](https://github.com/karel-brinda/miniphy/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/miniphy/actions/)
 [![GitHub release](https://img.shields.io/github/release/karel-brinda/miniphy.svg)](https://github.com/karel-brinda/miniphy/releases/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10636847.svg)](https://doi.org/10.5281/zenodo.10636847)
+
 
 <h2>Contents</h2>
 
@@ -28,15 +30,15 @@ and the <a href="https://doi.org/10.1101/2023.04.15.536996">associated paper</a>
 
 * [1. Introduction](#1-introduction)
 * [2. Dependencies](#2-dependencies)
-  * [2a. Essential dependencies](#2a-essential-dependencies)
-  * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
+    * [2a. Essential dependencies](#2a-essential-dependencies)
+    * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
 * [3. Installation](#3-installation)
 * [4. Usage](#4-usage)
-  * [4a. Basic example](#4a-basic-example)
-  * [4b. Adjusting configuration](#4b-adjusting-configuration)
-  * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
-  * [4d. List of workflow commands](#4d-list-of-workflow-commands)
-  * [4e. Troubleshooting](#4e-troubleshooting)
+    * [4a. Basic example](#4a-basic-example)
+    * [4b. Adjusting configuration](#4b-adjusting-configuration)
+    * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
+    * [4d. List of workflow commands](#4d-list-of-workflow-commands)
+    * [4e. Troubleshooting](#4e-troubleshooting)
 * [5. Citation](#5-citation)
 * [6. Issues](#6-issues)
 * [7. Changelog](#7-changelog)
