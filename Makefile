@@ -14,13 +14,8 @@ SHELL=/usr/bin/env bash -eo pipefail
 #TOPDIR = .
 TOPDIR = $(shell if [ -d ".test" ]; then echo . ; else echo .. ; fi)
 
+THREADS = $(shell grep "^threads:" config.yaml | awk '{print $$2}')
 
-# test if this is run from the .test/ directory
-ifeq ($(strip $(TOPDIR)),..)
-	SNAKEMAKE_PARAM_DIR = --snakefile ../workflow/Snakefile --show-failed-logs
-else
-	SNAKEMAKE_PARAM_DIR =
-endif
 
 CONDA_DIR     = $(shell grep "^conda_dir:" config.yaml | awk '{print $$2}')
 ifeq ($(CONDA_DIR),)
@@ -38,13 +33,22 @@ ifeq ($(strip $(USE_CONDA)),True)
 	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR_ADJ)"
 endif
 
+# test if this is run from the .test/ directory
+ifeq ($(strip $(TOPDIR)),..)
+	SNAKEMAKE_PARAMS = -j $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs --snakefile ../workflow/Snakefile
+else
+	SNAKEMAKE_PARAMS = -j $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs
+endif
+
+
+
 
 ######################
 ## General commands ##
 ######################
 
 all: ## Run everything
-	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR)
+	snakemake $(SNAKEMAKE_PARAMS)
 
 help: ## Print help messages
 	@echo "$$(grep -hE '^\S*(:.*)?##' $(MAKEFILE_LIST) \
@@ -52,7 +56,7 @@ help: ## Print help messages
 		| column -c2 -t -s : )"
 
 conda: ## Create the conda environments
-	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
+	snakemake $(SNAKEMAKE_PARAMS) -d .test --conda-create-envs-only
 
 clean: ## Clean all output archives and files with statistics
 	rm -fvr output/* intermediate/stats/*
@@ -86,7 +90,7 @@ viewconf: ## View configuration without comments
 	@#| grep -Ev ^$$
 
 reports: ## Create html report
-	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR) --report report.html
+	snakemake $(SNAKEMAKE_PARAMS)--report report.html
 	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test reports; \
 	fi
@@ -97,7 +101,7 @@ reports: ## Create html report
 ####################
 
 test: ## Run the workflow on test data
-	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
+	#snakemake -d .test $(SNAKEMAKE_PARAMS)
 	@if [ -d ".test" ]; then \
 		$(MAKE) -C .test; \
 	fi

@@ -9,6 +9,7 @@ output_dir:           output
 conda_dir:            .conda
 
 # (2) Parameters for Snakemake execution
+threads:              unlimited # use all available threads
 use_conda:            True # build conda environments automatically by Snakemake
 
 
