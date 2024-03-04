@@ -39,4 +39,3 @@ jobs:
         run: |
           micromamba activate test-env
           make bigtest
-          make testreport
