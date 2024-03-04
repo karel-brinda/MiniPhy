@@ -32,12 +32,7 @@ ifeq ($(strip $(USE_CONDA)),True)
 	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR_ADJ)"
 endif
 
-# test if this is run from the .test/ directory
-ifeq ($(strip $(TOPDIR)),..)
-	SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs --snakefile ../workflow/Snakefile
-else
-	SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs
-endif
+SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs
 
 BIG_TEST_PARAMS = --config protocol_pre=True protocol_post=True
 
