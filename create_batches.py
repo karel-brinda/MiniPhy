@@ -23,10 +23,11 @@ DEFAULT_COLUMN_FN = "filename"
 def clean_species_name(name):
     return re.sub('[^a-zA-Z0-9 ]+', '', name).replace(" ", "_").lower()
 
+
 class Batching:
 
     def __init__(self, input_fn, cluster_min_size, cluster_max_size,
-                 dustbin_max_size, output_d, col_species, col_fn):
+                 dustbin_max_size, output_d, col_species, col_fn, comments):
         self.input_fn = input_fn
         self.cluster_min_size = cluster_min_size
         self.cluster_max_size = cluster_max_size
@@ -34,10 +35,12 @@ class Batching:
         self.output_d = output_d
         self.col_species = col_species
         self.col_fn = col_fn
+        self.comments = comments
 
         self.clusters = collections.defaultdict(list)
         self.pseudoclusters = collections.defaultdict(list)
         self.batches = collections.defaultdict(list)
+        self.dbg_info = {}  # fn -> dbg comments
 
     def _load_clusters(self):
         with xopen(self.input_fn) as fo:
@@ -48,6 +51,7 @@ class Batching:
                 species = clean_species_name(x[self.col_species])
                 fn = x[self.col_fn]
                 self.clusters[species].append(fn)
+                self.dbg_info[fn] = species
         print(
             f"Loaded {genome_count} genomes across {len(self.clusters)} species clusters",
             file=sys.stderr)
@@ -91,7 +95,11 @@ class Batching:
         for batch_name, l in self.batches.items():
             fn = os.path.join(self.output_d, f"{batch_name}.txt")
             with open(fn, "w+") as f:
-                f.write("\n".join(l) + "\n")
+                for x in l:
+                    if self.comments:
+                        f.write(f"{x}\t#{self.dbg_info[x]}\n")
+                    else:
+                        f.write(f"{x}\n")
         print(f"Finished", file=sys.stderr)
 
     def run(self):
@@ -158,6 +166,13 @@ def main():
         help=f'column name with filename [{DEFAULT_COLUMN_FN}]',
     )
 
+    parser.add_argument(
+        '-c',
+        dest='comments',
+        action='store_true',
+        help=f'add comments with info to the output text files (for debugging)',
+    )
+
     args = parser.parse_args()
 
     batching = Batching(input_fn=args.input_fn,
@@ -166,7 +181,8 @@ def main():
                         dustbin_max_size=args.dustbin_max_size,
                         output_d=args.output_d,
                         col_species=args.col_species,
-                        col_fn=args.col_fn)
+                        col_fn=args.col_fn,
+                        comments=args.comments)
     batching.run()
 
 
