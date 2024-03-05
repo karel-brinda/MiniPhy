@@ -7,6 +7,8 @@ import os
 import re
 import sys
 
+from xopen import xopen
+
 DEFAULT_BATCH_MAX_SIZE = 4000
 DEFAULT_BATCH_MIN_SIZE = 100
 DEFAULT_DUSTBIN_MAX_SIZE = 1000
@@ -51,43 +53,49 @@ def batches():
             f.write("\n".join(dd[k]) + "\n")
 
 
-def clusters():
-    lists = collections.defaultdict(lambda: [])
-    with lzma.open("../60_661k_main_table/661k_main_table.tsv.xz", "tr") as f:
-        for x in csv.DictReader(f, delimiter="\t"):
-            #print(x)
-            species = x["hit1_species"]
-            fasta = x["path"]
-            lists[clean(species)].append(fasta)
-            #print(lists)
-    for k in lists:
-        l = lists[k]
-        #l.sort(key=lambda x: x[1])
-        #ll = [x[0] for x in l]
-        with open(f"{k}.txt", "w+") as f:
-            f.write("\n".join(l) + "\n")
-
-
 class Batching:
+    # todo: pass names of csv columns
 
     def __init__(self, input_fn, cluster_min_size, cluster_max_size,
                  dustbin_max_size, output_d):
-        self._load_input(input_fn)
+        self.input_fn = input_fn
         self.cluster_min_size = cluster_min_size
         self.cluster_max_size = cluster_max_size
         self.dustbin_max_size = dustbin_max_size
         self.output_d = output_d
 
-        self.species = collections.default_dict(lambda: [])
+        self.clusters = collections.default_dict(lambda: [])
+        self.batches = collections.default_dict(lambda: [])
 
-    def _load_input(self, fn):
-        with open(fn) as fo:
+    def _load_clusters(self):
+        with xopen(self.input_fn) as fo:
             for genome_count, x in enumerate(fo):
                 species, fasta_fn = x.strip().split("\t")
                 self.species[species].append(fasta_fn)
+
+                species = x["hit1_species"]
+                fn = x["path"]
+                self.clusters[species].append(fn)
+
             print(
                 f"Loaded {genome_count} genomes of {len(self.species)} species",
                 file=sys.stderr)
+
+    def _create_batches(self):
+        for species, fastas in self.species.items():
+            self._write_batches(species, fastas)
+
+    def _write_batches(self):
+        for batch_name in self.batches:
+            l = self.batches[batch_name]
+            fn = os.path.join(self.output_d, "{batch_name}.txt")
+            with open(f"{k}.txt", "w+") as f:
+                f.write("\n".join(l) + "\n")
+
+    def run(self):
+        self._load_clusters(self)
+        self._create_batches(self)
+        self._write_batches(self)
 
 
 def main():
@@ -133,11 +141,12 @@ def main():
 
     args = parser.parse_args()
 
-    create_batches(input_fn=args.input_fn,
-                   cluster_min_size=args.cluster_min_size,
-                   cluster_max_size=args.cluster_max_size,
-                   dustbin_max_size=args.dustbin_max_size,
-                   output_d=args.output_d)
+    batching = Batching(input_fn=args.input_fn,
+                        cluster_min_size=args.cluster_min_size,
+                        cluster_max_size=args.cluster_max_size,
+                        dustbin_max_size=args.dustbin_max_size,
+                        output_d=args.output_d)
+    batching.run()
 
 
 if __name__ == "__main__":
