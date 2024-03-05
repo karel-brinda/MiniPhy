@@ -15,44 +15,6 @@ DEFAULT_DUSTBIN_MAX_SIZE = 1000
 DEFAULT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input')
 
 
-def accession_from_fn(fn):
-    b = os.path.basename(fn)
-    return b.split(".")[0]
-
-
-def batches():
-    l = glob.glob("../61_661k_clusters/*.txt")
-    d = collections.defaultdict(lambda: [])
-
-    for x in l:
-        b = accession_from_fn(x)
-        ll = [x.strip() for x in open(x)]
-        if len(ll) >= cluster_min_size:
-            cluster_name = b
-        else:
-            cluster_name = "dustbin"
-        d[cluster_name].extend(ll)
-
-    dd = collections.defaultdict(lambda: [])
-
-    for k in d:
-        if k == "dustbin":
-            current_max_size = dustbin_max_size
-        else:
-            current_max_size = cluster_max_size
-
-        #d[k].sort(key=sorting_function)
-
-        for i, v in enumerate(d[k]):
-            j = "{:02}".format(1 + i // current_max_size)
-            #print(i, v, sorting_function(v), k, j, sep="\t")
-            dd[f"{k}__{j}"].append(v)
-
-    for k in dd:
-        with open(f"{k}.txt", "w") as f:
-            f.write("\n".join(dd[k]) + "\n")
-
-
 class Batching:
     # todo: pass names of csv columns
 
@@ -65,6 +27,7 @@ class Batching:
         self.output_d = output_d
 
         self.clusters = collections.default_dict(lambda: [])
+        self.pseudoclusters = collections.default_dict(lambda: [])
         self.batches = collections.default_dict(lambda: [])
 
     def _load_clusters(self):
@@ -81,19 +44,43 @@ class Batching:
                 f"Loaded {genome_count} genomes of {len(self.species)} species",
                 file=sys.stderr)
 
+    def _create_dustbin(self):
+        for cluster_name, fns in self.clusters.items():
+            if len(fns) >= self.cluster_min_size:
+                pseudocluster_name = cluster_name
+            else:
+                pseudocluster_name = "dustbin"
+            self.pseudoclusters[cluster_name].extend(fns)
+
     def _create_batches(self):
         for species, fastas in self.species.items():
-            self._write_batches(species, fastas)
+
+            for k in d:
+                if k == "dustbin":
+                    current_max_size = dustbin_max_size
+                else:
+                    current_max_size = cluster_max_size
+
+                #d[k].sort(key=sorting_function)
+
+                for i, v in enumerate(d[k]):
+                    j = "{:02}".format(1 + i // current_max_size)
+                    #print(i, v, sorting_function(v), k, j, sep="\t")
+                    dd[f"{k}__{j}"].append(v)
+
+            for k in dd:
+                with open(f"{k}.txt", "w") as f:
+                    f.write("\n".join(dd[k]) + "\n")
 
     def _write_batches(self):
-        for batch_name in self.batches:
-            l = self.batches[batch_name]
+        for batch_name, l in self.batches.items():
             fn = os.path.join(self.output_d, "{batch_name}.txt")
             with open(f"{k}.txt", "w+") as f:
                 f.write("\n".join(l) + "\n")
 
     def run(self):
         self._load_clusters(self)
+        self._create_dustbin(self)
         self._create_batches(self)
         self._write_batches(self)
 
