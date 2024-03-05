@@ -32,7 +32,7 @@ ifeq ($(strip $(USE_CONDA)),True)
 	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR_ADJ)"
 endif
 
-SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p --show-failed-logs
+SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p #--show-failed-logs
 
 BIG_TEST_PARAMS = --config protocol_pre=True protocol_post=True
 
@@ -56,7 +56,7 @@ conda: ## Create the conda environments
 clean: ## Clean all output archives and files with statistics
 	rm -fvr output/* intermediate/stats/*
 	find intermediate -name '*.summary' -or -name '*.nscl' -or -name '*.hist'  | xargs rm -fv
-	@if [ -d ".test" ]; then \
+	if [ -d ".test" ]; then \
 		$(MAKE) -C .test clean; \
 	fi
 
@@ -86,7 +86,7 @@ viewconf: ## View configuration without comments
 
 reports: ## Create html report
 	snakemake $(SNAKEMAKE_PARAMS)--report report.html
-	@if [ -d ".test" ]; then \
+	if [ -d ".test" ]; then \
 		$(MAKE) -C .test reports; \
 	fi
 
@@ -97,7 +97,7 @@ reports: ## Create html report
 
 #snakemake -d .test $(SNAKEMAKE_PARAMS)
 test: ## Run the workflow on test data (P1)
-	@if [ -d ".test" ]; then \
+	if [ -d ".test" ]; then \
 		$(MAKE) -C .test test; \
 	else\
 		snakemake $(SNAKEMAKE_PARAMS); \
@@ -105,7 +105,7 @@ test: ## Run the workflow on test data (P1)
 
 
 bigtest: ## Run the workflow on test data (P1, P2, P3)
-	@if [ -d ".test" ]; then \
+	if [ -d ".test" ]; then \
 		$(MAKE) -C .test bigtest; \
 	else\
 		snakemake $(SNAKEMAKE_PARAMS) $(BIG_TEST_PARAMS); \
