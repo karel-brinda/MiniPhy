@@ -115,6 +115,7 @@ bigtest: ## Run the workflow on test data (P1, P2, P3)
 format: ## Reformat all source code
 	snakefmt workflow
 	yapf -i --recursive workflow
+	yapf -i *.py
 
 checkformat: ## Check source code format
 	snakefmt --check workflow
