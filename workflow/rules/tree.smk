@@ -15,7 +15,7 @@ rule tree_postprocessing:
     input:
         nw=fn_tree_dirty(_batch="{batch}"),
     params:
-        script=snakemake.workflow.srcdir("../scripts/postprocess_tree.py"),
+        script="workflow/scripts/postprocess_tree.py",
     conda:
         "../envs/basic_env.yaml"
     shell:

@@ -14,13 +14,7 @@ SHELL=/usr/bin/env bash -eo pipefail
 #TOPDIR = .
 TOPDIR = $(shell if [ -d ".test" ]; then echo . ; else echo .. ; fi)
 
-
-# test if this is run from the .test/ directory
-ifeq ($(strip $(TOPDIR)),..)
-	SNAKEMAKE_PARAM_DIR = --snakefile ../workflow/Snakefile --show-failed-logs
-else
-	SNAKEMAKE_PARAM_DIR =
-endif
+THREADS = $(shell grep "^threads:" config.yaml | awk '{print $$2}')
 
 CONDA_DIR     = $(shell grep "^conda_dir:" config.yaml | awk '{print $$2}')
 ifeq ($(CONDA_DIR),)
@@ -38,13 +32,18 @@ ifeq ($(strip $(USE_CONDA)),True)
 	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR_ADJ)"
 endif
 
+SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p #--show-failed-logs
+
+BIG_TEST_PARAMS = --config protocol_pre=True protocol_post=True
+
+
 
 ######################
 ## General commands ##
 ######################
 
 all: ## Run everything
-	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR)
+	snakemake $(SNAKEMAKE_PARAMS)
 
 help: ## Print help messages
 	@echo "$$(grep -hE '^\S*(:.*)?##' $(MAKEFILE_LIST) \
@@ -52,12 +51,12 @@ help: ## Print help messages
 		| column -c2 -t -s : )"
 
 conda: ## Create the conda environments
-	snakemake -p -j -d .test $(CONDA_PARAMS) --conda-create-envs-only
+	snakemake $(SNAKEMAKE_PARAMS) -d .test --conda-create-envs-only
 
 clean: ## Clean all output archives and files with statistics
 	rm -fvr output/* intermediate/stats/*
 	find intermediate -name '*.summary' -or -name '*.nscl' -or -name '*.hist'  | xargs rm -fv
-	@if [ -d ".test" ]; then \
+	if [ -d ".test" ]; then \
 		$(MAKE) -C .test clean; \
 	fi
 
@@ -86,8 +85,8 @@ viewconf: ## View configuration without comments
 	@#| grep -Ev ^$$
 
 reports: ## Create html report
-	snakemake -j $(CONDA_PARAMS) -p --rerun-incomplete $(SNAKEMAKE_PARAM_DIR) --report report.html
-	@if [ -d ".test" ]; then \
+	snakemake $(SNAKEMAKE_PARAMS)--report report.html
+	if [ -d ".test" ]; then \
 		$(MAKE) -C .test reports; \
 	fi
 
@@ -96,11 +95,22 @@ reports: ## Create html report
 ## For developers ##
 ####################
 
-test: ## Run the workflow on test data
-	#snakemake -d .test -j $(CONDA_PARAMS) -p --show-failed-logs --rerun-incomplete
-	@if [ -d ".test" ]; then \
-		$(MAKE) -C .test; \
+#snakemake -d .test $(SNAKEMAKE_PARAMS)
+test: ## Run the workflow on test data (P1)
+	if [ -d ".test" ]; then \
+		$(MAKE) -C .test test; \
+	else\
+		snakemake $(SNAKEMAKE_PARAMS); \
 	fi
+
+
+bigtest: ## Run the workflow on test data (P1, P2, P3)
+	if [ -d ".test" ]; then \
+		$(MAKE) -C .test bigtest; \
+	else\
+		snakemake $(SNAKEMAKE_PARAMS) $(BIG_TEST_PARAMS); \
+	fi
+
 
 format: ## Reformat all source code
 	snakefmt workflow

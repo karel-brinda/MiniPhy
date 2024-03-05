@@ -48,8 +48,8 @@ rule kmer_histogram:
     input:
         list=fn_list("{batch}", "{protocol}"),
     params:
-        hjf=snakemake.workflow.srcdir("../scripts/histogram_using_jf.sh"),
-        lfa=snakemake.workflow.srcdir("../scripts/file_list_to_fa.py"),
+        hjf="workflow/scripts/histogram_using_jf.sh",
+        lfa="workflow/scripts/file_list_to_fa.py",
         k=config["kmer_length"],
         s=config["jellyfish_size"],
     threads: config["jellyfish_threads"]
@@ -72,7 +72,7 @@ rule histogram_summary:
     input:
         hist=fn_hist("{batch}", "{protocol}"),
     params:
-        s=snakemake.workflow.srcdir("../scripts/summarize_histogram.py"),
+        s="workflow/scripts/summarize_histogram.py",
     conda:
         "../envs/basic_env.yaml"
     shell:
@@ -89,7 +89,7 @@ rule nscl:
     input:
         list=fn_list("{batch}", "{protocol}"),
     params:
-        ss=snakemake.workflow.srcdir("../scripts/file_list_to_seq_summaries.py"),
+        ss="workflow/scripts/file_list_to_seq_summaries.py",
     conda:
         "../envs/basic_env.yaml"
     shell:
@@ -105,7 +105,7 @@ rule nscl_summary:
     input:
         nscl=fn_nscl("{batch}", "{protocol}"),
     params:
-        s=snakemake.workflow.srcdir("../scripts/summarize_nscl.py"),
+        s="workflow/scripts/summarize_nscl.py",
     conda:
         "../envs/basic_env.yaml"
     shell:
