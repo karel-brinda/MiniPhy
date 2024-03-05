@@ -1,7 +1,10 @@
 #! /usr/bin/env python3
 
+# example usage: ./create_batches.py ~/github/my/mof-experiments/experiments/60_661k_main_table/661k_main_table.tsv.xz -s hit1_species -f asm_path
+
 import argparse
 import collections
+import csv
 import glob
 import os
 import re
@@ -42,9 +45,9 @@ class Batching:
                 species = x[self.col_species]
                 fn = x[self.col_fn]
                 self.clusters[species].append(fn)
-            print(
-                f"Loaded {genome_count} genomes across {len(self.species)} species clusters",
-                file=sys.stderr)
+        print(
+            f"Loaded {genome_count} genomes across {len(self.clusters)} species clusters",
+            file=sys.stderr)
 
     def _create_dustbin(self):
         genome_count = 0
@@ -57,8 +60,9 @@ class Batching:
                 species_count += 1
                 genome_count += len(fns)
             self.pseudoclusters[cluster_name].extend(fns)
-        print(f"Put {genome_count} genomes of {species_count} into dustbin",
-              file=sys.stderr)
+        print(
+            f"Put {genome_count} genomes of {species_count} species into the dustbin",
+            file=sys.stderr)
 
     def _create_batches(self):
         batches = set()
@@ -70,8 +74,8 @@ class Batching:
             else:
                 current_max_size = self.cluster_max_size
 
-            for i, v in enumerate(d[k]):
-                batch_number = f"{pseudocluster_name}_{i // current_max_size}"
+            for i, v in enumerate(fns):
+                batch_number = i // current_max_size
                 batch_name = "{}__{:02}".format(pseudocluster_name,
                                                 batch_number)
                 batches.add(batch_name)
@@ -82,15 +86,16 @@ class Batching:
 
     def _write_batches(self):
         for batch_name, l in self.batches.items():
-            fn = os.path.join(self.output_d, "{batch_name}.txt")
-            with open(f"{k}.txt", "w+") as f:
+            fn = os.path.join(self.output_d, f"{batch_name}.txt")
+            with open(fn, "w+") as f:
                 f.write("\n".join(l) + "\n")
+        print(f"Finished", file=sys.stderr)
 
     def run(self):
-        self._load_clusters(self)
-        self._create_dustbin(self)
-        self._create_batches(self)
-        self._write_batches(self)
+        self._load_clusters()
+        self._create_dustbin()
+        self._create_batches()
+        self._write_batches()
 
 
 def main():
