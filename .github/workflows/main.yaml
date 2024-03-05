@@ -20,6 +20,11 @@ jobs:
         os: [ ubuntu-latest, macos-latest ]
         python-version: [ "3.11" ]
         snakemake-version: [ 6, 7, 8 ]
+        exclude:
+           - python-version: "3.11" #package dep conflict
+             snakemake-version: 6
+           - python-version: "3.11" #snakemake bug; TypeError: SpawnedJobArgsFactory.general_args()
+             snakemake-version: "8.1"
         include:
            - os: ubuntu-latest
              python-version: "3.8"
