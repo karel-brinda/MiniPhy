@@ -62,7 +62,7 @@ class Batching:
                 pseudocluster_name = "dustbin"
                 species_count += 1
                 genome_count += len(fns)
-            self.pseudoclusters[cluster_name].extend(fns)
+            self.pseudoclusters[pseudocluster_name].extend(fns)
         print(
             f"Put {genome_count} genomes of {species_count} species into the dustbin",
             file=sys.stderr)
