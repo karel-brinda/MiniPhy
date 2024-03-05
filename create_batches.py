@@ -53,24 +53,17 @@ class Batching:
             self.pseudoclusters[cluster_name].extend(fns)
 
     def _create_batches(self):
-        for species, fastas in self.species.items():
+        for pseudocluster_name, fns in self.pseudoclusters.items():
+            if pseudocluster_name == "dustbin":
+                current_max_size = self.dustbin_max_size
+            else:
+                current_max_size = self.cluster_max_size
 
-            for k in d:
-                if k == "dustbin":
-                    current_max_size = dustbin_max_size
-                else:
-                    current_max_size = cluster_max_size
-
-                #d[k].sort(key=sorting_function)
-
-                for i, v in enumerate(d[k]):
-                    j = "{:02}".format(1 + i // current_max_size)
-                    #print(i, v, sorting_function(v), k, j, sep="\t")
-                    dd[f"{k}__{j}"].append(v)
-
-            for k in dd:
-                with open(f"{k}.txt", "w") as f:
-                    f.write("\n".join(dd[k]) + "\n")
+            for i, v in enumerate(d[k]):
+                batch_number = f"{pseudocluster_name}_{i // current_max_size}"
+                batch_name = "{}__{:02}".format(pseudocluster_name,
+                                                batch_number)
+                self.batches[batch_name].append(v)
 
     def _write_batches(self):
         for batch_name, l in self.batches.items():
