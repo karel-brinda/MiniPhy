@@ -59,7 +59,8 @@ class Batching:
     def _create_dustbin(self):
         genome_count = 0
         species_count = 0
-        for cluster_name, fns in self.clusters.items():
+        for cluster_name in sorted(self.clusters):
+            fns = self.clusters[cluster_name]
             if len(fns) >= self.cluster_min_size:
                 pseudocluster_name = cluster_name
             else:
