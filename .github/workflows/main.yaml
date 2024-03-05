@@ -11,10 +11,24 @@ on:
 jobs:
   Testing:
     runs-on: ${{ matrix.os }}
+
+    continue-on-error:  true
+
     strategy:
+      fail-fast: false
+
       matrix:
         os: [ ubuntu-latest, macos-latest ]
-        python-version: [ 3.8, 3.9, "3.10", 3.11 ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+        snakemake-version: [ 7, 8 ]
+        exclude:
+          - snakemake-version: 8
+            python-version: 3.8
+          - snakemake-version: 8
+            python-version: 3.9
+          - snakemake-version: 8
+            python-version: 3.10
+
     steps:
       - uses: actions/checkout@v3
       - uses: mamba-org/setup-micromamba@v1
@@ -28,13 +42,19 @@ jobs:
               - defaults
           create-args: >-
             python=${{ matrix.python-version }}
-            snakemake-minimal
+            snakemake-minimal=${{ matrix.snakemake-version }}
             mamba
             make
           init-shell: bash
           cache-environment: true
           post-cleanup: 'all'
-      - name: Test workflow (local test data)
+      - name: Versions
+        shell: bash -el {0}
+        run: |
+          micromamba activate test-env
+          python -v
+          snakemake -v
+      - name: Make bigtest
         shell: bash -el {0}
         run: |
           micromamba activate test-env
