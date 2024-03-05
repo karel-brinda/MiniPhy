@@ -19,8 +19,8 @@ jobs:
 
       matrix:
         os: [ ubuntu-latest, macos-latest ]
-        python-version: ["3.10"]
-        snakemake-version: ["7"]
+        python-version: [ "3.10" ]
+        snakemake-version: [ "7" ]
         include:
           - python-version: "3.8"
             snakemake-version: "7"
