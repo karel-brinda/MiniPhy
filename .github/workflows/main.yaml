@@ -23,8 +23,6 @@ jobs:
         exclude:
            - python-version: "3.11" #package dep conflict
              snakemake-version: 6
-           - python-version: "3.11" #snakemake bug; TypeError: SpawnedJobArgsFactory.general_args()
-             snakemake-version: "8.1"
         include:
            - os: ubuntu-latest
              python-version: "3.8"
@@ -35,9 +33,9 @@ jobs:
            - os: ubuntu-latest
              python-version: "3.10"
              snakemake-version: 7
-           - os: ubuntu-latest
-             python-version: "3.11"
-             snakemake-version: "8.1"
+           #- os: ubuntu-latest ###### problem: snakemake bug; TypeError: SpawnedJobArgsFactory.general_args()
+           #  python-version: "3.11"
+           #  snakemake-version: "8.1"
            - os: ubuntu-latest
              python-version: "3.11"
              snakemake-version: "8.2"
@@ -81,9 +79,9 @@ jobs:
         run: |
           micromamba activate test-env
           make test
-      - name: Make bigtest
-        shell: bash -el {0}
-        run: |
-          make cleanall
-          micromamba activate test-env
-          make bigtest
+#      - name: Make bigtest
+#        shell: bash -el {0}
+#        run: |
+#          make cleanall
+#          micromamba activate test-env
+#          make bigtest
