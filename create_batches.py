@@ -40,7 +40,7 @@ class Batching:
         self.clusters = collections.defaultdict(list)
         self.pseudoclusters = collections.defaultdict(list)
         self.batches = collections.defaultdict(list)
-        self.dbg_info = {} # fn -> dbg comments
+        self.dbg_info = {}  # fn -> dbg comments
 
     def _load_clusters(self):
         with xopen(self.input_fn) as fo:

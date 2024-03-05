@@ -50,7 +50,8 @@ for x in res:
     BATCHES_FN[batch] = {}
     with open(x) as f:
         for y in f:
-            sample_fn = y.strip()
+            z = y.strip()
+            sample_fn = z.split("\t")[0]
             if sample_fn:
                 sample = _get_sample_from_fn(sample_fn)
                 BATCHES_FN[batch][sample] = sample_fn
