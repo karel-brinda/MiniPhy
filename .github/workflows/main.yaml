@@ -22,6 +22,8 @@ jobs:
             python-version: 3.8
           - snakemake-version: 8
             python-version: 3.9
+          - snakemake-version: 8
+            python-version: 3.10
 
     steps:
       - uses: actions/checkout@v3
