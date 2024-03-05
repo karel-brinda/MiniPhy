@@ -18,12 +18,33 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, macos-latest ]
-        python-version: [ 3.9, "3.10" ]
-        snakemake-version: [ 6, 7 ]
+        python-version: [ "3.11" ]
+        snakemake-version: [ 6, 7, 8 ]
         include:
            - os: ubuntu-latest
              python-version: 3.8
              snakemake-version: 7
+           - os: ubuntu-latest
+             python-version: 3.9
+             snakemake-version: 7
+           - os: ubuntu-latest
+             python-version: 3.10
+             snakemake-version: 7
+           - os: ubuntu-latest
+             python-version: 3.11
+             snakemake-version: 8.1
+           - os: ubuntu-latest
+             python-version: 3.11
+             snakemake-version: 8.2
+           - os: ubuntu-latest
+             python-version: 3.11
+             snakemake-version: 8.3
+           - os: ubuntu-latest
+             python-version: 3.11
+             snakemake-version: 8.4
+           - os: ubuntu-latest
+             python-version: 3.11
+             snakemake-version: 8.5
 
     steps:
       - uses: actions/checkout@v3
