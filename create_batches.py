@@ -20,6 +20,9 @@ DEFAULT_COLUMN_SPECIES = "species"
 DEFAULT_COLUMN_FN = "filename"
 
 
+def clean_species_name(name):
+    return re.sub('[^a-zA-Z0-9 ]+', '', name).replace(" ", "_").lower()
+
 class Batching:
 
     def __init__(self, input_fn, cluster_min_size, cluster_max_size,
@@ -42,7 +45,7 @@ class Batching:
                                                             delimiter="\t")):
                 #species = x["hit1_species"]
                 #fn = x["path"]
-                species = x[self.col_species]
+                species = clean_species_name(x[self.col_species])
                 fn = x[self.col_fn]
                 self.clusters[species].append(fn)
         print(
@@ -75,7 +78,7 @@ class Batching:
                 current_max_size = self.cluster_max_size
 
             for i, v in enumerate(fns):
-                batch_number = i // current_max_size
+                batch_number = 1 + i // current_max_size
                 batch_name = "{}__{:02}".format(pseudocluster_name,
                                                 batch_number)
                 batches.add(batch_name)
