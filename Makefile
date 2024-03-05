@@ -7,13 +7,6 @@ SHELL=/usr/bin/env bash -eo pipefail
 .SUFFIXES:
 
 
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#!! WARNING: !! TOPDIR changes automatically to .. when run from .test/ !!
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-#TOPDIR = .
-TOPDIR = $(shell if [ -d ".test" ]; then echo . ; else echo .. ; fi)
-
 THREADS = $(shell grep "^threads:" config.yaml | awk '{print $$2}')
 
 CONDA_DIR     = $(shell grep "^conda_dir:" config.yaml | awk '{print $$2}')
@@ -26,10 +19,8 @@ ifeq ($(USE_CONDA),)
     $(error 'use_conda' not found in the configuration)
 endif
 
-CONDA_DIR_ADJ = $(TOPDIR)/$(CONDA_DIR)
-
 ifeq ($(strip $(USE_CONDA)),True)
-	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR_ADJ)"
+	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR)"
 endif
 
 SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p #--show-failed-logs
