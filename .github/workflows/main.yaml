@@ -76,8 +76,14 @@ jobs:
           micromamba activate test-env
           python -v
           snakemake -v
+      - name: Make test
+        shell: bash -el {0}
+        run: |
+          micromamba activate test-env
+          make test
       - name: Make bigtest
         shell: bash -el {0}
         run: |
+          make cleanall
           micromamba activate test-env
           make bigtest
