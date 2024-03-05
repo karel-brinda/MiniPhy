@@ -13,47 +13,58 @@ DEFAULT_BATCH_MAX_SIZE = 4000
 DEFAULT_BATCH_MIN_SIZE = 100
 DEFAULT_DUSTBIN_MAX_SIZE = 1000
 DEFAULT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input')
+DEFAULT_COLUMN_SPECIES = "species"
+DEFAULT_COLUMN_FN = "filename"
 
 
 class Batching:
-    # todo: pass names of csv columns
 
     def __init__(self, input_fn, cluster_min_size, cluster_max_size,
-                 dustbin_max_size, output_d):
+                 dustbin_max_size, output_d, col_species, col_fn):
         self.input_fn = input_fn
         self.cluster_min_size = cluster_min_size
         self.cluster_max_size = cluster_max_size
         self.dustbin_max_size = dustbin_max_size
         self.output_d = output_d
+        self.col_species = col_species
+        self.col_fn = col_fn
 
-        self.clusters = collections.default_dict(lambda: [])
-        self.pseudoclusters = collections.default_dict(lambda: [])
-        self.batches = collections.default_dict(lambda: [])
+        self.clusters = collections.defaultdict(list)
+        self.pseudoclusters = collections.defaultdict(list)
+        self.batches = collections.defaultdict(list)
 
     def _load_clusters(self):
         with xopen(self.input_fn) as fo:
-            for genome_count, x in enumerate(fo):
-                species, fasta_fn = x.strip().split("\t")
-                self.species[species].append(fasta_fn)
-
-                species = x["hit1_species"]
-                fn = x["path"]
+            for genome_count, x in enumerate(csv.DictReader(fo,
+                                                            delimiter="\t")):
+                #species = x["hit1_species"]
+                #fn = x["path"]
+                species = x[self.col_species]
+                fn = x[self.col_fn]
                 self.clusters[species].append(fn)
-
             print(
-                f"Loaded {genome_count} genomes of {len(self.species)} species",
+                f"Loaded {genome_count} genomes across {len(self.species)} species clusters",
                 file=sys.stderr)
 
     def _create_dustbin(self):
+        genome_count = 0
+        species_count = 0
         for cluster_name, fns in self.clusters.items():
             if len(fns) >= self.cluster_min_size:
                 pseudocluster_name = cluster_name
             else:
                 pseudocluster_name = "dustbin"
+                species_count += 1
+                genome_count += len(fns)
             self.pseudoclusters[cluster_name].extend(fns)
+        print(f"Put {genome_count} genomes of {species_count} into dustbin",
+              file=sys.stderr)
 
     def _create_batches(self):
+        batches = set()
+        pseudoclusters_count = 0
         for pseudocluster_name, fns in self.pseudoclusters.items():
+            pseudoclusters_count += 1
             if pseudocluster_name == "dustbin":
                 current_max_size = self.dustbin_max_size
             else:
@@ -63,7 +74,11 @@ class Batching:
                 batch_number = f"{pseudocluster_name}_{i // current_max_size}"
                 batch_name = "{}__{:02}".format(pseudocluster_name,
                                                 batch_number)
+                batches.add(batch_name)
                 self.batches[batch_name].append(v)
+        print(
+            f"Created {len(batches)} batches of {pseudoclusters_count} pseudoclusters",
+            file=sys.stderr)
 
     def _write_batches(self):
         for batch_name, l in self.batches.items():
@@ -84,7 +99,7 @@ def main():
 
     parser.add_argument(
         'input_fn',
-        metavar='clustered_fastas.tsv',
+        metavar='clustered_fastas.tsv[.gz/.xz/...]',
         help='',
     )
 
@@ -119,13 +134,31 @@ def main():
         help=f'output directory [{DEFAULT_DIR}]',
     )
 
+    parser.add_argument(
+        '-s',
+        metavar='str',
+        dest='col_species',
+        default=DEFAULT_COLUMN_SPECIES,
+        help=f'column name with species name [{DEFAULT_COLUMN_SPECIES}]',
+    )
+
+    parser.add_argument(
+        '-f',
+        metavar='str',
+        dest='col_fn',
+        default=DEFAULT_COLUMN_FN,
+        help=f'column name with filename [{DEFAULT_COLUMN_FN}]',
+    )
+
     args = parser.parse_args()
 
     batching = Batching(input_fn=args.input_fn,
                         cluster_min_size=args.cluster_min_size,
                         cluster_max_size=args.cluster_max_size,
                         dustbin_max_size=args.dustbin_max_size,
-                        output_d=args.output_d)
+                        output_d=args.output_d,
+                        col_species=args.col_species,
+                        col_fn=args.col_fn)
     batching.run()
 
 
