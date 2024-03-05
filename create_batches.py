@@ -125,6 +125,7 @@ def main():
         metavar='int',
         dest='cluster_min_size',
         default=DEFAULT_BATCH_MIN_SIZE,
+        type=int,
         help=f'batch min size [{DEFAULT_BATCH_MIN_SIZE}]',
     )
     parser.add_argument(
@@ -132,6 +133,7 @@ def main():
         metavar='int',
         dest='cluster_max_size',
         default=DEFAULT_BATCH_MAX_SIZE,
+        type=int,
         help=f'batch max size [{DEFAULT_BATCH_MAX_SIZE}]',
     )
 
@@ -140,6 +142,7 @@ def main():
         metavar='int',
         dest='dustbin_max_size',
         default=DEFAULT_DUSTBIN_MAX_SIZE,
+        type=int,
         help=f'dustbin batch max size [{DEFAULT_DUSTBIN_MAX_SIZE}]',
     )
 
