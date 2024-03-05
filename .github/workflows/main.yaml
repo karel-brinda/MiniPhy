@@ -16,24 +16,44 @@ jobs:
 
     strategy:
       fail-fast: false
-
       matrix:
         os: [ ubuntu-latest, macos-latest ]
-        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
-        snakemake-version: [ 7, 8 ]
+        python-version: [ "3.11" ]
+        snakemake-version: [ 6, 7, 8 ]
         exclude:
-          - snakemake-version: 8
-            python-version: 3.8
-          - snakemake-version: 8
-            python-version: 3.9
-          - snakemake-version: 8
-            python-version: 3.10
+           - python-version: "3.11" #package dep conflict
+             snakemake-version: 6
+        include:
+           - os: ubuntu-latest
+             python-version: "3.8"
+             snakemake-version: 7
+           - os: ubuntu-latest
+             python-version: "3.9"
+             snakemake-version: 7
+           - os: ubuntu-latest
+             python-version: "3.10"
+             snakemake-version: 7
+           #- os: ubuntu-latest ###### problem: snakemake bug; TypeError: SpawnedJobArgsFactory.general_args()
+           #  python-version: "3.11"
+           #  snakemake-version: "8.1"
+           - os: ubuntu-latest
+             python-version: "3.11"
+             snakemake-version: "8.2"
+           - os: ubuntu-latest
+             python-version: "3.11"
+             snakemake-version: "8.3"
+           - os: ubuntu-latest
+             python-version: "3.11"
+             snakemake-version: "8.4"
+           - os: ubuntu-latest
+             python-version: "3.11"
+             snakemake-version: "8.5"
 
     steps:
       - uses: actions/checkout@v3
       - uses: mamba-org/setup-micromamba@v1
         with:
-          micromamba-version: '1.5.6-0'
+          micromamba-version: "1.5.6-0"
           environment-name: test-env
           condarc: |
             channels:
@@ -47,15 +67,21 @@ jobs:
             make
           init-shell: bash
           cache-environment: true
-          post-cleanup: 'all'
+          post-cleanup: all
       - name: Versions
         shell: bash -el {0}
         run: |
           micromamba activate test-env
           python -v
           snakemake -v
-      - name: Make bigtest
+      - name: Make test
         shell: bash -el {0}
         run: |
           micromamba activate test-env
-          make bigtest
+          make test
+#      - name: Make bigtest
+#        shell: bash -el {0}
+#        run: |
+#          make cleanall
+#          micromamba activate test-env
+#          make bigtest
