@@ -3,7 +3,22 @@
 ##
 
 
-rule asm_list:
+rule asm_list_unsorted:
+    """
+    Make an unsorted list of input assemblies
+    """
+    output:
+        list=fn_asm_list_unsorted(_batch="{batch}"),
+    input:
+        fa=w_batch_asms,
+    run:
+        dump_file_list(
+            input.fa,
+            output.list,
+        )
+
+
+rule asm_list_sorted:
     """
     Make a list of assemblies as they will appear in the .tar.xz archive
     """
