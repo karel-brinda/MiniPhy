@@ -30,16 +30,16 @@ and the <a href="https://doi.org/10.1101/2023.04.15.536996">associated paper</a>
 
 * [1. Introduction](#1-introduction)
 * [2. Dependencies](#2-dependencies)
-  * [2a. Essential dependencies](#2a-essential-dependencies)
-  * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
+    * [2a. Essential dependencies](#2a-essential-dependencies)
+    * [2b. Protocol-specific dependencies](#2b-protocol-specific-dependencies)
 * [3. Installation](#3-installation)
 * [4. Usage](#4-usage)
-  * [4a. Basic example](#4a-basic-example)
-  * [4b. Adjusting configuration](#4b-adjusting-configuration)
-  * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
-  * [4d. List of workflow commands](#4d-list-of-workflow-commands)
-  * [4e. Running on a cluster.](#4e-running-on-a-cluster)
-  * [4f. Troubleshooting](#4f-troubleshooting)
+    * [4a. Basic example](#4a-basic-example)
+    * [4b. Adjusting configuration](#4b-adjusting-configuration)
+    * [4c. List of implemented protocols](#4c-list-of-implemented-protocols)
+    * [4d. List of workflow commands](#4d-list-of-workflow-commands)
+    * [4e. Running on a cluster](#4e-running-on-a-cluster)
+    * [4f. Troubleshooting](#4f-troubleshooting)
 * [5. Citation](#5-citation)
 * [6. Issues](#6-issues)
 * [7. Changelog](#7-changelog)
@@ -288,10 +288,9 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 
 
 
-### 4e. Running on a cluster.
+### 4e. Running on a cluster
 
 Cluster-related parameters for Snakemake can be added via the `SMK_CLUSTER_ARGS` Make variable.
-
 Example:
 ```bash
   make SMK_CLUSTER_ARGS="--profile my_snakemake_cluster_profile"
