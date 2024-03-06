@@ -262,7 +262,7 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 ######################
 ## General commands ##
 ######################
-    all                  Run everything
+    all                  Run everything (the default subcommand)
     help                 Print help messages
     conda                Create the conda environments
     clean                Clean all output archives and files with statistics
@@ -276,7 +276,8 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 ####################
 ## For developers ##
 ####################
-    test                 Run the workflow on test data
+    test                 Run the workflow on test data (P1)
+    bigtest              Run the workflow on test data (P1, P2, P3)
     format               Reformat all source code
     checkformat          Check source code format
 ```
@@ -291,9 +292,10 @@ Here's a list of all implemented commands (to be executed as `make {command}`):
 ### 4e. Running on a cluster
 
 Cluster-related parameters for Snakemake can be added via the `SMK_CLUSTER_ARGS` Make variable.
+
 Example:
 ```bash
-  make SMK_CLUSTER_ARGS="--profile my_snakemake_cluster_profile"
+make SMK_CLUSTER_ARGS="--profile my_snakemake_cluster_profile"
 ```
 
 

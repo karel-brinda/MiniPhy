@@ -38,12 +38,17 @@ BIG_TEST_PARAMS = --config protocol_pre=True protocol_post=True
 ## General commands ##
 ######################
 
-all: ## Run everything
+all: ## Run everything (the default subcommand)
 	snakemake $(SNAKEMAKE_PARAMS)
 
 help: ## Print help messages
-	@echo "$$(grep -hE '^\S*(:.*)?##' $(MAKEFILE_LIST) \
-		| sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\\x1b[36m\1\\x1b[m:\2/' -e 's/^\([^#]\)/    \1/g'\
+	@echo -e "$$(grep -hE '^\S*(:.*)?##' $(MAKEFILE_LIST) \
+		| sed \
+			-e 's/:.*##\s*/:/' \
+			-e 's/^\(.*\):\(.*\)/   \\x1b[36m\1\\x1b[m:\2/' \
+			-e 's/^\([^#]\)/\1/g' \
+			-e 's/: /:/g' \
+			-e 's/^#\(.*\)#/\\x1b[90m\1\\x1b[m/' \
 		| column -c2 -t -s : )"
 
 conda: ## Create the conda environments
@@ -99,14 +104,12 @@ test: ## Run the workflow on test data (P1)
 		snakemake $(SNAKEMAKE_PARAMS); \
 	fi
 
-
 bigtest: ## Run the workflow on test data (P1, P2, P3)
 	if [ -d ".test" ]; then \
 		$(MAKE) -C .test bigtest; \
 	else\
 		snakemake $(SNAKEMAKE_PARAMS) $(BIG_TEST_PARAMS); \
 	fi
-
 
 format: ## Reformat all source code
 	snakefmt workflow
