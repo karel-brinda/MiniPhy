@@ -23,8 +23,13 @@ ifeq ($(strip $(USE_CONDA)),True)
 	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR)"
 endif
 
-SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete -p #--show-failed-logs
-
+ifeq ($(SMK_CLUSTER_ARGS),)
+    # configure local run
+	SNAKEMAKE_PARAMS = --cores $(THREADS) $(CONDA_PARAMS) --rerun-incomplete --printshellcmds #--show-failed-logs
+else
+    # configure cluster run
+	SNAKEMAKE_PARAMS = --cores all $(CONDA_PARAMS) $(SMK_CLUSTER_ARGS) --rerun-incomplete --printshellcmds #--show-failed-logs
+endif
 BIG_TEST_PARAMS = --config protocol_pre=True protocol_post=True
 
 
