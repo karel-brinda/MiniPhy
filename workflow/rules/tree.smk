@@ -71,7 +71,7 @@ if not config["trees_required"]:
         output:
             nw=fn_tree_dirty(_batch="{batch}"),
         input:
-            w_batch_asms,
+            nw=fn_asm_list_unsorted(_batch="{batch}"),
         threads: config["attotree_threads"]
         params:
             k=config["attotree_kmer_length"],
@@ -85,6 +85,6 @@ if not config["trees_required"]:
                 -t {params.t} \\
                 -k {params.k} \\
                 -s {params.s} \\
-                {input} \\
+                -L {input.nw} \\
                 | tee {output.nw}
             """

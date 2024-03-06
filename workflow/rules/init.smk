@@ -148,6 +148,10 @@ def fn_hist_summary(_batch, _protocol):
 # ASM
 
 
+def fn_asm_list_unsorted(_batch):
+    return f"{dir_intermediate()}/asm/{_batch}.asm.list_unsorted"
+
+
 def fn_asm_seq_dir(_batch):
     return f"{dir_intermediate()}/asm/{_batch}"
 
@@ -233,6 +237,13 @@ def generate_file_list(input_list_fn, output_list_fn, filename_function):
                 fn0 = filename_function(x)  # top-level path
                 fn = os.path.relpath(fn0, os.path.dirname(output_list_fn))
                 g.write(fn + "\n")
+
+
+# dump list of files into a file
+def dump_file_list(input_files, output_list_fn):
+    with open(output_list_fn, "w") as g:
+        for x in input_files:
+            g.write(x + "\n")
 
 
 def load_list(fn):
