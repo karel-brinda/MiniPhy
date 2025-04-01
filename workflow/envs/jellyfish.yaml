@@ -2,5 +2,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - jellyfish ==2.2.10
-  - xopen ==0.7.3
+  - kmer-jellyfish >=2.2
+  - xopen >=0.7.3
