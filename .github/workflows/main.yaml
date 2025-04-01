@@ -75,10 +75,11 @@ jobs:
              snakemake-version: "8.5"
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: mamba-org/setup-micromamba@v2
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
         with:
           environment-name: test-env
+          miniforge-version: latest
           condarc: |
             channels:
               - conda-forge
@@ -95,13 +96,13 @@ jobs:
       - name: Versions
         shell: bash -el {0}
         run: |
-          micromamba activate test-env
+          conda activate test-env
           python -v
           snakemake -v
       - name: Make test
         shell: bash -el {0}
         run: |
-          micromamba activate test-env
+          conda activate test-env
           make test
 #      - name: Make bigtest
 #        shell: bash -el {0}
