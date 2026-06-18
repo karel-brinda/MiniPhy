@@ -1,6 +1,6 @@
 channels:
+  - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - kmer-jellyfish >=2.2
-  - xopen >=0.7.3
+  - kmer-jellyfish >=2.3,<2.4
+  - xopen >=1.7,<2.1
