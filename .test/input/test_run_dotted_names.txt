@@ -1,0 +1,2 @@
+input/isolates/GCA_037442905.1_ASM3744290v1_genomic.fa
+input/isolates/GCA_037442906.1_ASM3744291v1_genomic.fa
