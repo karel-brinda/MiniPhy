@@ -58,7 +58,7 @@ clean: ## Clean all output archives and files with statistics
 	rm -fvr output/* intermediate/stats/*
 	find intermediate -name '*.summary' -or -name '*.nscl' -or -name '*.hist'  | xargs rm -fv
 	if [ -d ".test" ]; then \
-		$(MAKE) -C .test clean; \
+		$(MAKE) -C .test cleanall; \
 	fi
 
 cleanall: clean ## Clean everything but Conda, Snakemake, and input files
