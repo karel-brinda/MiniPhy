@@ -107,7 +107,7 @@ jobs:
           conda --version
           conda info --json
           rm -rf .test/.conda .conda
-          make test
+          make test CONDA_FRONTEND=conda
 #      - name: Make bigtest
 #        shell: bash -el {0}
 #        run: |
