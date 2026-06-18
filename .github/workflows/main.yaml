@@ -85,10 +85,11 @@ jobs:
               - conda-forge
               - bioconda
               - defaults
+            channel_priority: strict
           create-args: >-
             python=${{ matrix.python-version }}
             snakemake-minimal=${{ matrix.snakemake-version }}
-            mamba
+            conda
             make
           init-shell: bash
           cache-environment: false
@@ -103,11 +104,9 @@ jobs:
         shell: bash -el {0}
         run: |
           micromamba activate test-env
-          mkdir -p "$HOME/bin"
-          ln -sf "$(command -v micromamba)" "$HOME/bin/conda"
-          export PATH="$HOME/bin:$PATH"
           conda --version
           conda info --json
+          rm -rf .test/.conda .conda
           make test
 #      - name: Make bigtest
 #        shell: bash -el {0}
