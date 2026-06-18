@@ -19,8 +19,10 @@ ifeq ($(USE_CONDA),)
     $(error 'use_conda' not found in the configuration)
 endif
 
+CONDA_FRONTEND ?= $(shell command -v mamba >/dev/null 2>&1 && echo mamba || echo conda)
+
 ifeq ($(strip $(USE_CONDA)),True)
-	CONDA_PARAMS  =	--use-conda --conda-prefix="$(CONDA_DIR)"
+	CONDA_PARAMS = --use-conda --conda-frontend $(CONDA_FRONTEND) --conda-prefix="$(CONDA_DIR)"
 endif
 
 ifeq ($(SMK_CLUSTER_ARGS),)
