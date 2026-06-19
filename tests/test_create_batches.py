@@ -79,3 +79,19 @@ def test_writes_one_batch_for_two_genomes_from_same_species(tmp_path):
         "genome-1.fasta",
         "genome-2.fasta",
     ], f"Unexpected batch contents: {batch_contents}"
+
+
+def test_reports_loaded_genome_count(tmp_path):
+    metadata = tmp_path / "metadata.tsv"
+    output_dir = tmp_path / "batches"
+    write_metadata(metadata, [("Example species", "genome-1.fasta")])
+
+    result = run_create_batches(metadata, output_dir)
+
+    assert result.returncode == 0, (
+        f"create_batches.py failed:\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+    )
+    expected = "Loaded 1 genomes across 1 species clusters"
+    assert expected in result.stderr, (
+        f"Expected {expected!r} in stderr:\n{result.stderr}"
+    )

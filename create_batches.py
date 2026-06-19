@@ -43,11 +43,10 @@ class Batching:
         self.dbg_info = {}  # fn -> dbg comments
 
     def _load_clusters(self):
+        genome_count = 0
         with xopen(self.input_fn) as fo:
-            for genome_count, x in enumerate(csv.DictReader(fo,
-                                                            delimiter="\t")):
-                #species = x["hit1_species"]
-                #fn = x["path"]
+            for x in csv.DictReader(fo, delimiter="\t"):
+                genome_count += 1
                 species = clean_species_name(x[self.col_species])
                 fn = x[self.col_fn]
                 self.clusters[species].append(fn)
