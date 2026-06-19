@@ -12,7 +12,7 @@ def write_metadata(path, rows):
     path.write_text("\n".join(lines) + "\n")
 
 
-def run_create_batches(metadata, output_dir):
+def run_create_batches(metadata, output_dir, *extra_args):
     output_dir.mkdir(exist_ok=True)
     return subprocess.run(
         [
@@ -27,6 +27,7 @@ def run_create_batches(metadata, output_dir):
             "10",
             "-D",
             "10",
+            *extra_args,
         ],
         capture_output=True,
         text=True,
@@ -117,4 +118,39 @@ def test_refuses_existing_txt_files_without_modifying_them(tmp_path):
     assert stale_batch.exists(), f"Existing batch file was removed: {stale_batch}"
     assert stale_batch.read_text() == stale_contents, (
         f"Existing batch file was modified: {stale_batch}"
+    )
+
+
+def test_force_removes_txt_files_and_preserves_other_files(tmp_path):
+    metadata = tmp_path / "metadata.tsv"
+    output_dir = tmp_path / "batches"
+    output_dir.mkdir()
+    stale_batch = output_dir / "old_batch.txt"
+    unrelated_file = output_dir / "notes.md"
+    stale_batch.write_text("old-genome.fasta\n")
+    unrelated_contents = "Keep this file.\n"
+    unrelated_file.write_text(unrelated_contents)
+    write_metadata(
+        metadata,
+        [
+            ("Example species", "genome-1.fasta"),
+            ("Example species", "genome-2.fasta"),
+        ],
+    )
+
+    result = run_create_batches(metadata, output_dir, "--force")
+
+    assert result.returncode == 0, (
+        f"create_batches.py --force failed:\n"
+        f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+    )
+    assert not stale_batch.exists(), f"Stale batch file remains: {stale_batch}"
+    batch_files = list(output_dir.glob("*.txt"))
+    assert len(batch_files) == 1, f"Expected one new batch file, found: {batch_files}"
+    assert batch_files[0].read_text().splitlines() == [
+        "genome-1.fasta",
+        "genome-2.fasta",
+    ], f"Unexpected new batch contents: {batch_files[0].read_text()!r}"
+    assert unrelated_file.read_text() == unrelated_contents, (
+        f"Unrelated file was modified: {unrelated_file}"
     )

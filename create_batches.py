@@ -27,7 +27,8 @@ def clean_species_name(name):
 class Batching:
 
     def __init__(self, input_fn, cluster_min_size, cluster_max_size,
-                 dustbin_max_size, output_d, col_species, col_fn, comments):
+                 dustbin_max_size, output_d, col_species, col_fn, comments,
+                 force):
         self.input_fn = input_fn
         self.cluster_min_size = cluster_min_size
         self.cluster_max_size = cluster_max_size
@@ -36,6 +37,7 @@ class Batching:
         self.col_species = col_species
         self.col_fn = col_fn
         self.comments = comments
+        self.force = force
 
         self.clusters = collections.defaultdict(list)
         self.pseudoclusters = collections.defaultdict(list)
@@ -46,11 +48,17 @@ class Batching:
         os.makedirs(self.output_d, exist_ok=True)
 
         existing_txt = sorted(glob.glob(os.path.join(self.output_d, "*.txt")))
-        if existing_txt:
+        if existing_txt and not self.force:
             raise SystemExit(
                 f"Output directory contains existing .txt files: {self.output_d}\n"
-                "Remove them before rerunning create_batches.py."
+                "Remove them manually or rerun with --force to delete existing "
+                ".txt batch files."
             )
+
+        # Only generated .txt batch files are removed; unrelated files remain.
+        if self.force:
+            for fn in existing_txt:
+                os.remove(fn)
 
     def _load_clusters(self):
         genome_count = 0
@@ -187,6 +195,14 @@ def main():
         help=f'add comments with info to the output text files (for debugging)',
     )
 
+    parser.add_argument(
+        '--force',
+        dest='force',
+        action='store_true',
+        help='Delete existing .txt batch files in the output directory before '
+             'writing new ones',
+    )
+
     args = parser.parse_args()
 
     batching = Batching(input_fn=args.input_fn,
@@ -196,7 +212,8 @@ def main():
                         output_d=args.output_d,
                         col_species=args.col_species,
                         col_fn=args.col_fn,
-                        comments=args.comments)
+                        comments=args.comments,
+                        force=args.force)
     batching.run()
 
 
