@@ -378,7 +378,7 @@ The default Protocol 1 does not require Protocol 3.
 
 ## 5. Citation
 
-> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and robust search of microbial genomes via phylogenetic compression](https://www.nature.com/articles/s41592-025-02625-2).** *Nature Methods* 22, 692–697 (2025). https://doi.org/10.1038/s41592-025-02625-2
+> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and robust search of microbial genomes via phylogenetic compression](https://www.nature.com/articles/s41592-025-02625-2).** *Nature Methods* 22, 692–697 (2025). https://doi.org/10.1038/s41592-025-02625-2 ([PDF](https://www.nature.com/articles/s41592-025-02625-2.pdf))
 
 ```bibtex
 @article {PhylogeneticCompression,
