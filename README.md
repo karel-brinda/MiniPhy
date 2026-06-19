@@ -361,6 +361,20 @@ make SMK_CLUSTER_ARGS="--profile my_snakemake_cluster_profile"
 
 Tests can be run by `make test` (just Protocol 1) or `make bigtest` (all the protocols).
 
+Protocol 3 uses ProPhyle-based *k*-mer propagation and has additional compiled
+dependencies. If Protocol 3 fails during environment creation or compilation,
+first check that the Conda environments were created correctly:
+```bash
+make conda
+```
+
+If the problem is specific to Protocol 3 and you only need assembly compression,
+disable Protocol 3 in `config.yaml`:
+```yaml
+protocol_post: False
+```
+The default Protocol 1 does not require Protocol 3.
+
 
 ## 5. Citation
 
