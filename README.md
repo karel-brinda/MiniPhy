@@ -6,7 +6,7 @@
     <img src="docs/logo_wbg.svg" align="left" style="width:100px;" />
 </a>
 Workflow for <a href="http://brinda.eu/mof">phylogenetic compression</a>
-of microbial genomes, producing highly compressed <code>.tar.xz</code> genome archives.
+of microbial genome isolates, producing highly compressed <code>.tar.xz</code> genome archives.
 MiniPhy first estimates the evolutionary history
 of user-provided genomes
 and then uses it for guiding their compression using XZ.
@@ -14,7 +14,7 @@ The resulting archives can be distributed to users or
 re-compressed/indexed by other methods.
 For more information,
 see the <a href="https://brinda.eu/mof">website of phylogenetic compression</a>
-and the <a href="https://www.nature.com/articles/s41592-025-02625-2">associated paper</a>.
+and the <a href="https://www.nature.com/articles/s41592-025-02625-2">associated paper</a>  ([PDF](https://www.nature.com/articles/s41592-025-02625-2.pdf)).
 </p><br/>
 
 [![Info](https://img.shields.io/badge/Project-Info-blue)](https://brinda.eu/mof)
@@ -51,15 +51,19 @@ and the <a href="https://www.nature.com/articles/s41592-025-02625-2">associated 
 
 ## 1. Introduction
 
-The user provides files of files for individual batches
-in the `input/` directory
-and specifies the requested compression protocols in the
-[configuration file](config.yaml).
-It is assumed that the input genomes are provided as batches of
-phylogenetically related genomes, of up to approx. 10k genomes per batch
-(for more information on batching strategies,
-see the [paper](https://www.nature.com/articles/s41592-025-02625-2)).
-Upon the execution by `make`,
+For every non-trivial collection, phylogenetic compression using MiniPhy
+proceeds in two steps.
+First, isolate genomes are phylogenetically batched – for instance using the 
+`create_batches.py` in combination with isolate metadata – and then, they are 
+within each batch phylogenetically reordered.
+
+In practical terms, user first prepares individual FASTA files (possibly gzipped),
+the associated metadata in a single TSV table including species names, 
+and then generated batches as files of files
+in the `input/` directory.
+After specifying the requested compression protocol (usually just .tar.xz compression of the assembly files) in the
+[configuration file](config.yaml)
+and runing `make`,
 MiniPhy performs phylogenetic compression
 of the assemblies or associated de Bruijn graphs.
 All the compressed outputs and the calculated statistics
