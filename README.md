@@ -137,6 +137,52 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
   ```bash
   find ~/dir_with_my_genomes -name '*.fa' > input/my_first_batch.txt
   ```
+
+  Alternatively, if you have a tab-separated metadata file with one genome per row,
+  you can generate MiniPhy batch lists with `create_batches.py`. The default metadata
+  columns are `species` and `filename`:
+  ```bash
+  ./create_batches.py meta_file.tsv -d input
+  ```
+  This creates one or more `input/{batch_name}.txt` files. Each file contains paths
+  to genomes that will be compressed together as one MiniPhy batch.
+
+  For metadata files with different column names, use `-s` for the species column
+  and `-f` for the genome filename or path column:
+  ```bash
+  ./create_batches.py meta_file.tsv.xz \
+    -s hit1_species \
+    -f asm_path \
+    -d input
+  ```
+  The script groups genomes by cleaned species names. Species clusters smaller than
+  `-m` are moved to the dustbin; species clusters larger than `-M` are split into
+  several batches; dustbin batches are split using `-D`.
+
+  For example:
+  ```bash
+  ./create_batches.py meta_file.tsv.xz \
+    -s hit1_species \
+    -f asm_path \
+    -m 100 \
+    -M 4000 \
+    -D 1000 \
+    -d input
+  ```
+  To avoid mixing old and new batch lists, `create_batches.py` refuses to write into
+  an output directory that already contains `.txt` files. Remove old batch lists
+  manually before rerunning, or use `--force` to delete existing `.txt` files in the
+  selected output directory before generating new ones:
+  ```bash
+  ./create_batches.py meta_file.tsv.xz \
+    -s hit1_species \
+    -f asm_path \
+    -d input \
+    --force
+  ```
+  Use `--force` carefully: it removes all existing `.txt` files in the selected
+  output directory.
+
   The supported input file formats include FASTA and FASTQ (possibly compressed by GZip).
 
 * ***Step 2 (optional): Provide corresponding phylogenies.*** \
