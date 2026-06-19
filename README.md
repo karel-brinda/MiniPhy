@@ -131,7 +131,7 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
 * ***Step 1: Provide lists of input files.*** \
   For every batch, create a txt list of input files in the `input/`
   directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
-  or paths relative to the root of the Github repository (not relative to the txt files).
+  or paths relative to the root of the GitHub repository (not relative to the txt files).
 
   Such a list can be generated, for instance, by `find` by
   ```bash
@@ -190,12 +190,12 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
   (similar functionality like [Mashtree](https://github.com/lskatz/mashtree)),
   it is possible to supply custom phylogenies in the Newick format.
   The tree files should be named `input/{batch_name}.nw`,
-  and the leave names inside should correspond
+  and the leaf names inside should correspond
   to FASTA filenames (without FASTA suffixes).
 
 * ***Step 3 (optional): Adjust configuration.*** \
   By editing [`config.yaml`](config.yaml) it is possible to specify
-  compression protocols, data analyzes,
+  compression protocols, data analyses,
   and low-level parameters (see below).
 
 * ***Step 4: Run the pipeline.*** \
@@ -302,11 +302,11 @@ all options are documented directly there. The configurable functionality includ
 
 <small>
   <sup><b>(1)</b></sup> In FASTA 1-line format and all sequences converted to uppercase
-  (unless switche off in the configuration).
+  (unless switched off in the configuration).
   <br />
   <sup><b>(2)</b></sup> The original de Bruijn graphs can
   be obtained by merging <i>k</i>-mer sets along
-  the respetive root-to-leaf paths.
+  the respective root-to-leaf paths.
 </small>
 
 
@@ -397,7 +397,7 @@ The default Protocol 1 does not require Protocol 3.
 
 ## 6. Issues
 
-Please use [Github issues](https://github.com/karel-brinda/miniphy/issues).
+Please use [GitHub issues](https://github.com/karel-brinda/miniphy/issues).
 
 
 
