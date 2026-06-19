@@ -112,7 +112,8 @@ class Batching:
     def _write_batches(self):
         for batch_name, l in self.batches.items():
             fn = os.path.join(self.output_d, f"{batch_name}.txt")
-            with open(fn, "w+") as f:
+            # Fail instead of silently overwriting an unexpected collision.
+            with open(fn, "x") as f:
                 for x in l:
                     if self.comments:
                         f.write(f"{x}\t#{self.dbg_info[x]}\n")
