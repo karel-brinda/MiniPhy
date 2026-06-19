@@ -116,8 +116,8 @@ def main():
 
     parser.add_argument(
         'input_fn',
-        metavar='clustered_fastas.tsv[.gz/.xz/...]',
-        help='',
+        metavar='meta_file.tsv[.gz/.xz/...]',
+        help='Tab-separated metadata file with species and filename columns',
     )
 
     parser.add_argument(
