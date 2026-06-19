@@ -14,11 +14,11 @@ The resulting archives can be distributed to users or
 re-compressed/indexed by other methods.
 For more information,
 see the <a href="https://brinda.eu/mof">website of phylogenetic compression</a>
-and the <a href="https://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
+and the <a href="https://www.nature.com/articles/s41592-025-02625-2">associated paper</a>.
 </p><br/>
 
 [![Info](https://img.shields.io/badge/Project-Info-blue)](https://brinda.eu/mof)
-[![Paper DOI](https://img.shields.io/badge/paper-10.1101/2023.04.15.536996-14dc3d.svg)](https://doi.org/10.1101/2023.04.15.536996)
+[![Paper DOI](https://img.shields.io/badge/paper-10.1038%2Fs41592--025--02625--2-14dc3d.svg)](https://www.nature.com/articles/s41592-025-02625-2)
 [![GitHub release](https://img.shields.io/github/release/karel-brinda/miniphy.svg)](https://github.com/karel-brinda/miniphy/releases/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10636846.svg)](https://doi.org/10.5281/zenodo.10636846)
 [![MiniPhy test](https://github.com/karel-brinda/miniphy/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/miniphy/actions/)
@@ -58,7 +58,7 @@ and specifies the requested compression protocols in the
 It is assumed that the input genomes are provided as batches of
 phylogenetically related genomes, of up to approx. 10k genomes per batch
 (for more information on batching strategies,
-see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
+see the [paper](https://www.nature.com/articles/s41592-025-02625-2)).
 Upon the execution by `make`,
 MiniPhy performs phylogenetic compression
 of the assemblies or associated de Bruijn graphs.
@@ -131,12 +131,58 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
 * ***Step 1: Provide lists of input files.*** \
   For every batch, create a txt list of input files in the `input/`
   directory (i.e., as `input/{batch_name}.txt`. Use either absolute paths (recommended),
-  or paths relative to the root of the Github repository (not relative to the txt files).
+  or paths relative to the root of the GitHub repository (not relative to the txt files).
 
   Such a list can be generated, for instance, by `find` by
   ```bash
   find ~/dir_with_my_genomes -name '*.fa' > input/my_first_batch.txt
   ```
+
+  Alternatively, if you have a tab-separated metadata file with one genome per row,
+  you can generate MiniPhy batch lists with `create_batches.py`. The default metadata
+  columns are `species` and `filename`:
+  ```bash
+  ./create_batches.py meta_file.tsv -d input
+  ```
+  This creates one or more `input/{batch_name}.txt` files. Each file contains paths
+  to genomes that will be compressed together as one MiniPhy batch.
+
+  For metadata files with different column names, use `-s` for the species column
+  and `-f` for the genome filename or path column:
+  ```bash
+  ./create_batches.py meta_file.tsv.xz \
+    -s hit1_species \
+    -f asm_path \
+    -d input
+  ```
+  The script groups genomes by cleaned species names. Species clusters smaller than
+  `-m` are moved to the dustbin; species clusters larger than `-M` are split into
+  several batches; dustbin batches are split using `-D`.
+
+  For example:
+  ```bash
+  ./create_batches.py meta_file.tsv.xz \
+    -s hit1_species \
+    -f asm_path \
+    -m 100 \
+    -M 4000 \
+    -D 1000 \
+    -d input
+  ```
+  To avoid mixing old and new batch lists, `create_batches.py` refuses to write into
+  an output directory that already contains `.txt` files. Remove old batch lists
+  manually before rerunning, or use `--force` to delete existing `.txt` files in the
+  selected output directory before generating new ones:
+  ```bash
+  ./create_batches.py meta_file.tsv.xz \
+    -s hit1_species \
+    -f asm_path \
+    -d input \
+    --force
+  ```
+  Use `--force` carefully: it removes all existing `.txt` files in the selected
+  output directory.
+
   The supported input file formats include FASTA and FASTQ (possibly compressed by GZip).
 
 * ***Step 2 (optional): Provide corresponding phylogenies.*** \
@@ -144,12 +190,12 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
   (similar functionality like [Mashtree](https://github.com/lskatz/mashtree)),
   it is possible to supply custom phylogenies in the Newick format.
   The tree files should be named `input/{batch_name}.nw`,
-  and the leave names inside should correspond
+  and the leaf names inside should correspond
   to FASTA filenames (without FASTA suffixes).
 
 * ***Step 3 (optional): Adjust configuration.*** \
   By editing [`config.yaml`](config.yaml) it is possible to specify
-  compression protocols, data analyzes,
+  compression protocols, data analyses,
   and low-level parameters (see below).
 
 * ***Step 4: Run the pipeline.*** \
@@ -158,6 +204,18 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
 
 * ***Step 5: Retrieve the output files.*** \
   All output files will be located in `output/`.
+
+For larger collections, the usual workflow is:
+
+1. prepare a metadata table with one row per genome;
+2. use `create_batches.py` to create `input/{batch_name}.txt` files;
+3. optionally add matching `input/{batch_name}.nw` Newick trees for batches where
+   a custom phylogeny should be used;
+4. edit `config.yaml` to select the requested protocols and resource settings;
+5. run `make`.
+
+For large collections, prefer absolute genome paths in the generated batch files.
+This makes the batch lists independent of where MiniPhy is launched from.
 
 
 ### 4b. Adjusting configuration
@@ -244,11 +302,11 @@ all options are documented directly there. The configurable functionality includ
 
 <small>
   <sup><b>(1)</b></sup> In FASTA 1-line format and all sequences converted to uppercase
-  (unless switche off in the configuration).
+  (unless switched off in the configuration).
   <br />
   <sup><b>(2)</b></sup> The original de Bruijn graphs can
   be obtained by merging <i>k</i>-mer sets along
-  the respetive root-to-leaf paths.
+  the respective root-to-leaf paths.
 </small>
 
 
@@ -303,29 +361,44 @@ make SMK_CLUSTER_ARGS="--profile my_snakemake_cluster_profile"
 
 Tests can be run by `make test` (just Protocol 1) or `make bigtest` (all the protocols).
 
+Protocol 3 uses ProPhyle-based *k*-mer propagation and has additional compiled
+dependencies. If Protocol 3 fails during environment creation or compilation,
+first check that the Conda environments were created correctly:
+```bash
+make conda
+```
+
+If the problem is specific to Protocol 3 and you only need assembly compression,
+disable Protocol 3 in `config.yaml`:
+```yaml
+protocol_post: False
+```
+The default Protocol 1 does not require Protocol 3.
+
 
 ## 5. Citation
 
-> K. Brinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression](https://doi.org/10.1101/2023.04.15.536996).** *bioRxiv* 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
+> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and robust search of microbial genomes via phylogenetic compression](https://www.nature.com/articles/s41592-025-02625-2).** *Nature Methods* 22, 692–697 (2025). https://doi.org/10.1038/s41592-025-02625-2 ([PDF](https://www.nature.com/articles/s41592-025-02625-2.pdf))
 
 ```bibtex
 @article {PhylogeneticCompression,
    author  = {Karel B{\v r}inda and Leandro Lima and Simone Pignotti
                and Natalia Quinones-Olvera and Kamil Salikhov and Rayan Chikhi
                and Gregory Kucherov and Zamin Iqbal and Michael Baym},
-   title   = {Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression},
-   journal = {bioRxiv},
-   elocation-id = {2023.04.15.536996},
-   year    = {2023},
-   doi     = {10.1101/2023.04.15.536996},
-   url     = {https://www.biorxiv.org/content/early/2023/04/16/2023.04.15.536996}
+   title   = {Efficient and robust search of microbial genomes via phylogenetic compression},
+   journal = {Nature Methods},
+   volume  = {22},
+   pages   = {692--697},
+   year    = {2025},
+   doi     = {10.1038/s41592-025-02625-2},
+   url     = {https://www.nature.com/articles/s41592-025-02625-2}
 }
 ```
 
 
 ## 6. Issues
 
-Please use [Github issues](https://github.com/karel-brinda/miniphy/issues).
+Please use [GitHub issues](https://github.com/karel-brinda/miniphy/issues).
 
 
 
