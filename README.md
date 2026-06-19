@@ -14,11 +14,11 @@ The resulting archives can be distributed to users or
 re-compressed/indexed by other methods.
 For more information,
 see the <a href="https://brinda.eu/mof">website of phylogenetic compression</a>
-and the <a href="https://doi.org/10.1101/2023.04.15.536996">associated paper</a>.
+and the <a href="https://www.nature.com/articles/s41592-025-02625-2">associated paper</a>.
 </p><br/>
 
 [![Info](https://img.shields.io/badge/Project-Info-blue)](https://brinda.eu/mof)
-[![Paper DOI](https://img.shields.io/badge/paper-10.1101/2023.04.15.536996-14dc3d.svg)](https://doi.org/10.1101/2023.04.15.536996)
+[![Paper DOI](https://img.shields.io/badge/paper-10.1038%2Fs41592--025--02625--2-14dc3d.svg)](https://www.nature.com/articles/s41592-025-02625-2)
 [![GitHub release](https://img.shields.io/github/release/karel-brinda/miniphy.svg)](https://github.com/karel-brinda/miniphy/releases/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10636846.svg)](https://doi.org/10.5281/zenodo.10636846)
 [![MiniPhy test](https://github.com/karel-brinda/miniphy/actions/workflows/main.yaml/badge.svg)](https://github.com/karel-brinda/miniphy/actions/)
@@ -58,7 +58,7 @@ and specifies the requested compression protocols in the
 It is assumed that the input genomes are provided as batches of
 phylogenetically related genomes, of up to approx. 10k genomes per batch
 (for more information on batching strategies,
-see the [paper](http://doi.org/10.1101/2023.04.15.536996)).
+see the [paper](https://www.nature.com/articles/s41592-025-02625-2)).
 Upon the execution by `make`,
 MiniPhy performs phylogenetic compression
 of the assemblies or associated de Bruijn graphs.
@@ -378,19 +378,20 @@ The default Protocol 1 does not require Protocol 3.
 
 ## 5. Citation
 
-> K. Brinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression](https://doi.org/10.1101/2023.04.15.536996).** *bioRxiv* 2023.04.15.536996, 2023. https://doi.org/10.1101/2023.04.15.536996
+> K. Břinda, L. Lima, S. Pignotti, N. Quinones-Olvera, K. Salikhov, R. Chikhi, G. Kucherov, Z. Iqbal, and M. Baym. **[Efficient and robust search of microbial genomes via phylogenetic compression](https://www.nature.com/articles/s41592-025-02625-2).** *Nature Methods* 22, 692–697 (2025). https://doi.org/10.1038/s41592-025-02625-2
 
 ```bibtex
 @article {PhylogeneticCompression,
    author  = {Karel B{\v r}inda and Leandro Lima and Simone Pignotti
                and Natalia Quinones-Olvera and Kamil Salikhov and Rayan Chikhi
                and Gregory Kucherov and Zamin Iqbal and Michael Baym},
-   title   = {Efficient and Robust Search of Microbial Genomes via Phylogenetic Compression},
-   journal = {bioRxiv},
-   elocation-id = {2023.04.15.536996},
-   year    = {2023},
-   doi     = {10.1101/2023.04.15.536996},
-   url     = {https://www.biorxiv.org/content/early/2023/04/16/2023.04.15.536996}
+   title   = {Efficient and robust search of microbial genomes via phylogenetic compression},
+   journal = {Nature Methods},
+   volume  = {22},
+   pages   = {692--697},
+   year    = {2025},
+   doi     = {10.1038/s41592-025-02625-2},
+   url     = {https://www.nature.com/articles/s41592-025-02625-2}
 }
 ```
 
