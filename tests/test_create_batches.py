@@ -13,7 +13,7 @@ def write_metadata(path, rows):
 
 
 def run_create_batches(metadata, output_dir):
-    output_dir.mkdir()
+    output_dir.mkdir(exist_ok=True)
     return subprocess.run(
         [
             sys.executable,
@@ -94,4 +94,27 @@ def test_reports_loaded_genome_count(tmp_path):
     expected = "Loaded 1 genomes across 1 species clusters"
     assert expected in result.stderr, (
         f"Expected {expected!r} in stderr:\n{result.stderr}"
+    )
+
+
+def test_refuses_existing_txt_files_without_modifying_them(tmp_path):
+    metadata = tmp_path / "metadata.tsv"
+    output_dir = tmp_path / "batches"
+    output_dir.mkdir()
+    stale_batch = output_dir / "old_batch.txt"
+    stale_contents = "old-genome.fasta\n"
+    stale_batch.write_text(stale_contents)
+    write_metadata(metadata, [("Example species", "genome-1.fasta")])
+
+    result = run_create_batches(metadata, output_dir)
+
+    assert result.returncode != 0, (
+        "Expected create_batches.py to reject an existing .txt file"
+    )
+    assert "Output directory contains existing .txt files" in result.stderr, (
+        f"Expected stale-output error in stderr:\n{result.stderr}"
+    )
+    assert stale_batch.exists(), f"Existing batch file was removed: {stale_batch}"
+    assert stale_batch.read_text() == stale_contents, (
+        f"Existing batch file was modified: {stale_batch}"
     )

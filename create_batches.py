@@ -42,6 +42,16 @@ class Batching:
         self.batches = collections.defaultdict(list)
         self.dbg_info = {}  # fn -> dbg comments
 
+    def _prepare_output_dir(self):
+        os.makedirs(self.output_d, exist_ok=True)
+
+        existing_txt = sorted(glob.glob(os.path.join(self.output_d, "*.txt")))
+        if existing_txt:
+            raise SystemExit(
+                f"Output directory contains existing .txt files: {self.output_d}\n"
+                "Remove them before rerunning create_batches.py."
+            )
+
     def _load_clusters(self):
         genome_count = 0
         with xopen(self.input_fn) as fo:
@@ -103,6 +113,7 @@ class Batching:
         print(f"Finished", file=sys.stderr)
 
     def run(self):
+        self._prepare_output_dir()
         self._load_clusters()
         self._create_dustbin()
         self._create_batches()
