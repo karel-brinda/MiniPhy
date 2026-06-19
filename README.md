@@ -205,6 +205,18 @@ curl -L https://github.com/karel-brinda/miniphy/tarball/main \
 * ***Step 5: Retrieve the output files.*** \
   All output files will be located in `output/`.
 
+For larger collections, the usual workflow is:
+
+1. prepare a metadata table with one row per genome;
+2. use `create_batches.py` to create `input/{batch_name}.txt` files;
+3. optionally add matching `input/{batch_name}.nw` Newick trees for batches where
+   a custom phylogeny should be used;
+4. edit `config.yaml` to select the requested protocols and resource settings;
+5. run `make`.
+
+For large collections, prefer absolute genome paths in the generated batch files.
+This makes the batch lists independent of where MiniPhy is launched from.
+
 
 ### 4b. Adjusting configuration
 
