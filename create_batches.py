@@ -27,7 +27,8 @@ def clean_species_name(name):
 class Batching:
 
     def __init__(self, input_fn, cluster_min_size, cluster_max_size,
-                 dustbin_max_size, output_d, col_species, col_fn, comments):
+                 dustbin_max_size, output_d, col_species, col_fn, comments,
+                 force):
         self.input_fn = input_fn
         self.cluster_min_size = cluster_min_size
         self.cluster_max_size = cluster_max_size
@@ -36,18 +37,34 @@ class Batching:
         self.col_species = col_species
         self.col_fn = col_fn
         self.comments = comments
+        self.force = force
 
         self.clusters = collections.defaultdict(list)
         self.pseudoclusters = collections.defaultdict(list)
         self.batches = collections.defaultdict(list)
         self.dbg_info = {}  # fn -> dbg comments
 
+    def _prepare_output_dir(self):
+        os.makedirs(self.output_d, exist_ok=True)
+
+        existing_txt = sorted(glob.glob(os.path.join(self.output_d, "*.txt")))
+        if existing_txt and not self.force:
+            raise SystemExit(
+                f"Output directory contains existing .txt files: {self.output_d}\n"
+                "Remove them manually or rerun with --force to delete existing "
+                ".txt batch files."
+            )
+
+        # Only generated .txt batch files are removed; unrelated files remain.
+        if self.force:
+            for fn in existing_txt:
+                os.remove(fn)
+
     def _load_clusters(self):
+        genome_count = 0
         with xopen(self.input_fn) as fo:
-            for genome_count, x in enumerate(csv.DictReader(fo,
-                                                            delimiter="\t")):
-                #species = x["hit1_species"]
-                #fn = x["path"]
+            for x in csv.DictReader(fo, delimiter="\t"):
+                genome_count += 1
                 species = clean_species_name(x[self.col_species])
                 fn = x[self.col_fn]
                 self.clusters[species].append(fn)
@@ -95,7 +112,8 @@ class Batching:
     def _write_batches(self):
         for batch_name, l in self.batches.items():
             fn = os.path.join(self.output_d, f"{batch_name}.txt")
-            with open(fn, "w+") as f:
+            # Fail instead of silently overwriting an unexpected collision.
+            with open(fn, "x") as f:
                 for x in l:
                     if self.comments:
                         f.write(f"{x}\t#{self.dbg_info[x]}\n")
@@ -104,6 +122,7 @@ class Batching:
         print(f"Finished", file=sys.stderr)
 
     def run(self):
+        self._prepare_output_dir()
         self._load_clusters()
         self._create_dustbin()
         self._create_batches()
@@ -116,8 +135,8 @@ def main():
 
     parser.add_argument(
         'input_fn',
-        metavar='clustered_fastas.tsv[.gz/.xz/...]',
-        help='',
+        metavar='meta_file.tsv[.gz/.xz/...]',
+        help='Tab-separated metadata file with species and filename columns',
     )
 
     parser.add_argument(
@@ -177,6 +196,14 @@ def main():
         help=f'add comments with info to the output text files (for debugging)',
     )
 
+    parser.add_argument(
+        '--force',
+        dest='force',
+        action='store_true',
+        help='Delete existing .txt batch files in the output directory before '
+             'writing new ones',
+    )
+
     args = parser.parse_args()
 
     batching = Batching(input_fn=args.input_fn,
@@ -186,7 +213,8 @@ def main():
                         output_d=args.output_d,
                         col_species=args.col_species,
                         col_fn=args.col_fn,
-                        comments=args.comments)
+                        comments=args.comments,
+                        force=args.force)
     batching.run()
 
 
